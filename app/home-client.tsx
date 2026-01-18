@@ -32,8 +32,8 @@ import {
 // Types
 // ============================================
 
-type InputFormat = 'jpg' | 'png' | 'webp' | 'gif' | 'bmp' | 'svg' | 'ico';
-type OutputFormat = 'png' | 'jpg' | 'webp';
+type InputFormat = 'jpg' | 'png' | 'webp' | 'gif' | 'bmp' | 'svg' | 'ico' | 'pdf';
+type OutputFormat = 'png' | 'jpg' | 'webp' | 'pdf';
 
 interface FilterState {
   search: string;
@@ -105,6 +105,7 @@ function getInputFormatFromTool(tool: Tool): InputFormat | null {
   if (formats.includes('bmp')) return 'bmp';
   if (formats.includes('svg')) return 'svg';
   if (formats.includes('ico')) return 'ico';
+  if (formats.includes('pdf')) return 'pdf';
   return null;
 }
 

@@ -64,20 +64,6 @@ export const toolCategories: ToolCategory[] = [
     icon: 'Type',
     color: 'bg-green-500',
   },
-  {
-    id: 'video',
-    label: 'Video Tools',
-    description: 'Video conversion and manipulation',
-    icon: 'Video',
-    color: 'bg-purple-500',
-  },
-  {
-    id: 'audio',
-    label: 'Audio Tools',
-    description: 'Audio conversion and editing',
-    icon: 'Music',
-    color: 'bg-orange-500',
-  },
 ];
 
 // ============================================
@@ -910,6 +896,56 @@ export const toolsConfig: Tool[] = [
         {
           question: 'What about password-protected PDFs?',
           answer: 'Password-protected PDFs are not currently supported. You\'ll need to remove the password first.',
+        },
+      ],
+    },
+  },
+  {
+    id: 'pdf-to-jpg',
+    name: 'PDF to JPG',
+    slug: 'pdf-to-jpg',
+    category: 'pdf',
+    categoryLabel: 'PDF Tools',
+    description: 'Convert PDF document pages to compressed JPG images',
+    longDescription: 'Free online PDF to JPG converter. Extract pages from your PDF documents as compressed JPG images. Smaller file sizes than PNG, perfect for web sharing and email attachments. All processing happens in your browser.',
+    keywords: ['pdf to jpg', 'pdf to jpeg', 'convert pdf to jpg', 'extract pdf pages', 'pdf converter', 'pdf image extractor', 'free pdf converter'],
+    icon: 'FileText',
+    acceptedFormats: ['.pdf'],
+    maxFileSize: 50,
+    seo: {
+      title: 'PDF to JPG Converter - Extract PDF Pages as JPEG Images | Free Online',
+      metaDescription: 'Convert PDF to JPG online for free. Extract compressed JPEG images from PDF pages. Smaller file sizes, perfect for sharing. Browser-based, no upload needed.',
+      h1: 'Convert PDF to JPG - Extract Pages as JPEG Images',
+      features: [
+        'Compressed output',
+        'Smaller file sizes',
+        'All pages extracted',
+        'Browser-based',
+        'No file upload',
+        'Free forever',
+      ],
+      useCases: [
+        'Share via email',
+        'Embed in documents',
+        'Web publishing',
+        'Social media sharing',
+      ],
+      faq: [
+        {
+          question: 'Why choose JPG over PNG?',
+          answer: 'JPG files are smaller than PNG, making them ideal for sharing via email or uploading to websites. However, PNG preserves quality better for text-heavy documents.',
+        },
+        {
+          question: 'What quality are the JPG images?',
+          answer: 'We use 92% quality by default, which provides excellent visual quality while still achieving good compression.',
+        },
+        {
+          question: 'Is my PDF secure?',
+          answer: 'Absolutely! Your PDF is processed entirely in your browser. No data is ever uploaded to any server.',
+        },
+        {
+          question: 'Can I adjust the compression?',
+          answer: 'Currently we use optimized default settings. Custom quality control is coming in a future update!',
         },
       ],
     },

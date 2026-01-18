@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/theme-toggle';
+import { toolsConfig, toolCategories as configCategories } from '@/lib/tools-config';
 import {
   Sheet,
   SheetContent,
@@ -22,6 +23,7 @@ import {
   Home,
   Wrench,
   Github,
+  LucideIcon,
 } from 'lucide-react';
 
 const navigation = [
@@ -29,13 +31,30 @@ const navigation = [
   { name: 'All Tools', href: '/tools', icon: Wrench },
 ];
 
-const toolCategories = [
-  { name: 'Image Tools', href: '/tools?category=image', icon: Image, count: 16 },
-  { name: 'PDF Tools', href: '/tools?category=pdf', icon: FileText, count: 1 },
-  { name: 'Text Tools', href: '/tools?category=text', icon: Type, count: 0 },
-  { name: 'Video Tools', href: '/tools?category=video', icon: Video, count: 0 },
-  { name: 'Audio Tools', href: '/tools?category=audio', icon: Music, count: 0 },
-];
+// Map string icon names from config to Lucide components
+const iconMap: Record<string, LucideIcon> = {
+  Image,
+  FileText,
+  Type,
+  Video,
+  Music,
+};
+
+// Calculate counts dynamically from filtered toolsConfig
+const toolCategories = configCategories.map(category => {
+  const count = toolsConfig.filter(tool => tool.category === category.id).length;
+  // Only include categories that match the ones we want to show in header or all of them?
+  // The original hardcoded list had these specific ones.
+  // The icon logic needs to map the string 'Image' to the component Image
+  const IconComponent = iconMap[category.icon] || Wrench;
+  
+  return {
+    name: category.label,
+    href: `/tools?category=${category.id}`,
+    icon: IconComponent,
+    count,
+  };
+});
 
 export function Header() {
   const pathname = usePathname();

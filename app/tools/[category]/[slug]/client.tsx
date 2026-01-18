@@ -36,7 +36,7 @@ import {
 } from '@/components/tools/image';
 
 // Import PDF tools
-import { PdfToPngConverter } from '@/components/tools/pdf';
+import { PdfToPngConverter, PdfToJpgConverter } from '@/components/tools/pdf';
 
 interface ToolPageClientProps {
   toolId: string;
@@ -52,7 +52,7 @@ interface ToolPageClientProps {
  * Maps tool IDs to their respective standalone components.
  * Each tool component is completely self-contained with its own logic.
  * 
- * Total: 16 image converters + 1 PDF tool = 17 tools
+ * Total: 16 image converters + 2 PDF tools = 18 tools
  */
 export function ToolPageClient({
   toolId,
@@ -135,6 +135,8 @@ export function ToolPageClient({
           // ─────────────────────────────────────────
           case 'pdf-to-png':
             return <PdfToPngConverter file={file} onReset={onReset} />;
+          case 'pdf-to-jpg':
+            return <PdfToJpgConverter file={file} onReset={onReset} />;
           
           default:
             return (

@@ -4,3 +4,4 @@
 // PDF to Image Converters
 // ============================================
 export { PdfToPngConverter } from './PdfToPngConverter';
+export { PdfToJpgConverter } from './PdfToJpgConverter';

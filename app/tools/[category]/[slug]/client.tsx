@@ -70,6 +70,21 @@ export function ToolPageClient({
   useCases,
   faq,
 }: ToolPageClientProps) {
+  // Special case for Word Counter which manages its own state and layout (file/text input tabs)
+  if (toolId === 'word-counter') {
+    return (
+      <WordCounter 
+        title={title}
+        description={description}
+        acceptedFormats={acceptedFormats}
+        maxFileSize={maxFileSize}
+        features={features}
+        useCases={useCases}
+        faq={faq}
+      />
+    );
+  }
+
   return (
     <ToolShell
       title={title}
@@ -149,12 +164,6 @@ export function ToolPageClient({
             return <PdfToPngConverter file={file} onReset={onReset} />;
           case 'pdf-to-jpg':
             return <PdfToJpgConverter file={file} onReset={onReset} />;
-          
-          // ─────────────────────────────────────────
-          // Text Tools
-          // ─────────────────────────────────────────
-          case 'word-counter':
-            return <WordCounter file={file} onReset={onReset} />;
           
           default:
             return (

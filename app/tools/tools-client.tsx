@@ -55,6 +55,7 @@ const inputFormats: { id: InputFormat; label: string; description: string }[] = 
   { id: 'bmp', label: 'BMP', description: 'Uncompressed bitmap' },
   { id: 'svg', label: 'SVG', description: 'Vector graphics' },
   { id: 'ico', label: 'ICO', description: 'Windows icons' },
+  { id: 'pdf', label: 'PDF', description: 'Portable Document Format' },
 ];
 
 const outputFormats: { id: OutputFormat; label: string; description: string; color: string }[] = [

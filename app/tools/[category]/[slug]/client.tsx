@@ -44,6 +44,9 @@ interface ToolPageClientProps {
   description: string;
   acceptedFormats: string[];
   maxFileSize: number;
+  features?: string[];
+  useCases?: string[];
+  faq?: { question: string; answer: string }[];
 }
 
 /**
@@ -60,6 +63,9 @@ export function ToolPageClient({
   description,
   acceptedFormats,
   maxFileSize,
+  features,
+  useCases,
+  faq,
 }: ToolPageClientProps) {
   return (
     <ToolShell
@@ -67,6 +73,9 @@ export function ToolPageClient({
       description={description}
       acceptedFormats={acceptedFormats}
       maxFileSize={maxFileSize}
+      features={features}
+      useCases={useCases}
+      faq={faq}
     >
       {({ file, onReset }) => {
         switch (toolId) {

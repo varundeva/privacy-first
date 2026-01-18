@@ -138,6 +138,9 @@ export default async function ToolPage(props: PageProps) {
         description={tool.longDescription}
         acceptedFormats={tool.acceptedFormats}
         maxFileSize={tool.maxFileSize}
+        features={tool.seo.features}
+        useCases={tool.seo.useCases}
+        faq={tool.seo.faq}
       />
     </>
   );

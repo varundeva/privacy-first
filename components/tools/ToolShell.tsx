@@ -1,73 +1,85 @@
 'use client';
 
-import React from "react"
-
-import { useState } from 'react';
+import React, { useState, useCallback } from 'react';
+import Link from 'next/link';
 import { ToolHeader } from './ToolHeader';
 import { FileUploader } from './FileUploader';
-import { Loader2 } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface ToolShellProps {
   title: string;
   description: string;
   acceptedFormats: string[];
   maxFileSize: number;
-  children: (file: File | null, isProcessing: boolean) => React.ReactNode;
-  onFileSelect?: (file: File) => void;
+  children: (props: { file: File; onReset: () => void }) => React.ReactNode;
 }
 
+/**
+ * ToolShell - Container component for all tools
+ * 
+ * Handles:
+ * - File selection and validation
+ * - Navigation back to home
+ * - Consistent layout across all tools
+ * 
+ * The tool-specific component receives the file and a reset callback
+ */
 export function ToolShell({
   title,
   description,
   acceptedFormats,
   maxFileSize,
   children,
-  onFileSelect,
 }: ToolShellProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [isProcessing, setIsProcessing] = useState(false);
 
-  const handleFileSelect = (file: File) => {
+  const handleFileSelect = useCallback((file: File) => {
     setSelectedFile(file);
-    setIsProcessing(true);
-    onFileSelect?.(file);
-    // Processing state will be managed by the child component
-    setTimeout(() => setIsProcessing(false), 100);
-  };
+  }, []);
+
+  const handleReset = useCallback(() => {
+    setSelectedFile(null);
+  }, []);
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Back Navigation */}
+      <div className="border-b bg-muted/30">
+        <div className="mx-auto max-w-4xl px-4 py-3 sm:px-6">
+          <Link href="/">
+            <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-foreground">
+              <ArrowLeft className="h-4 w-4" />
+              Back to Tools
+            </Button>
+          </Link>
+        </div>
+      </div>
+
+      {/* Tool Header */}
       <ToolHeader title={title} description={description} />
 
+      {/* Main Content */}
       <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6">
         {!selectedFile ? (
           <FileUploader
             acceptedFormats={acceptedFormats}
             maxFileSize={maxFileSize}
             onFileSelect={handleFileSelect}
-            isProcessing={isProcessing}
           />
         ) : (
-          <div className="space-y-6">
-            <div className="rounded-lg border border-muted bg-muted/30 p-4">
-              <p className="text-sm">
-                <span className="font-semibold">Processing:</span>{' '}
-                {selectedFile.name}
-              </p>
-            </div>
-            {children(selectedFile, isProcessing)}
-            <button
-              onClick={() => {
-                setSelectedFile(null);
-                setIsProcessing(false);
-              }}
-              className="text-sm text-muted-foreground hover:underline"
-            >
-              ← Convert another file
-            </button>
-          </div>
+          children({ file: selectedFile, onReset: handleReset })
         )}
       </main>
+
+      {/* Privacy Footer */}
+      <footer className="border-t mt-auto">
+        <div className="mx-auto max-w-4xl px-4 py-6 sm:px-6">
+          <p className="text-center text-sm text-muted-foreground">
+            🔒 This tool processes files entirely in your browser. Your data never leaves your device.
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }

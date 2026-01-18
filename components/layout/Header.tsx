@@ -31,7 +31,7 @@ const navigation = [
 
 const toolCategories = [
   { name: 'Image Tools', href: '/tools?category=image', icon: Image, count: 16 },
-  { name: 'PDF Tools', href: '/tools?category=pdf', icon: FileText, count: 0 },
+  { name: 'PDF Tools', href: '/tools?category=pdf', icon: FileText, count: 1 },
   { name: 'Text Tools', href: '/tools?category=text', icon: Type, count: 0 },
   { name: 'Video Tools', href: '/tools?category=video', icon: Video, count: 0 },
   { name: 'Audio Tools', href: '/tools?category=audio', icon: Music, count: 0 },

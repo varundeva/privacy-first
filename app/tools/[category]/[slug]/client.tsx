@@ -35,6 +35,9 @@ import {
   IcoToPngConverter,
 } from '@/components/tools/image';
 
+// Import PDF tools
+import { PdfToPngConverter } from '@/components/tools/pdf';
+
 interface ToolPageClientProps {
   toolId: string;
   title: string;
@@ -49,7 +52,7 @@ interface ToolPageClientProps {
  * Maps tool IDs to their respective standalone components.
  * Each tool component is completely self-contained with its own logic.
  * 
- * Total: 17 image converter tools
+ * Total: 16 image converters + 1 PDF tool = 17 tools
  */
 export function ToolPageClient({
   toolId,
@@ -127,6 +130,12 @@ export function ToolPageClient({
           case 'ico-to-png':
             return <IcoToPngConverter file={file} onReset={onReset} />;
           
+          // ─────────────────────────────────────────
+          // PDF Tools
+          // ─────────────────────────────────────────
+          case 'pdf-to-png':
+            return <PdfToPngConverter file={file} onReset={onReset} />;
+          
           default:
             return (
               <div className="rounded-lg border border-dashed p-8 text-center text-muted-foreground">
@@ -139,3 +148,4 @@ export function ToolPageClient({
     </ToolShell>
   );
 }
+

@@ -860,6 +860,60 @@ export const toolsConfig: Tool[] = [
       ],
     },
   },
+
+  // ─────────────────────────────────────────
+  // PDF Tools
+  // ─────────────────────────────────────────
+  {
+    id: 'pdf-to-png',
+    name: 'PDF to PNG',
+    slug: 'pdf-to-png',
+    category: 'pdf',
+    categoryLabel: 'PDF Tools',
+    description: 'Convert PDF document pages to high-quality PNG images',
+    longDescription: 'Free online PDF to PNG converter. Extract pages from your PDF documents as high-resolution PNG images. Perfect for presentations, document sharing, and archiving. All processing happens in your browser.',
+    keywords: ['pdf to png', 'pdf to image', 'convert pdf to png', 'extract pdf pages', 'pdf converter', 'pdf image extractor', 'free pdf converter'],
+    icon: 'FileText',
+    acceptedFormats: ['.pdf'],
+    maxFileSize: 50,
+    seo: {
+      title: 'PDF to PNG Converter - Extract PDF Pages as Images | Free Online',
+      metaDescription: 'Convert PDF to PNG online for free. Extract high-quality images from PDF pages. Browser-based, no upload needed. Perfect for presentations and sharing.',
+      h1: 'Convert PDF to PNG - Extract Pages as Images',
+      features: [
+        'High-quality output',
+        'All pages extracted',
+        'Adjustable resolution',
+        'Browser-based',
+        'No file upload',
+        'Free forever',
+      ],
+      useCases: [
+        'Create presentation slides',
+        'Share document pages',
+        'Archive documents as images',
+        'Extract PDF graphics',
+      ],
+      faq: [
+        {
+          question: 'What resolution are the PNG images?',
+          answer: 'By default, we render at 2x scale (144 DPI) for excellent quality. This produces crisp images suitable for most use cases.',
+        },
+        {
+          question: 'Can I convert specific pages only?',
+          answer: 'Currently, all pages are converted. Page range selection is coming soon!',
+        },
+        {
+          question: 'Is my PDF secure?',
+          answer: 'Absolutely! Your PDF is processed entirely in your browser. No data is ever uploaded to any server.',
+        },
+        {
+          question: 'What about password-protected PDFs?',
+          answer: 'Password-protected PDFs are not currently supported. You\'ll need to remove the password first.',
+        },
+      ],
+    },
+  },
 ];
 
 // ============================================

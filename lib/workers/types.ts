@@ -47,6 +47,46 @@ export interface ImageMetadata {
 }
 
 // ============================================
+// PDF Worker Types
+// ============================================
+
+export interface PdfToImagesPayload {
+    pdfData: ArrayBuffer;
+    fileName: string;
+    outputFormat: 'png' | 'jpeg';
+    quality?: number; // 0-1 for JPEG
+    scale?: number; // Render scale (1 = 72 DPI, 2 = 144 DPI, etc.)
+    pageRange?: {
+        start?: number;
+        end?: number;
+    };
+}
+
+export interface PdfPageImage {
+    pageNumber: number;
+    data: ArrayBuffer;
+    width: number;
+    height: number;
+    fileName: string;
+}
+
+export interface PdfToImagesResult {
+    success: boolean;
+    pages?: PdfPageImage[];
+    totalPages?: number;
+    error?: string;
+}
+
+export interface PdfMetadata {
+    title?: string;
+    author?: string;
+    pageCount: number;
+    fileName: string;
+    fileSize: string;
+    fileSizeBytes: number;
+}
+
+// ============================================
 // Progress & Status Types
 // ============================================
 

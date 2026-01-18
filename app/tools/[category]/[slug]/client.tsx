@@ -4,14 +4,35 @@ import { ToolShell } from '@/components/tools/ToolShell';
 
 // Import all image converters
 import { 
+  // JPG/JPEG Converters
   JpgToPngConverter,
   JpgToWebpConverter,
+  
+  // PNG Converters
   PngToJpgConverter,
   PngToWebpConverter,
+  
+  // WebP Converters
   WebpToPngConverter,
   WebpToJpgConverter,
-  BmpToPngConverter,
+  
+  // GIF Converters
   GifToPngConverter,
+  GifToJpgConverter,
+  GifToWebpConverter,
+  
+  // BMP Converters
+  BmpToPngConverter,
+  BmpToJpgConverter,
+  BmpToWebpConverter,
+  
+  // SVG Converters (Rasterize)
+  SvgToPngConverter,
+  SvgToJpgConverter,
+  SvgToWebpConverter,
+  
+  // ICO Converter
+  IcoToPngConverter,
 } from '@/components/tools/image';
 
 interface ToolPageClientProps {
@@ -28,10 +49,7 @@ interface ToolPageClientProps {
  * Maps tool IDs to their respective standalone components.
  * Each tool component is completely self-contained with its own logic.
  * 
- * To add a new tool:
- * 1. Create the tool component in /components/tools/[category]/
- * 2. Import it above
- * 3. Add a case in the switch statement below
+ * Total: 17 image converter tools
  */
 export function ToolPageClient({
   toolId,
@@ -49,29 +67,65 @@ export function ToolPageClient({
     >
       {({ file, onReset }) => {
         switch (toolId) {
+          // ─────────────────────────────────────────
           // JPG/JPEG Converters
+          // ─────────────────────────────────────────
           case 'jpg-to-png':
             return <JpgToPngConverter file={file} onReset={onReset} />;
           case 'jpg-to-webp':
             return <JpgToWebpConverter file={file} onReset={onReset} />;
           
+          // ─────────────────────────────────────────
           // PNG Converters
+          // ─────────────────────────────────────────
           case 'png-to-jpg':
             return <PngToJpgConverter file={file} onReset={onReset} />;
           case 'png-to-webp':
             return <PngToWebpConverter file={file} onReset={onReset} />;
           
+          // ─────────────────────────────────────────
           // WebP Converters
+          // ─────────────────────────────────────────
           case 'webp-to-png':
             return <WebpToPngConverter file={file} onReset={onReset} />;
           case 'webp-to-jpg':
             return <WebpToJpgConverter file={file} onReset={onReset} />;
           
-          // Other Format Converters
-          case 'bmp-to-png':
-            return <BmpToPngConverter file={file} onReset={onReset} />;
+          // ─────────────────────────────────────────
+          // GIF Converters
+          // ─────────────────────────────────────────
           case 'gif-to-png':
             return <GifToPngConverter file={file} onReset={onReset} />;
+          case 'gif-to-jpg':
+            return <GifToJpgConverter file={file} onReset={onReset} />;
+          case 'gif-to-webp':
+            return <GifToWebpConverter file={file} onReset={onReset} />;
+          
+          // ─────────────────────────────────────────
+          // BMP Converters
+          // ─────────────────────────────────────────
+          case 'bmp-to-png':
+            return <BmpToPngConverter file={file} onReset={onReset} />;
+          case 'bmp-to-jpg':
+            return <BmpToJpgConverter file={file} onReset={onReset} />;
+          case 'bmp-to-webp':
+            return <BmpToWebpConverter file={file} onReset={onReset} />;
+          
+          // ─────────────────────────────────────────
+          // SVG Converters (Rasterize)
+          // ─────────────────────────────────────────
+          case 'svg-to-png':
+            return <SvgToPngConverter file={file} onReset={onReset} />;
+          case 'svg-to-jpg':
+            return <SvgToJpgConverter file={file} onReset={onReset} />;
+          case 'svg-to-webp':
+            return <SvgToWebpConverter file={file} onReset={onReset} />;
+          
+          // ─────────────────────────────────────────
+          // ICO Converter
+          // ─────────────────────────────────────────
+          case 'ico-to-png':
+            return <IcoToPngConverter file={file} onReset={onReset} />;
           
           default:
             return (

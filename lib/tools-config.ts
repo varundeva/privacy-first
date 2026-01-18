@@ -472,6 +472,394 @@ export const toolsConfig: Tool[] = [
       ],
     },
   },
+
+  // ─────────────────────────────────────────
+  // Additional GIF Converters
+  // ─────────────────────────────────────────
+  {
+    id: 'gif-to-jpg',
+    name: 'GIF to JPG',
+    slug: 'gif-to-jpg',
+    category: 'image',
+    categoryLabel: 'Image Tools',
+    description: 'Convert GIF images to JPG format for universal compatibility',
+    longDescription: 'Convert GIF images to JPEG format. Extract still frames from animated GIFs and save them in the most widely supported image format. Perfect for thumbnails and sharing.',
+    keywords: ['gif to jpg', 'gif to jpeg', 'convert gif', 'gif converter', 'animated gif to jpg', 'extract gif frame'],
+    icon: 'Image',
+    acceptedFormats: ['.gif'],
+    maxFileSize: 50,
+    seo: {
+      title: 'GIF to JPG Converter - Extract Frames to JPEG | Free Online',
+      metaDescription: 'Convert GIF to JPG online for free. Extract frames from animated GIFs and save as JPEG. Browser-based, no upload needed.',
+      h1: 'Convert GIF to JPG - Extract & Share',
+      features: [
+        'Extract first frame',
+        'Universal compatibility',
+        'High quality output',
+        'Small file sizes',
+        'Browser-based',
+        'Free forever',
+      ],
+      useCases: [
+        'Create thumbnails',
+        'Share on any platform',
+        'Email compatibility',
+        'Print services',
+      ],
+      faq: [
+        {
+          question: 'What happens to animated GIFs?',
+          answer: 'The converter extracts the first frame of the animation and saves it as a JPG image.',
+        },
+        {
+          question: 'Will I lose transparency?',
+          answer: 'Yes, JPG does not support transparency. Transparent areas become white.',
+        },
+        {
+          question: 'Is the quality good?',
+          answer: 'We use 92% quality setting for optimal balance between file size and visual quality.',
+        },
+      ],
+    },
+  },
+
+  {
+    id: 'gif-to-webp',
+    name: 'GIF to WebP',
+    slug: 'gif-to-webp',
+    category: 'image',
+    categoryLabel: 'Image Tools',
+    description: 'Convert GIF images to modern WebP format',
+    longDescription: 'Convert GIF images to WebP format for modern web use. Extract still frames from animated GIFs and save in an optimized format perfect for websites.',
+    keywords: ['gif to webp', 'convert gif to webp', 'gif converter', 'optimize gif', 'web optimization'],
+    icon: 'Image',
+    acceptedFormats: ['.gif'],
+    maxFileSize: 50,
+    seo: {
+      title: 'GIF to WebP Converter - Modern Format | Free Online Tool',
+      metaDescription: 'Convert GIF to WebP for better web performance. Extract frames from animated GIFs. Free browser-based converter.',
+      h1: 'Convert GIF to WebP - Web Optimized',
+      features: [
+        'Modern web format',
+        'Smaller file sizes',
+        'Great quality',
+        'Extract animation frames',
+        'Browser-based',
+        'No upload needed',
+      ],
+      useCases: [
+        'Web optimization',
+        'Create thumbnails',
+        'Modern website images',
+        'Performance improvement',
+      ],
+      faq: [
+        {
+          question: 'Is WebP better than GIF?',
+          answer: 'For static images, WebP offers much better compression and quality. For animations, animated WebP can also be smaller.',
+        },
+        {
+          question: 'Do all browsers support WebP?',
+          answer: 'Yes! All modern browsers support WebP including Chrome, Firefox, Safari, and Edge.',
+        },
+        {
+          question: 'What about the animation?',
+          answer: 'This tool extracts the first frame. Animated WebP conversion is coming soon!',
+        },
+      ],
+    },
+  },
+
+  // ─────────────────────────────────────────
+  // Additional BMP Converters
+  // ─────────────────────────────────────────
+  {
+    id: 'bmp-to-jpg',
+    name: 'BMP to JPG',
+    slug: 'bmp-to-jpg',
+    category: 'image',
+    categoryLabel: 'Image Tools',
+    description: 'Convert BMP bitmap images to compressed JPG format',
+    longDescription: 'Convert large BMP files to compressed JPEG format. Dramatically reduce file sizes while maintaining good visual quality. Ideal for sharing and web use.',
+    keywords: ['bmp to jpg', 'bmp to jpeg', 'convert bmp', 'bitmap converter', 'compress bmp', 'bmp to image'],
+    icon: 'Image',
+    acceptedFormats: ['.bmp'],
+    maxFileSize: 100,
+    seo: {
+      title: 'BMP to JPG Converter - Compress Bitmap to JPEG | Free Online',
+      metaDescription: 'Convert BMP to JPG and reduce file size by up to 95%. Free online converter - no upload needed. Preserve quality while saving space.',
+      h1: 'Convert BMP to JPG - Maximum Compression',
+      features: [
+        'Up to 95% smaller files',
+        'High quality output',
+        'Fast conversion',
+        'Web-ready format',
+        'Browser-based',
+        'Free forever',
+      ],
+      useCases: [
+        'Compress screenshots',
+        'Share large images',
+        'Email attachments',
+        'Web publishing',
+      ],
+      faq: [
+        {
+          question: 'How much smaller will my BMP become?',
+          answer: 'JPG compression can reduce BMP files by 90-95%, making them much easier to share and store.',
+        },
+        {
+          question: 'Is there quality loss?',
+          answer: 'JPG uses lossy compression, but at 92% quality the difference is usually imperceptible.',
+        },
+        {
+          question: 'Why are BMP files so large?',
+          answer: 'BMP stores every pixel uncompressed. A 1920x1080 image can be 6MB+ as BMP but under 500KB as JPG.',
+        },
+      ],
+    },
+  },
+
+  {
+    id: 'bmp-to-webp',
+    name: 'BMP to WebP',
+    slug: 'bmp-to-webp',
+    category: 'image',
+    categoryLabel: 'Image Tools',
+    description: 'Convert BMP bitmap images to modern WebP format',
+    longDescription: 'Convert large BMP files to modern WebP format. Achieve maximum compression with excellent quality. The best choice for web optimization.',
+    keywords: ['bmp to webp', 'convert bmp to webp', 'bitmap to webp', 'compress bmp', 'web optimization'],
+    icon: 'Image',
+    acceptedFormats: ['.bmp'],
+    maxFileSize: 100,
+    seo: {
+      title: 'BMP to WebP Converter - Maximum Compression | Free Online',
+      metaDescription: 'Convert BMP to WebP for the smallest possible file size. Free browser-based converter. Perfect for web optimization.',
+      h1: 'Convert BMP to WebP - Ultimate Compression',
+      features: [
+        'Maximum compression',
+        'Excellent quality',
+        'Modern format',
+        'Web optimized',
+        'Browser-based',
+        'No upload needed',
+      ],
+      useCases: [
+        'Web optimization',
+        'Compress old images',
+        'Modernize archives',
+        'Reduce storage',
+      ],
+      faq: [
+        {
+          question: 'Why choose WebP over JPG?',
+          answer: 'WebP typically produces 25-35% smaller files than JPG at equivalent quality, making it ideal for web use.',
+        },
+        {
+          question: 'How much will my BMP shrink?',
+          answer: 'Converting BMP to WebP can reduce file size by 95% or more, depending on image content.',
+        },
+        {
+          question: 'Is WebP widely supported?',
+          answer: 'Yes! All modern browsers and many applications now support WebP.',
+        },
+      ],
+    },
+  },
+
+  // ─────────────────────────────────────────
+  // SVG Converters (Rasterize)
+  // ─────────────────────────────────────────
+  {
+    id: 'svg-to-png',
+    name: 'SVG to PNG',
+    slug: 'svg-to-png',
+    category: 'image',
+    categoryLabel: 'Image Tools',
+    description: 'Convert SVG vector graphics to PNG bitmap images',
+    longDescription: 'Rasterize SVG vector graphics to PNG format. Convert scalable vector files to fixed-resolution bitmap images. Perfect for when you need a standard image format.',
+    keywords: ['svg to png', 'convert svg', 'svg converter', 'rasterize svg', 'vector to bitmap', 'svg to image'],
+    icon: 'Image',
+    acceptedFormats: ['.svg'],
+    maxFileSize: 10,
+    seo: {
+      title: 'SVG to PNG Converter - Rasterize Vector Graphics | Free Online',
+      metaDescription: 'Convert SVG to PNG online for free. Rasterize vector graphics to bitmap images. Browser-based, no upload needed.',
+      h1: 'Convert SVG to PNG - Rasterize Vectors',
+      features: [
+        'High quality output',
+        'Preserves details',
+        'Transparency support',
+        'Instant conversion',
+        'Browser-based',
+        'Free forever',
+      ],
+      useCases: [
+        'Use in non-vector software',
+        'Create social media images',
+        'Email logos',
+        'Print preparation',
+      ],
+      faq: [
+        {
+          question: 'What resolution will my PNG be?',
+          answer: 'The PNG will match the SVG\'s defined dimensions. For best results, ensure your SVG has appropriate width/height.',
+        },
+        {
+          question: 'Will I lose scalability?',
+          answer: 'Yes, PNG is a bitmap format. Once converted, the image cannot be scaled without quality loss. Keep your original SVG for future use.',
+        },
+        {
+          question: 'Does it support transparency?',
+          answer: 'Yes! PNG fully supports transparency, so your SVG\'s transparent areas will be preserved.',
+        },
+      ],
+    },
+  },
+
+  {
+    id: 'svg-to-jpg',
+    name: 'SVG to JPG',
+    slug: 'svg-to-jpg',
+    category: 'image',
+    categoryLabel: 'Image Tools',
+    description: 'Convert SVG vector graphics to JPG for universal sharing',
+    longDescription: 'Rasterize SVG vector graphics to JPEG format. Convert scalable vectors to the most universally supported image format. Ideal for sharing and email.',
+    keywords: ['svg to jpg', 'svg to jpeg', 'convert svg', 'vector to jpg', 'rasterize svg'],
+    icon: 'Image',
+    acceptedFormats: ['.svg'],
+    maxFileSize: 10,
+    seo: {
+      title: 'SVG to JPG Converter - Vector to JPEG | Free Online Tool',
+      metaDescription: 'Convert SVG to JPG for universal compatibility. Rasterize vector graphics to JPEG. Free browser-based converter.',
+      h1: 'Convert SVG to JPG - Universal Format',
+      features: [
+        'Universal compatibility',
+        'Compact file size',
+        'High quality',
+        'Fast conversion',
+        'Browser-based',
+        'No upload needed',
+      ],
+      useCases: [
+        'Share on any platform',
+        'Email attachments',
+        'Social media images',
+        'Document embedding',
+      ],
+      faq: [
+        {
+          question: 'What happens to transparency?',
+          answer: 'JPG doesn\'t support transparency. Transparent areas will be converted to a white background.',
+        },
+        {
+          question: 'What size will my image be?',
+          answer: 'The JPG will match your SVG\'s defined width and height dimensions.',
+        },
+        {
+          question: 'Is the quality good?',
+          answer: 'Yes! We use 92% quality setting for excellent visual quality with reasonable file size.',
+        },
+      ],
+    },
+  },
+
+  {
+    id: 'svg-to-webp',
+    name: 'SVG to WebP',
+    slug: 'svg-to-webp',
+    category: 'image',
+    categoryLabel: 'Image Tools',
+    description: 'Convert SVG vector graphics to modern WebP format',
+    longDescription: 'Rasterize SVG vector graphics to WebP format. Create optimized web-ready images from vector files. Best choice for web performance with quality output.',
+    keywords: ['svg to webp', 'convert svg to webp', 'vector to webp', 'rasterize svg', 'web optimization'],
+    icon: 'Image',
+    acceptedFormats: ['.svg'],
+    maxFileSize: 10,
+    seo: {
+      title: 'SVG to WebP Converter - Modern Web Format | Free Online',
+      metaDescription: 'Convert SVG to WebP for optimal web performance. Rasterize vectors to modern format. Free browser-based tool.',
+      h1: 'Convert SVG to WebP - Web Optimized',
+      features: [
+        'Modern format',
+        'Excellent compression',
+        'Transparency support',
+        'Web optimized',
+        'Browser-based',
+        'Free forever',
+      ],
+      useCases: [
+        'Web optimization',
+        'Modern websites',
+        'Performance focused',
+        'App images',
+      ],
+      faq: [
+        {
+          question: 'Why convert SVG to WebP instead of using SVG?',
+          answer: 'Some contexts don\'t support SVG (emails, certain apps). WebP offers great compression while maintaining quality.',
+        },
+        {
+          question: 'Does WebP support transparency like SVG?',
+          answer: 'Yes! WebP fully supports transparency (alpha channel), unlike JPG.',
+        },
+        {
+          question: 'What about scalability?',
+          answer: 'Unlike SVG, WebP is a bitmap format. Keep your original SVG for cases where scalability is needed.',
+        },
+      ],
+    },
+  },
+
+  // ─────────────────────────────────────────
+  // ICO Converter
+  // ─────────────────────────────────────────
+  {
+    id: 'ico-to-png',
+    name: 'ICO to PNG',
+    slug: 'ico-to-png',
+    category: 'image',
+    categoryLabel: 'Image Tools',
+    description: 'Convert Windows ICO icon files to PNG format',
+    longDescription: 'Convert Windows icon files to PNG format. Extract icon images for web design, graphic design, and general use. Perfect for using icons in your projects.',
+    keywords: ['ico to png', 'convert ico', 'icon converter', 'windows icon', 'favicon to png', 'icon to image'],
+    icon: 'Image',
+    acceptedFormats: ['.ico'],
+    maxFileSize: 5,
+    seo: {
+      title: 'ICO to PNG Converter - Convert Icons to PNG | Free Online',
+      metaDescription: 'Convert ICO to PNG online for free. Extract Windows icons to PNG format. Browser-based, no upload needed.',
+      h1: 'Convert ICO to PNG - Extract Icons',
+      features: [
+        'Extract icon images',
+        'PNG with transparency',
+        'High quality output',
+        'Instant conversion',
+        'Browser-based',
+        'Free forever',
+      ],
+      useCases: [
+        'Web design projects',
+        'Graphic design',
+        'Extract favicons',
+        'Documentation',
+      ],
+      faq: [
+        {
+          question: 'What if my ICO has multiple sizes?',
+          answer: 'The browser will use the largest/best quality version available in the ICO file.',
+        },
+        {
+          question: 'Is transparency preserved?',
+          answer: 'Yes! PNG supports transparency, so icon transparency is fully preserved.',
+        },
+        {
+          question: 'Can I convert favicons?',
+          answer: 'Yes! Favicons are ICO files, and this tool converts them to PNG perfectly.',
+        },
+      ],
+    },
+  },
 ];
 
 // ============================================

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { toolsConfig, toolCategories, Tool } from '@/lib/tools-config';
@@ -32,35 +32,45 @@ import {
 // Types
 // ============================================
 
-type InputFormat = 'jpg' | 'png' | 'webp' | 'gif' | 'bmp' | 'svg' | 'ico' | 'pdf';
-type OutputFormat = 'png' | 'jpg' | 'webp' | 'pdf';
-
 interface FilterState {
   search: string;
   category: string | null;
-  inputFormat: InputFormat | null;
-  outputFormat: OutputFormat | null;
+  inputFormat: string | null;
+  outputFormat: string | null;
 }
 
 // ============================================
 // Constants
 // ============================================
 
-const inputFormats: { id: InputFormat; label: string; icon: string }[] = [
-  { id: 'jpg', label: 'JPG/JPEG', icon: '📷' },
-  { id: 'png', label: 'PNG', icon: '🖼️' },
-  { id: 'webp', label: 'WebP', icon: '🌐' },
-  { id: 'gif', label: 'GIF', icon: '🎬' },
-  { id: 'bmp', label: 'BMP', icon: '🗂️' },
-  { id: 'svg', label: 'SVG', icon: '✏️' },
-  { id: 'ico', label: 'ICO', icon: '⭐' },
-];
+const formatMetadata: Record<string, { label: string; icon?: string; color?: string }> = {
+  jpg: { label: 'JPG/JPEG', icon: '📷', color: 'bg-amber-500' },
+  png: { label: 'PNG', icon: '🖼️', color: 'bg-blue-500' },
+  webp: { label: 'WebP', icon: '🌐', color: 'bg-green-500' },
+  gif: { label: 'GIF', icon: '🎬' },
+  bmp: { label: 'BMP', icon: '🗂️' },
+  svg: { label: 'SVG', icon: '✏️' },
+  ico: { label: 'ICO', icon: '⭐' },
+  pdf: { label: 'PDF', icon: '📄', color: 'bg-red-500' },
+};
 
-const outputFormats: { id: OutputFormat; label: string; color: string }[] = [
-  { id: 'png', label: 'PNG', color: 'bg-blue-500' },
-  { id: 'jpg', label: 'JPG', color: 'bg-amber-500' },
-  { id: 'webp', label: 'WebP', color: 'bg-green-500' },
-];
+function normalizeFormat(fmt: string): string {
+  const f = fmt.replace(/^\./, '').toLowerCase();
+  if (f === 'jpeg') return 'jpg';
+  return f;
+}
+
+// Derive unique formats from tools config
+const availableInputFormats = Array.from(new Set(
+  toolsConfig.flatMap(t => t.acceptedFormats.map(normalizeFormat))
+)).sort();
+
+const availableOutputFormats = Array.from(new Set(
+  toolsConfig.map(t => {
+    const parts = t.slug.split('-to-');
+    return parts.length > 1 ? normalizeFormat(parts[1]) : null;
+  }).filter(Boolean) as string[]
+)).sort();
 
 const stats = [
   { value: '16+', label: 'Free Tools', icon: Sparkles },
@@ -96,25 +106,14 @@ const features = [
 // Helper Functions
 // ============================================
 
-function getInputFormatFromTool(tool: Tool): InputFormat | null {
-  const formats = tool.acceptedFormats.join(' ').toLowerCase();
-  if (formats.includes('jpg') || formats.includes('jpeg')) return 'jpg';
-  if (formats.includes('png')) return 'png';
-  if (formats.includes('webp')) return 'webp';
-  if (formats.includes('gif')) return 'gif';
-  if (formats.includes('bmp')) return 'bmp';
-  if (formats.includes('svg')) return 'svg';
-  if (formats.includes('ico')) return 'ico';
-  if (formats.includes('pdf')) return 'pdf';
-  return null;
+function getInputFormatFromTool(tool: Tool): string | null {
+  if (tool.acceptedFormats.length === 0) return null;
+  return normalizeFormat(tool.acceptedFormats[0]);
 }
 
-function getOutputFormatFromTool(tool: Tool): OutputFormat | null {
-  const slug = tool.slug.toLowerCase();
-  if (slug.endsWith('-to-png')) return 'png';
-  if (slug.endsWith('-to-jpg')) return 'jpg';
-  if (slug.endsWith('-to-webp')) return 'webp';
-  return null;
+function getOutputFormatFromTool(tool: Tool): string | null {
+  const parts = tool.slug.split('-to-');
+  return parts.length > 1 ? normalizeFormat(parts[1]) : null;
 }
 
 function getCategoryIcon(category: string) {
@@ -280,18 +279,21 @@ function FilterSection({
               <div>
                 <label className="block text-sm font-medium mb-3">Input Format (I have a...)</label>
                 <div className="flex flex-wrap gap-2">
-                  {inputFormats.map((format) => (
-                    <Button
-                      key={format.id}
-                      variant={filters.inputFormat === format.id ? 'default' : 'outline'}
-                      size="sm"
-                      onClick={() => onFilterChange('inputFormat', filters.inputFormat === format.id ? null : format.id)}
-                      className="gap-1"
-                    >
-                      <span>{format.icon}</span>
-                      {format.label}
-                    </Button>
-                  ))}
+                  {availableInputFormats.map((formatId) => {
+                    const meta = formatMetadata[formatId] || { label: formatId.toUpperCase(), icon: '📁' };
+                    return (
+                      <Button
+                        key={formatId}
+                        variant={filters.inputFormat === formatId ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => onFilterChange('inputFormat', filters.inputFormat === formatId ? null : formatId)}
+                        className="gap-1"
+                      >
+                        <span>{meta.icon}</span>
+                        {meta.label}
+                      </Button>
+                    );
+                  })}
                 </div>
               </div>
 
@@ -299,18 +301,21 @@ function FilterSection({
               <div>
                 <label className="block text-sm font-medium mb-3">Output Format (I want...)</label>
                 <div className="flex flex-wrap gap-2">
-                  {outputFormats.map((format) => (
-                    <Button
-                      key={format.id}
-                      variant={filters.outputFormat === format.id ? 'default' : 'outline'}
-                      size="sm"
-                      onClick={() => onFilterChange('outputFormat', filters.outputFormat === format.id ? null : format.id)}
-                      className="gap-2"
-                    >
-                      <span className={`w-3 h-3 rounded-full ${format.color}`}></span>
-                      {format.label}
-                    </Button>
-                  ))}
+                  {availableOutputFormats.map((formatId) => {
+                    const meta = formatMetadata[formatId] || { label: formatId.toUpperCase(), color: 'bg-slate-500' };
+                    return (
+                      <Button
+                        key={formatId}
+                        variant={filters.outputFormat === formatId ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => onFilterChange('outputFormat', filters.outputFormat === formatId ? null : formatId)}
+                        className="gap-2"
+                      >
+                        <span className={`w-3 h-3 rounded-full ${meta.color || 'bg-slate-500'}`}></span>
+                        {meta.label}
+                      </Button>
+                    );
+                  })}
                 </div>
               </div>
             </div>
@@ -509,8 +514,8 @@ export function HomeClient() {
   const [filters, setFilters] = useState<FilterState>({
     search: searchParams.get('q') || '',
     category: searchParams.get('category') || null,
-    inputFormat: (searchParams.get('from') as InputFormat) || null,
-    outputFormat: (searchParams.get('to') as OutputFormat) || null,
+    inputFormat: searchParams.get('from') || null,
+    outputFormat: searchParams.get('to') || null,
   });
 
   // Update URL when filters change
@@ -552,8 +557,20 @@ export function HomeClient() {
     return count;
   }, [filters]);
 
+  const [randomTools, setRandomTools] = useState<Tool[]>([]);
+
+  useEffect(() => {
+    setRandomTools([...toolsConfig].sort(() => 0.5 - Math.random()).slice(0, 9));
+  }, []);
+
   // Filter tools based on current filters
   const filteredTools = useMemo(() => {
+    const hasActiveFilter = filters.search || filters.category || filters.inputFormat || filters.outputFormat;
+
+    if (!hasActiveFilter) {
+      return randomTools.length > 0 ? randomTools : toolsConfig.slice(0, 10);
+    }
+
     return toolsConfig.filter((tool) => {
       // Search filter
       if (filters.search) {
@@ -573,8 +590,8 @@ export function HomeClient() {
 
       // Input format filter
       if (filters.inputFormat) {
-        const toolInputFormat = getInputFormatFromTool(tool);
-        if (toolInputFormat !== filters.inputFormat) return false;
+        const toolFormats = tool.acceptedFormats.map(normalizeFormat);
+        if (!toolFormats.includes(filters.inputFormat)) return false;
       }
 
       // Output format filter
@@ -585,7 +602,7 @@ export function HomeClient() {
 
       return true;
     });
-  }, [filters]);
+  }, [filters, randomTools]);
 
   return (
     <div className="min-h-screen bg-background">

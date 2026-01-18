@@ -494,29 +494,7 @@ function FAQSection() {
   );
 }
 
-function Footer() {
-  return (
-    <footer className="border-t bg-muted/30 py-12">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <div className="flex flex-col items-center gap-4 text-center">
-          <div className="flex items-center gap-2">
-            <Shield className="h-6 w-6 text-purple-600" />
-            <span className="text-lg font-semibold">Privacy-First Toolbox</span>
-          </div>
-          <p className="text-sm text-muted-foreground max-w-md">
-            All tools are open source and run entirely in your browser.
-            Your data is never stored or transmitted to any server.
-          </p>
-          <div className="flex items-center gap-6 text-sm text-muted-foreground">
-            <span>© {new Date().getFullYear()}</span>
-            <span>•</span>
-            <span>Made with ❤️ for privacy</span>
-          </div>
-        </div>
-      </div>
-    </footer>
-  );
-}
+
 
 // ============================================
 // Main Component
@@ -648,8 +626,7 @@ export function HomeClient() {
       {/* FAQ Section */}
       <FAQSection />
 
-      {/* Footer */}
-      <Footer />
+
     </div>
   );
 }

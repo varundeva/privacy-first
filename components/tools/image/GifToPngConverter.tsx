@@ -10,7 +10,7 @@ import { ResultPreview } from '../shared/ResultPreview';
 import { convertImage, type ProgressUpdate, type ImageConversionResult } from '@/lib/workers/worker-manager';
 import { formatFileSize, type ImageMetadata } from '@/lib/workers/types';
 
-interface JpgToPngConverterProps {
+interface GifToPngConverterProps {
   file: File;
   onReset: () => void;
 }
@@ -22,19 +22,18 @@ type ConversionState =
   | { status: 'error'; message: string };
 
 /**
- * JPG to PNG Converter
+ * GIF to PNG Converter
  * 
- * Converts JPEG/JPG images to PNG format with full quality preservation.
- * PNG format supports transparency and is ideal for:
- * - Graphics and logos
- * - Images with text
- * - Screenshots
- * - Images requiring transparency
+ * Converts GIF images to PNG format (extracts first frame from animated GIFs).
+ * Use cases:
+ * - Extract a still image from an animated GIF
+ * - Get better color depth (PNG supports millions of colors vs GIF's 256)
+ * - Create a thumbnail from a GIF animation
+ * - Remove animation for static use
  */
-export function JpgToPngConverter({ file, onReset }: JpgToPngConverterProps) {
+export function GifToPngConverter({ file, onReset }: GifToPngConverterProps) {
   const [state, setState] = useState<ConversionState>({ status: 'idle' });
 
-  // Cleanup preview URL on unmount
   useEffect(() => {
     return () => {
       if (state.status === 'complete') {
@@ -43,7 +42,6 @@ export function JpgToPngConverter({ file, onReset }: JpgToPngConverterProps) {
     };
   }, [state]);
 
-  // Process the file when component mounts or file changes
   useEffect(() => {
     if (!file) return;
 
@@ -54,11 +52,11 @@ export function JpgToPngConverter({ file, onReset }: JpgToPngConverterProps) {
       try {
         setState({
           status: 'processing',
-          progress: { percent: 0, stage: 'loading', message: 'Loading JPG image...' },
+          progress: { percent: 0, stage: 'loading', message: 'Loading GIF image...' },
         });
 
         const result = await convertImage(file, 'png', {
-          quality: 1.0, // PNG is lossless
+          quality: 1.0,
           onProgress: (progress) => {
             if (!cancelled) {
               setState({ status: 'processing', progress });
@@ -80,7 +78,7 @@ export function JpgToPngConverter({ file, onReset }: JpgToPngConverterProps) {
         } else {
           setState({
             status: 'error',
-            message: result.error || 'Failed to convert JPG to PNG',
+            message: result.error || 'Failed to convert GIF to PNG',
           });
         }
       } catch (error) {
@@ -141,7 +139,7 @@ export function JpgToPngConverter({ file, onReset }: JpgToPngConverterProps) {
     sizeBytes: result.originalSize,
     width: result.width || 0,
     height: result.height || 0,
-    format: 'JPG',
+    format: 'GIF',
   };
 
   const convertedMetadata: ImageMetadata = {
@@ -170,7 +168,7 @@ export function JpgToPngConverter({ file, onReset }: JpgToPngConverterProps) {
 
       <Button variant="ghost" className="w-full gap-2" onClick={onReset}>
         <RotateCcw className="h-4 w-4" />
-        Convert Another JPG to PNG
+        Convert Another GIF to PNG
       </Button>
     </div>
   );

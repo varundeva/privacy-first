@@ -10,7 +10,7 @@ import { ResultPreview } from '../shared/ResultPreview';
 import { convertImage, type ProgressUpdate, type ImageConversionResult } from '@/lib/workers/worker-manager';
 import { formatFileSize, type ImageMetadata } from '@/lib/workers/types';
 
-interface JpgToPngConverterProps {
+interface PngToJpgConverterProps {
   file: File;
   onReset: () => void;
 }
@@ -22,19 +22,18 @@ type ConversionState =
   | { status: 'error'; message: string };
 
 /**
- * JPG to PNG Converter
+ * PNG to JPG Converter
  * 
- * Converts JPEG/JPG images to PNG format with full quality preservation.
- * PNG format supports transparency and is ideal for:
- * - Graphics and logos
- * - Images with text
- * - Screenshots
- * - Images requiring transparency
+ * Converts PNG images to JPEG format with high quality compression.
+ * JPEG format is ideal for:
+ * - Photographs and complex images
+ * - Smaller file sizes
+ * - Web images where transparency is not needed
+ * - Email attachments and sharing
  */
-export function JpgToPngConverter({ file, onReset }: JpgToPngConverterProps) {
+export function PngToJpgConverter({ file, onReset }: PngToJpgConverterProps) {
   const [state, setState] = useState<ConversionState>({ status: 'idle' });
 
-  // Cleanup preview URL on unmount
   useEffect(() => {
     return () => {
       if (state.status === 'complete') {
@@ -43,7 +42,6 @@ export function JpgToPngConverter({ file, onReset }: JpgToPngConverterProps) {
     };
   }, [state]);
 
-  // Process the file when component mounts or file changes
   useEffect(() => {
     if (!file) return;
 
@@ -54,11 +52,11 @@ export function JpgToPngConverter({ file, onReset }: JpgToPngConverterProps) {
       try {
         setState({
           status: 'processing',
-          progress: { percent: 0, stage: 'loading', message: 'Loading JPG image...' },
+          progress: { percent: 0, stage: 'loading', message: 'Loading PNG image...' },
         });
 
-        const result = await convertImage(file, 'png', {
-          quality: 1.0, // PNG is lossless
+        const result = await convertImage(file, 'jpeg', {
+          quality: 0.92, // High quality JPEG
           onProgress: (progress) => {
             if (!cancelled) {
               setState({ status: 'processing', progress });
@@ -69,7 +67,7 @@ export function JpgToPngConverter({ file, onReset }: JpgToPngConverterProps) {
         if (cancelled) return;
 
         if (result.success && result.data) {
-          const blob = new Blob([result.data], { type: 'image/png' });
+          const blob = new Blob([result.data], { type: 'image/jpeg' });
           previewUrl = URL.createObjectURL(blob);
 
           setState({
@@ -80,7 +78,7 @@ export function JpgToPngConverter({ file, onReset }: JpgToPngConverterProps) {
         } else {
           setState({
             status: 'error',
-            message: result.error || 'Failed to convert JPG to PNG',
+            message: result.error || 'Failed to convert PNG to JPG',
           });
         }
       } catch (error) {
@@ -141,16 +139,16 @@ export function JpgToPngConverter({ file, onReset }: JpgToPngConverterProps) {
     sizeBytes: result.originalSize,
     width: result.width || 0,
     height: result.height || 0,
-    format: 'JPG',
+    format: 'PNG',
   };
 
   const convertedMetadata: ImageMetadata = {
-    name: result.fileName || 'converted.png',
+    name: result.fileName || 'converted.jpg',
     size: formatFileSize(result.convertedSize || 0),
     sizeBytes: result.convertedSize || 0,
     width: result.width || 0,
     height: result.height || 0,
-    format: 'PNG',
+    format: 'JPG',
   };
 
   return (
@@ -165,12 +163,12 @@ export function JpgToPngConverter({ file, onReset }: JpgToPngConverterProps) {
         fileName={convertedMetadata.name}
         fileSize={convertedMetadata.size}
         fileUrl={previewUrl}
-        mimeType="image/png"
+        mimeType="image/jpeg"
       />
 
       <Button variant="ghost" className="w-full gap-2" onClick={onReset}>
         <RotateCcw className="h-4 w-4" />
-        Convert Another JPG to PNG
+        Convert Another PNG to JPG
       </Button>
     </div>
   );

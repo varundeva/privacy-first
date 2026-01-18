@@ -38,6 +38,9 @@ import {
 // Import PDF tools
 import { PdfToPngConverter, PdfToJpgConverter } from '@/components/tools/pdf';
 
+// Import Text tools
+import { WordCounter } from '@/components/tools/text';
+
 interface ToolPageClientProps {
   toolId: string;
   title: string;
@@ -55,7 +58,7 @@ interface ToolPageClientProps {
  * Maps tool IDs to their respective standalone components.
  * Each tool component is completely self-contained with its own logic.
  * 
- * Total: 16 image converters + 2 PDF tools = 18 tools
+ * Total: 16 image converters + 2 PDF tools + 1 Text tool = 19 tools
  */
 export function ToolPageClient({
   toolId,
@@ -146,6 +149,12 @@ export function ToolPageClient({
             return <PdfToPngConverter file={file} onReset={onReset} />;
           case 'pdf-to-jpg':
             return <PdfToJpgConverter file={file} onReset={onReset} />;
+          
+          // ─────────────────────────────────────────
+          // Text Tools
+          // ─────────────────────────────────────────
+          case 'word-counter':
+            return <WordCounter file={file} onReset={onReset} />;
           
           default:
             return (

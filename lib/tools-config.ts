@@ -996,6 +996,52 @@ export const toolsConfig: Tool[] = [
       ],
     },
   },
+  {
+    id: 'case-converter',
+    name: 'Case Converter',
+    slug: 'case-converter',
+    category: 'text',
+    categoryLabel: 'Text Tools',
+    description: 'Convert text between different letter cases (UPPER, lower, Title, Camel, etc.)',
+    longDescription: 'Free online case converter tool. Instantly convert text between Uppercase, Lowercase, Title Case, Sentence case, PascalCase, camelCase, snake_case, and kebab-case. Works locally in your browser for maximum privacy.',
+    keywords: ['case converter', 'text case converter', 'uppercase to lowercase', 'title case generator', 'sentence case', 'camelcase converter', 'snake case', 'kebab case'],
+    icon: 'Type',
+    acceptedFormats: ['.txt'],
+    maxFileSize: 10,
+    seo: {
+      title: 'Case Converter - Convert Text Case Online | Free & Private',
+      metaDescription: 'Convert text case instantly online. Support for Uppercase, Lowercase, Title Case, camelCase, snake_case and more. 100% free and private.',
+      h1: 'Case Converter - Transform Text Case',
+      features: [
+        'Instant conversion',
+        'Supports 8+ case styles',
+        'Bulk text processing',
+        'Copy to clipboard',
+        'Download as file',
+        '100% Private',
+      ],
+      useCases: [
+        'Fixing accidental caps lock',
+        'Programming variable naming',
+        'Title formatting for content',
+        'Data cleaning',
+      ],
+      faq: [
+        {
+          question: 'What case styles are supported?',
+          answer: 'We support Uppercase, Lowercase, Title Case, Sentence case, PascalCase, camelCase, snake_case, and kebab-case.',
+        },
+        {
+          question: 'Is there a character limit?',
+          answer: 'No strict limit. The tool runs in your browser so it can handle as much text as your computer memory allows.',
+        },
+        {
+          question: 'Do you save my text?',
+          answer: 'No. All processing happens locally in your web browser. Your text never leaves your device.',
+        },
+      ],
+    },
+  },
 ];
 
 // ============================================

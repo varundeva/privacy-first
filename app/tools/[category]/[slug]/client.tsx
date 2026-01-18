@@ -39,7 +39,7 @@ import {
 import { PdfToPngConverter, PdfToJpgConverter } from '@/components/tools/pdf';
 
 // Import Text tools
-import { WordCounter } from '@/components/tools/text';
+import { WordCounter, CaseConverter } from '@/components/tools/text';
 
 interface ToolPageClientProps {
   toolId: string;
@@ -58,7 +58,7 @@ interface ToolPageClientProps {
  * Maps tool IDs to their respective standalone components.
  * Each tool component is completely self-contained with its own logic.
  * 
- * Total: 16 image converters + 2 PDF tools + 1 Text tool = 19 tools
+ * Total: 16 image converters + 2 PDF tools + 2 Text tools = 20 tools
  */
 export function ToolPageClient({
   toolId,
@@ -74,6 +74,21 @@ export function ToolPageClient({
   if (toolId === 'word-counter') {
     return (
       <WordCounter 
+        title={title}
+        description={description}
+        acceptedFormats={acceptedFormats}
+        maxFileSize={maxFileSize}
+        features={features}
+        useCases={useCases}
+        faq={faq}
+      />
+    );
+  }
+
+  // Special case for Case Converter which manages its own text-focused interface
+  if (toolId === 'case-converter') {
+    return (
+      <CaseConverter 
         title={title}
         description={description}
         acceptedFormats={acceptedFormats}

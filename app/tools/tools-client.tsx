@@ -20,7 +20,6 @@ import {
   Music,
   X,
   Sparkles,
-  CheckCircle2,
   ArrowUpRight,
   Filter,
   LayoutGrid,
@@ -32,60 +31,90 @@ import {
 // Types
 // ============================================
 
-type InputFormat = 'jpg' | 'png' | 'webp' | 'gif' | 'bmp' | 'svg' | 'ico' | 'pdf';
-type OutputFormat = 'png' | 'jpg' | 'webp' | 'pdf';
 type ViewMode = 'grid' | 'list';
 
 interface FilterState {
   search: string;
   category: ToolCategoryId | null;
-  inputFormat: InputFormat | null;
-  outputFormat: OutputFormat | null;
+  inputFormat: string | null;
+  outputFormat: string | null;
+}
+
+interface FormatMetadata {
+  label: string;
+  description: string;
+  color: string;
 }
 
 // ============================================
-// Constants
+// Constants & Metadata
 // ============================================
 
-const inputFormats: { id: InputFormat; label: string; description: string }[] = [
-  { id: 'jpg', label: 'JPG/JPEG', description: 'Standard photo format' },
-  { id: 'png', label: 'PNG', description: 'Lossless with transparency' },
-  { id: 'webp', label: 'WebP', description: 'Modern web format' },
-  { id: 'gif', label: 'GIF', description: 'Animated images' },
-  { id: 'bmp', label: 'BMP', description: 'Uncompressed bitmap' },
-  { id: 'svg', label: 'SVG', description: 'Vector graphics' },
-  { id: 'ico', label: 'ICO', description: 'Windows icons' },
-  { id: 'pdf', label: 'PDF', description: 'Portable Document Format' },
-];
+const FORMAT_METADATA: Record<string, FormatMetadata> = {
+  // Image Formats
+  jpg: { label: 'JPG/JPEG', description: 'Standard photo format', color: 'bg-amber-500' },
+  png: { label: 'PNG', description: 'Lossless with transparency', color: 'bg-blue-500' },
+  webp: { label: 'WebP', description: 'Modern web format', color: 'bg-green-500' },
+  gif: { label: 'GIF', description: 'Animated images', color: 'bg-purple-500' },
+  bmp: { label: 'BMP', description: 'Uncompressed bitmap', color: 'bg-pink-500' },
+  svg: { label: 'SVG', description: 'Vector graphics', color: 'bg-orange-500' },
+  ico: { label: 'ICO', description: 'Windows icons', color: 'bg-yellow-500' },
+  
+  // Document Formats
+  pdf: { label: 'PDF', description: 'Portable Document Format', color: 'bg-red-500' },
+  txt: { label: 'Text', description: 'Plain text files', color: 'bg-gray-500' },
+  md: { label: 'Markdown', description: 'Formatted text', color: 'bg-gray-600' },
+  json: { label: 'JSON', description: 'Data format', color: 'bg-yellow-600' },
+  csv: { label: 'CSV', description: 'Spreadsheet data', color: 'bg-green-600' },
+  xml: { label: 'XML', description: 'Markup language', color: 'bg-blue-600' },
+};
 
-const outputFormats: { id: OutputFormat; label: string; description: string; color: string }[] = [
-  { id: 'png', label: 'PNG', description: 'Best for graphics & transparency', color: 'bg-blue-500' },
-  { id: 'jpg', label: 'JPG', description: 'Best for photos & sharing', color: 'bg-amber-500' },
-  { id: 'webp', label: 'WebP', description: 'Best for web performance', color: 'bg-green-500' },
-];
+const DEFAULT_METADATA: FormatMetadata = {
+  label: 'Unknown',
+  description: 'File format',
+  color: 'bg-slate-500',
+};
 
 // ============================================
 // Helper Functions
 // ============================================
 
-function getInputFormatFromTool(tool: Tool): InputFormat | null {
-  const formats = tool.acceptedFormats.join(' ').toLowerCase();
-  if (formats.includes('jpg') || formats.includes('jpeg')) return 'jpg';
-  if (formats.includes('png')) return 'png';
-  if (formats.includes('webp')) return 'webp';
-  if (formats.includes('gif')) return 'gif';
-  if (formats.includes('bmp')) return 'bmp';
-  if (formats.includes('svg')) return 'svg';
-  if (formats.includes('ico')) return 'ico';
-  if (formats.includes('pdf')) return 'pdf';
+function getFormatMetadata(format: string): FormatMetadata {
+  return FORMAT_METADATA[format] || {
+    ...DEFAULT_METADATA,
+    label: format.toUpperCase(),
+  };
+}
+
+function getInputFormatFromTool(tool: Tool): string | null {
+  const formats = tool.acceptedFormats.map(f => f.toLowerCase());
+  
+  if (formats.some(f => f.includes('pdf'))) return 'pdf';
+  if (formats.some(f => f.includes('jpg') || f.includes('jpeg'))) return 'jpg';
+  if (formats.some(f => f.includes('png'))) return 'png';
+  if (formats.some(f => f.includes('webp'))) return 'webp';
+  if (formats.some(f => f.includes('gif'))) return 'gif';
+  if (formats.some(f => f.includes('bmp'))) return 'bmp';
+  if (formats.some(f => f.includes('svg'))) return 'svg';
+  if (formats.some(f => f.includes('ico'))) return 'ico';
+  
+  // For text tools or others, take the first format's extension
+  if (formats.length > 0) {
+    return formats[0].replace('.', '');
+  }
+  
   return null;
 }
 
-function getOutputFormatFromTool(tool: Tool): OutputFormat | null {
+function getOutputFormatFromTool(tool: Tool): string | null {
   const slug = tool.slug.toLowerCase();
-  if (slug.endsWith('-to-png')) return 'png';
-  if (slug.endsWith('-to-jpg')) return 'jpg';
-  if (slug.endsWith('-to-webp')) return 'webp';
+  
+  // Attempt to extract output format from slug (e.g., pdf-to-jpg -> jpg)
+  const parts = slug.split('-to-');
+  if (parts.length === 2) {
+    return parts[1];
+  }
+  
   return null;
 }
 
@@ -133,11 +162,15 @@ function FilterSidebar({
   onFilterChange,
   onClearFilters,
   toolCounts,
+  availableInputFormats,
+  availableOutputFormats,
 }: {
   filters: FilterState;
   onFilterChange: (key: keyof FilterState, value: string | null) => void;
   onClearFilters: () => void;
   toolCounts: { categories: Record<string, number>; inputs: Record<string, number>; outputs: Record<string, number> };
+  availableInputFormats: string[];
+  availableOutputFormats: string[];
 }) {
   const hasActiveFilters = filters.category || filters.inputFormat || filters.outputFormat;
 
@@ -198,69 +231,77 @@ function FilterSidebar({
       </div>
 
       {/* Input Format */}
-      <div>
-        <h3 className="font-semibold mb-3 flex items-center gap-2">
-          <Filter className="h-4 w-4" />
-          I have a...
-        </h3>
-        <div className="space-y-1">
-          {inputFormats.map((format) => {
-            const count = toolCounts.inputs[format.id] || 0;
-            if (count === 0) return null;
-            return (
-              <button
-                key={format.id}
-                onClick={() => onFilterChange('inputFormat', filters.inputFormat === format.id ? null : format.id)}
-                className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-colors ${
-                  filters.inputFormat === format.id 
-                    ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300' 
-                    : 'hover:bg-muted'
-                }`}
-              >
-                <div className="text-left">
-                  <div className="font-medium">{format.label}</div>
-                  <div className="text-xs text-muted-foreground">{format.description}</div>
-                </div>
-                <Badge variant="secondary">{count}</Badge>
-              </button>
-            );
-          })}
+      {availableInputFormats.length > 0 && (
+        <div>
+          <h3 className="font-semibold mb-3 flex items-center gap-2">
+            <Filter className="h-4 w-4" />
+            I have a...
+          </h3>
+          <div className="space-y-1">
+            {availableInputFormats.map((formatId) => {
+              const count = toolCounts.inputs[formatId] || 0;
+              const metadata = getFormatMetadata(formatId);
+              if (count === 0) return null;
+              
+              return (
+                <button
+                  key={formatId}
+                  onClick={() => onFilterChange('inputFormat', filters.inputFormat === formatId ? null : formatId)}
+                  className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-colors ${
+                    filters.inputFormat === formatId 
+                      ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300' 
+                      : 'hover:bg-muted'
+                  }`}
+                >
+                  <div className="text-left">
+                    <div className="font-medium">{metadata.label}</div>
+                    <div className="text-xs text-muted-foreground">{metadata.description}</div>
+                  </div>
+                  <Badge variant="secondary">{count}</Badge>
+                </button>
+              );
+            })}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Output Format */}
-      <div>
-        <h3 className="font-semibold mb-3 flex items-center gap-2">
-          <SlidersHorizontal className="h-4 w-4" />
-          I want...
-        </h3>
-        <div className="space-y-1">
-          {outputFormats.map((format) => {
-            const count = toolCounts.outputs[format.id] || 0;
-            if (count === 0) return null;
-            return (
-              <button
-                key={format.id}
-                onClick={() => onFilterChange('outputFormat', filters.outputFormat === format.id ? null : format.id)}
-                className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-colors ${
-                  filters.outputFormat === format.id 
-                    ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300' 
-                    : 'hover:bg-muted'
-                }`}
-              >
-                <div className="flex items-center gap-2">
-                  <span className={`w-3 h-3 rounded-full ${format.color}`}></span>
-                  <div className="text-left">
-                    <div className="font-medium">{format.label}</div>
-                    <div className="text-xs text-muted-foreground">{format.description}</div>
+      {availableOutputFormats.length > 0 && (
+        <div>
+          <h3 className="font-semibold mb-3 flex items-center gap-2">
+            <SlidersHorizontal className="h-4 w-4" />
+            I want...
+          </h3>
+          <div className="space-y-1">
+            {availableOutputFormats.map((formatId) => {
+              const count = toolCounts.outputs[formatId] || 0;
+              const metadata = getFormatMetadata(formatId);
+              if (count === 0) return null;
+
+              return (
+                <button
+                  key={formatId}
+                  onClick={() => onFilterChange('outputFormat', filters.outputFormat === formatId ? null : formatId)}
+                  className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-colors ${
+                    filters.outputFormat === formatId 
+                      ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300' 
+                      : 'hover:bg-muted'
+                  }`}
+                >
+                  <div className="flex items-center gap-2">
+                    <span className={`w-3 h-3 rounded-full ${metadata.color}`}></span>
+                    <div className="text-left">
+                      <div className="font-medium">{metadata.label}</div>
+                      <div className="text-xs text-muted-foreground">{metadata.description}</div>
+                    </div>
                   </div>
-                </div>
-                <Badge variant="secondary">{count}</Badge>
-              </button>
-            );
-          })}
+                  <Badge variant="secondary">{count}</Badge>
+                </button>
+              );
+            })}
+          </div>
         </div>
-      </div>
+      )}
     </aside>
   );
 }
@@ -274,15 +315,21 @@ function ToolCardGrid({ tool }: { tool: Tool }) {
       <Card className="h-full transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/10 hover:border-purple-500/50 hover:-translate-y-1">
         <div className="flex h-full flex-col p-5">
           {/* Format Conversion Visual */}
-          <div className="flex items-center gap-2 text-sm mb-3">
-            <span className="px-2 py-1 rounded bg-slate-100 dark:bg-slate-800 font-mono font-medium text-xs">
-              {inputFormat?.toUpperCase()}
-            </span>
-            <ArrowRight className="h-3 w-3 text-muted-foreground" />
-            <span className="px-2 py-1 rounded bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 font-mono font-medium text-xs">
-              {outputFormat?.toUpperCase()}
-            </span>
-          </div>
+          {inputFormat && (
+            <div className="flex items-center gap-2 text-sm mb-3">
+              <span className="px-2 py-1 rounded bg-slate-100 dark:bg-slate-800 font-mono font-medium text-xs">
+                {inputFormat.toUpperCase()}
+              </span>
+              {outputFormat && (
+                <>
+                  <ArrowRight className="h-3 w-3 text-muted-foreground" />
+                  <span className="px-2 py-1 rounded bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 font-mono font-medium text-xs">
+                    {outputFormat.toUpperCase()}
+                  </span>
+                </>
+              )}
+            </div>
+          )}
 
           {/* Title */}
           <h3 className="font-semibold group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
@@ -315,13 +362,21 @@ function ToolCardList({ tool }: { tool: Tool }) {
         <div className="flex items-center gap-6 p-4">
           {/* Format Visual */}
           <div className="flex items-center gap-2 w-32 flex-shrink-0">
-            <span className="px-2 py-1 rounded bg-slate-100 dark:bg-slate-800 font-mono font-medium text-xs">
-              {inputFormat?.toUpperCase()}
-            </span>
-            <ArrowRight className="h-3 w-3 text-muted-foreground" />
-            <span className="px-2 py-1 rounded bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 font-mono font-medium text-xs">
-              {outputFormat?.toUpperCase()}
-            </span>
+            {inputFormat && (
+              <>
+                <span className="px-2 py-1 rounded bg-slate-100 dark:bg-slate-800 font-mono font-medium text-xs">
+                  {inputFormat.toUpperCase()}
+                </span>
+                {outputFormat && (
+                  <>
+                    <ArrowRight className="h-3 w-3 text-muted-foreground" />
+                    <span className="px-2 py-1 rounded bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 font-mono font-medium text-xs">
+                      {outputFormat.toUpperCase()}
+                    </span>
+                  </>
+                )}
+              </>
+            )}
           </div>
 
           {/* Content */}
@@ -394,33 +449,45 @@ export function ToolsClient() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const [viewMode, setViewMode] = useState<ViewMode>('grid');
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
   // Initialize filters from URL
   const [filters, setFilters] = useState<FilterState>({
     search: searchParams.get('q') || '',
     category: (searchParams.get('category') as ToolCategoryId) || null,
-    inputFormat: (searchParams.get('from') as InputFormat) || null,
-    outputFormat: (searchParams.get('to') as OutputFormat) || null,
+    inputFormat: searchParams.get('from') || null,
+    outputFormat: searchParams.get('to') || null,
   });
 
-  // Calculate tool counts for filters
-  const toolCounts = useMemo(() => {
+  // Calculate tool counts for filters and derive available formats
+  const { toolCounts, availableInputFormats, availableOutputFormats } = useMemo(() => {
     const categories: Record<string, number> = {};
     const inputs: Record<string, number> = {};
     const outputs: Record<string, number> = {};
+    const inputSet = new Set<string>();
+    const outputSet = new Set<string>();
 
     toolsConfig.forEach((tool) => {
       categories[tool.category] = (categories[tool.category] || 0) + 1;
       
       const input = getInputFormatFromTool(tool);
-      if (input) inputs[input] = (inputs[input] || 0) + 1;
+      if (input) {
+        inputs[input] = (inputs[input] || 0) + 1;
+        inputSet.add(input);
+      }
       
       const output = getOutputFormatFromTool(tool);
-      if (output) outputs[output] = (outputs[output] || 0) + 1;
+      if (output) {
+        outputs[output] = (outputs[output] || 0) + 1;
+        outputSet.add(output);
+      }
     });
 
-    return { categories, inputs, outputs };
+    return { 
+      toolCounts: { categories, inputs, outputs },
+      availableInputFormats: Array.from(inputSet).sort(),
+      availableOutputFormats: Array.from(outputSet).sort()
+    };
   }, []);
 
   // Update URL when filters change
@@ -516,6 +583,8 @@ export function ToolsClient() {
             onFilterChange={handleFilterChange}
             onClearFilters={clearFilters}
             toolCounts={toolCounts}
+            availableInputFormats={availableInputFormats}
+            availableOutputFormats={availableOutputFormats}
           />
 
           {/* Main Content */}

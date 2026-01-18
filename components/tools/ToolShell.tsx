@@ -44,18 +44,6 @@ export function ToolShell({
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Back Navigation */}
-      <div className="border-b bg-muted/30">
-        <div className="mx-auto max-w-4xl px-4 py-3 sm:px-6">
-          <Link href="/">
-            <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-foreground">
-              <ArrowLeft className="h-4 w-4" />
-              Back to Tools
-            </Button>
-          </Link>
-        </div>
-      </div>
-
       {/* Tool Header */}
       <ToolHeader title={title} description={description} />
 

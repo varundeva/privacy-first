@@ -1043,6 +1043,52 @@ export const toolsConfig: Tool[] = [
     },
   },
   {
+    id: 'pdf-merge',
+    name: 'Merge PDF',
+    slug: 'pdf-merge',
+    category: 'pdf',
+    categoryLabel: 'PDF Tools',
+    description: 'Combine multiple PDF files into one document',
+    longDescription: 'Free online PDF merger. Combine multiple PDF files into a single document. Drag and drop to reorder files. 100% private - all processing happens in your browser.',
+    keywords: ['merge pdf', 'combine pdf', 'join pdf', 'pdf merger', 'combine pdf files', 'free pdf merger'],
+    icon: 'Files',
+    acceptedFormats: ['.pdf'],
+    maxFileSize: 100,
+    seo: {
+      title: 'Merge PDF - Combine PDF Files Online | Free & Private',
+      metaDescription: 'Merge multiple PDF files into one online for free. Drag and drop to reorder. No upload needed. 100% private and secure.',
+      h1: 'Merge PDF Files - Combine Documents Instantly',
+      features: [
+        'Drag & drop reordering',
+        'Combine unlimited files',
+        'Preserve quality',
+        'Browser-based processing',
+        '100% private & secure',
+        'Free forever',
+      ],
+      useCases: [
+        'Combine reports',
+        'Merge contracts',
+        'Organize documents',
+        'Create portfolios',
+      ],
+      faq: [
+        {
+          question: 'How do I change the order?',
+          answer: 'Simply drag and drop the file thumbnails to arrange them in your desired order before merging.',
+        },
+        {
+          question: 'Is there a file limit?',
+          answer: 'You can merge as many files as your device memory allows. We recommend keeping total size under 500MB for best performance.',
+        },
+        {
+          question: 'Is it secure?',
+          answer: 'Yes! Your files never leave your device. The merging process runs entire in your local browser.',
+        },
+      ],
+    },
+  },
+  {
     id: 'word-counter',
     name: 'Word Counter',
     slug: 'word-counter',

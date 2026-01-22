@@ -3,40 +3,40 @@
 import { ToolShell } from '@/components/tools/ToolShell';
 
 // Import all image converters
-import { 
+import {
   // JPG/JPEG Converters
   JpgToPngConverter,
   JpgToWebpConverter,
-  
+
   // PNG Converters
   PngToJpgConverter,
   PngToWebpConverter,
-  
+
   // WebP Converters
   WebpToPngConverter,
   WebpToJpgConverter,
-  
+
   // GIF Converters
   GifToPngConverter,
   GifToJpgConverter,
   GifToWebpConverter,
-  
+
   // BMP Converters
   BmpToPngConverter,
   BmpToJpgConverter,
   BmpToWebpConverter,
-  
+
   // SVG Converters (Rasterize)
   SvgToPngConverter,
   SvgToJpgConverter,
   SvgToWebpConverter,
-  
+
   // ICO Converter
   IcoToPngConverter,
 } from '@/components/tools/image';
 
 // Import PDF tools
-import { PdfToPngConverter, PdfToJpgConverter, PdfCompressor, PdfSplitter } from '@/components/tools/pdf';
+import { PdfToPngConverter, PdfToJpgConverter, PdfCompressor, PdfSplitter, PdfMerger } from '@/components/tools/pdf';
 
 // Import Text tools
 import { WordCounter, CaseConverter } from '@/components/tools/text';
@@ -58,7 +58,7 @@ interface ToolPageClientProps {
  * Maps tool IDs to their respective standalone components.
  * Each tool component is completely self-contained with its own logic.
  * 
- * Total: 16 image converters + 4 PDF tools + 2 Text tools = 22 tools
+ * Total: 16 image converters + 5 PDF tools + 2 Text tools = 23 tools
  */
 export function ToolPageClient({
   toolId,
@@ -73,7 +73,7 @@ export function ToolPageClient({
   // Special case for Word Counter which manages its own state and layout (file/text input tabs)
   if (toolId === 'word-counter') {
     return (
-      <WordCounter 
+      <WordCounter
         title={title}
         description={description}
         acceptedFormats={acceptedFormats}
@@ -88,7 +88,7 @@ export function ToolPageClient({
   // Special case for Case Converter which manages its own text-focused interface
   if (toolId === 'case-converter') {
     return (
-      <CaseConverter 
+      <CaseConverter
         title={title}
         description={description}
         acceptedFormats={acceptedFormats}
@@ -119,7 +119,7 @@ export function ToolPageClient({
             return <JpgToPngConverter file={file} onReset={onReset} />;
           case 'jpg-to-webp':
             return <JpgToWebpConverter file={file} onReset={onReset} />;
-          
+
           // ─────────────────────────────────────────
           // PNG Converters
           // ─────────────────────────────────────────
@@ -127,7 +127,7 @@ export function ToolPageClient({
             return <PngToJpgConverter file={file} onReset={onReset} />;
           case 'png-to-webp':
             return <PngToWebpConverter file={file} onReset={onReset} />;
-          
+
           // ─────────────────────────────────────────
           // WebP Converters
           // ─────────────────────────────────────────
@@ -135,7 +135,7 @@ export function ToolPageClient({
             return <WebpToPngConverter file={file} onReset={onReset} />;
           case 'webp-to-jpg':
             return <WebpToJpgConverter file={file} onReset={onReset} />;
-          
+
           // ─────────────────────────────────────────
           // GIF Converters
           // ─────────────────────────────────────────
@@ -145,7 +145,7 @@ export function ToolPageClient({
             return <GifToJpgConverter file={file} onReset={onReset} />;
           case 'gif-to-webp':
             return <GifToWebpConverter file={file} onReset={onReset} />;
-          
+
           // ─────────────────────────────────────────
           // BMP Converters
           // ─────────────────────────────────────────
@@ -155,7 +155,7 @@ export function ToolPageClient({
             return <BmpToJpgConverter file={file} onReset={onReset} />;
           case 'bmp-to-webp':
             return <BmpToWebpConverter file={file} onReset={onReset} />;
-          
+
           // ─────────────────────────────────────────
           // SVG Converters (Rasterize)
           // ─────────────────────────────────────────
@@ -165,13 +165,13 @@ export function ToolPageClient({
             return <SvgToJpgConverter file={file} onReset={onReset} />;
           case 'svg-to-webp':
             return <SvgToWebpConverter file={file} onReset={onReset} />;
-          
+
           // ─────────────────────────────────────────
           // ICO Converter
           // ─────────────────────────────────────────
           case 'ico-to-png':
             return <IcoToPngConverter file={file} onReset={onReset} />;
-          
+
           // ─────────────────────────────────────────
           // PDF Tools
           // ─────────────────────────────────────────
@@ -183,7 +183,9 @@ export function ToolPageClient({
             return <PdfCompressor file={file} onReset={onReset} />;
           case 'pdf-split':
             return <PdfSplitter file={file} onReset={onReset} />;
-          
+          case 'pdf-merge':
+            return <PdfMerger file={file} onReset={onReset} />;
+
           default:
             return (
               <div className="rounded-lg border border-dashed p-8 text-center text-muted-foreground">

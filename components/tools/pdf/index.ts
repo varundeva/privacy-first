@@ -15,3 +15,8 @@ export { PdfCompressor } from './PdfCompressor';
 // PDF Splitter
 // ============================================
 export { PdfSplitter } from './PdfSplitter';
+
+// ============================================
+// PDF Merger
+// ============================================
+export { PdfMerger } from './PdfMerger';

@@ -9,6 +9,12 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import {
+  Sheet,
+  SheetTrigger,
+  SheetTitle,
+  SheetContent,
+} from '@/components/ui/sheet';
+import {
   Search,
   Shield,
   ArrowLeft,
@@ -59,7 +65,7 @@ const FORMAT_METADATA: Record<string, FormatMetadata> = {
   bmp: { label: 'BMP', description: 'Uncompressed bitmap', color: 'bg-pink-500' },
   svg: { label: 'SVG', description: 'Vector graphics', color: 'bg-orange-500' },
   ico: { label: 'ICO', description: 'Windows icons', color: 'bg-yellow-500' },
-  
+
   // Document Formats
   pdf: { label: 'PDF', description: 'Portable Document Format', color: 'bg-red-500' },
   txt: { label: 'Text', description: 'Plain text files', color: 'bg-gray-500' },
@@ -88,7 +94,7 @@ function getFormatMetadata(format: string): FormatMetadata {
 
 function getInputFormatFromTool(tool: Tool): string | null {
   const formats = tool.acceptedFormats.map(f => f.toLowerCase());
-  
+
   if (formats.some(f => f.includes('pdf'))) return 'pdf';
   if (formats.some(f => f.includes('jpg') || f.includes('jpeg'))) return 'jpg';
   if (formats.some(f => f.includes('png'))) return 'png';
@@ -97,24 +103,24 @@ function getInputFormatFromTool(tool: Tool): string | null {
   if (formats.some(f => f.includes('bmp'))) return 'bmp';
   if (formats.some(f => f.includes('svg'))) return 'svg';
   if (formats.some(f => f.includes('ico'))) return 'ico';
-  
+
   // For text tools or others, take the first format's extension
   if (formats.length > 0) {
     return formats[0].replace('.', '');
   }
-  
+
   return null;
 }
 
 function getOutputFormatFromTool(tool: Tool): string | null {
   const slug = tool.slug.toLowerCase();
-  
+
   // Attempt to extract output format from slug (e.g., pdf-to-jpg -> jpg)
   const parts = slug.split('-to-');
   if (parts.length === 2) {
     return parts[1];
   }
-  
+
   return null;
 }
 
@@ -164,6 +170,7 @@ function FilterSidebar({
   toolCounts,
   availableInputFormats,
   availableOutputFormats,
+  className = "w-64 flex-shrink-0 space-y-6",
 }: {
   filters: FilterState;
   onFilterChange: (key: keyof FilterState, value: string | null) => void;
@@ -171,11 +178,12 @@ function FilterSidebar({
   toolCounts: { categories: Record<string, number>; inputs: Record<string, number>; outputs: Record<string, number> };
   availableInputFormats: string[];
   availableOutputFormats: string[];
+  className?: string;
 }) {
   const hasActiveFilters = filters.category || filters.inputFormat || filters.outputFormat;
 
   return (
-    <aside className="w-64 flex-shrink-0 space-y-6">
+    <aside className={className}>
       {/* Clear Filters */}
       {hasActiveFilters && (
         <Button variant="ghost" size="sm" onClick={onClearFilters} className="w-full justify-start gap-2">
@@ -193,11 +201,10 @@ function FilterSidebar({
         <div className="space-y-1">
           <button
             onClick={() => onFilterChange('category', null)}
-            className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-colors ${
-              filters.category === null 
-                ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300' 
-                : 'hover:bg-muted'
-            }`}
+            className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-colors ${filters.category === null
+              ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300'
+              : 'hover:bg-muted'
+              }`}
           >
             <span className="flex items-center gap-2">
               <Sparkles className="h-4 w-4" />
@@ -213,11 +220,10 @@ function FilterSidebar({
               <button
                 key={category.id}
                 onClick={() => onFilterChange('category', category.id)}
-                className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-colors ${
-                  filters.category === category.id 
-                    ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300' 
-                    : 'hover:bg-muted'
-                }`}
+                className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-colors ${filters.category === category.id
+                  ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300'
+                  : 'hover:bg-muted'
+                  }`}
               >
                 <span className="flex items-center gap-2">
                   <Icon className="h-4 w-4" />
@@ -242,16 +248,15 @@ function FilterSidebar({
               const count = toolCounts.inputs[formatId] || 0;
               const metadata = getFormatMetadata(formatId);
               if (count === 0) return null;
-              
+
               return (
                 <button
                   key={formatId}
                   onClick={() => onFilterChange('inputFormat', filters.inputFormat === formatId ? null : formatId)}
-                  className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-colors ${
-                    filters.inputFormat === formatId 
-                      ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300' 
-                      : 'hover:bg-muted'
-                  }`}
+                  className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-colors ${filters.inputFormat === formatId
+                    ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300'
+                    : 'hover:bg-muted'
+                    }`}
                 >
                   <div className="text-left">
                     <div className="font-medium">{metadata.label}</div>
@@ -282,11 +287,10 @@ function FilterSidebar({
                 <button
                   key={formatId}
                   onClick={() => onFilterChange('outputFormat', filters.outputFormat === formatId ? null : formatId)}
-                  className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-colors ${
-                    filters.outputFormat === formatId 
-                      ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300' 
-                      : 'hover:bg-muted'
-                  }`}
+                  className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-colors ${filters.outputFormat === formatId
+                    ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300'
+                    : 'hover:bg-muted'
+                    }`}
                 >
                   <div className="flex items-center gap-2">
                     <span className={`w-3 h-3 rounded-full ${metadata.color}`}></span>
@@ -359,20 +363,21 @@ function ToolCardList({ tool }: { tool: Tool }) {
   return (
     <Link href={`/tools/${tool.category}/${tool.slug}`} className="group block">
       <Card className="transition-all duration-200 hover:shadow-md hover:border-purple-500/50">
-        <div className="flex items-center gap-6 p-4">
+        <div className="flex items-center gap-3 p-3 sm:gap-6 sm:p-4">
           {/* Format Visual */}
-          <div className="flex items-center gap-2 w-32 flex-shrink-0">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-1 sm:gap-2 min-w-[60px] sm:w-32 flex-shrink-0">
             {inputFormat && (
               <>
-                <span className="px-2 py-1 rounded bg-slate-100 dark:bg-slate-800 font-mono font-medium text-xs">
+                <Badge variant="outline" className="px-1.5 py-0.5 text-[10px] sm:text-xs font-mono bg-slate-100 dark:bg-slate-800 border-0">
                   {inputFormat.toUpperCase()}
-                </span>
+                </Badge>
                 {outputFormat && (
                   <>
-                    <ArrowRight className="h-3 w-3 text-muted-foreground" />
-                    <span className="px-2 py-1 rounded bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 font-mono font-medium text-xs">
+                    <ArrowRight className="hidden sm:block h-3 w-3 text-muted-foreground" />
+                    <ArrowRight className="sm:hidden h-2 w-2 text-muted-foreground rotate-90" />
+                    <Badge variant="outline" className="px-1.5 py-0.5 text-[10px] sm:text-xs font-mono bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 border-0">
                       {outputFormat.toUpperCase()}
-                    </span>
+                    </Badge>
                   </>
                 )}
               </>
@@ -381,10 +386,10 @@ function ToolCardList({ tool }: { tool: Tool }) {
 
           {/* Content */}
           <div className="flex-1 min-w-0">
-            <h3 className="font-semibold group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
+            <h3 className="font-semibold text-sm sm:text-base group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors truncate">
               {tool.name}
             </h3>
-            <p className="text-sm text-muted-foreground truncate">{tool.description}</p>
+            <p className="hidden sm:block text-sm text-muted-foreground truncate">{tool.description}</p>
           </div>
 
           {/* Features */}
@@ -397,10 +402,12 @@ function ToolCardList({ tool }: { tool: Tool }) {
           </div>
 
           {/* CTA */}
-          <Button size="sm" variant="ghost" className="gap-1 flex-shrink-0">
-            Open
-            <ArrowRight className="h-4 w-4" />
-          </Button>
+          <div className="flex-shrink-0">
+            <Button size="icon" variant="ghost" className="h-8 w-8 sm:h-9 sm:w-auto sm:px-3 sm:gap-1">
+              <span className="hidden sm:inline">Open</span>
+              <ArrowRight className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
       </Card>
     </Link>
@@ -469,13 +476,13 @@ export function ToolsClient() {
 
     toolsConfig.forEach((tool) => {
       categories[tool.category] = (categories[tool.category] || 0) + 1;
-      
+
       const input = getInputFormatFromTool(tool);
       if (input) {
         inputs[input] = (inputs[input] || 0) + 1;
         inputSet.add(input);
       }
-      
+
       const output = getOutputFormatFromTool(tool);
       if (output) {
         outputs[output] = (outputs[output] || 0) + 1;
@@ -483,7 +490,7 @@ export function ToolsClient() {
       }
     });
 
-    return { 
+    return {
       toolCounts: { categories, inputs, outputs },
       availableInputFormats: Array.from(inputSet).sort(),
       availableOutputFormats: Array.from(outputSet).sort()
@@ -497,7 +504,7 @@ export function ToolsClient() {
     if (newFilters.category) params.set('category', newFilters.category);
     if (newFilters.inputFormat) params.set('from', newFilters.inputFormat);
     if (newFilters.outputFormat) params.set('to', newFilters.outputFormat);
-    
+
     const queryString = params.toString();
     router.replace(queryString ? `/tools?${queryString}` : '/tools', { scroll: false });
   }, [router]);
@@ -578,20 +585,24 @@ export function ToolsClient() {
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
         <div className="flex gap-8">
           {/* Sidebar */}
-          <FilterSidebar
-            filters={filters}
-            onFilterChange={handleFilterChange}
-            onClearFilters={clearFilters}
-            toolCounts={toolCounts}
-            availableInputFormats={availableInputFormats}
-            availableOutputFormats={availableOutputFormats}
-          />
+          {/* Sidebar - Desktop */}
+          <div className="hidden lg:block">
+            <FilterSidebar
+              filters={filters}
+              onFilterChange={handleFilterChange}
+              onClearFilters={clearFilters}
+              toolCounts={toolCounts}
+              availableInputFormats={availableInputFormats}
+              availableOutputFormats={availableOutputFormats}
+            />
+          </div>
 
           {/* Main Content */}
           <main className="flex-1 min-w-0">
             {/* Search & View Toggle */}
-            <div className="flex items-center gap-4 mb-6">
-              <div className="relative flex-1">
+            {/* Search & View Toggle & Mobile Filter */}
+            <div className="flex flex-col sm:flex-row gap-4 mb-6">
+              <div className="relative flex-1 w-full">
                 <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                 <Input
                   placeholder="Search tools..."
@@ -608,19 +619,45 @@ export function ToolsClient() {
                   </button>
                 )}
               </div>
-              <div className="flex items-center border rounded-lg p-1">
-                <button
-                  onClick={() => setViewMode('grid')}
-                  className={`p-2 rounded ${viewMode === 'grid' ? 'bg-muted' : ''}`}
-                >
-                  <LayoutGrid className="h-4 w-4" />
-                </button>
-                <button
-                  onClick={() => setViewMode('list')}
-                  className={`p-2 rounded ${viewMode === 'list' ? 'bg-muted' : ''}`}
-                >
-                  <List className="h-4 w-4" />
-                </button>
+
+              <div className="flex items-center justify-between sm:justify-end gap-2 w-full sm:w-auto">
+                {/* Mobile Filter Trigger */}
+                <Sheet>
+                  <SheetTrigger asChild>
+                    <Button variant="outline" className="lg:hidden gap-2 flex-1 sm:flex-none">
+                      <Filter className="h-4 w-4" />
+                      Filters
+                    </Button>
+                  </SheetTrigger>
+                  <SheetContent side="left" className="w-80 overflow-y-auto px-6 pt-10">
+                    <SheetTitle className="text-lg font-bold mb-4">Filter Tools</SheetTitle>
+                    <FilterSidebar
+                      filters={filters}
+                      onFilterChange={handleFilterChange}
+                      onClearFilters={clearFilters}
+                      toolCounts={toolCounts}
+                      availableInputFormats={availableInputFormats}
+                      availableOutputFormats={availableOutputFormats}
+                      className="space-y-6"
+                    />
+                  </SheetContent>
+                </Sheet>
+
+                {/* View Toggle */}
+                <div className="hidden sm:flex items-center border rounded-lg p-1">
+                  <button
+                    onClick={() => setViewMode('grid')}
+                    className={`p-2 rounded ${viewMode === 'grid' ? 'bg-muted' : ''}`}
+                  >
+                    <LayoutGrid className="h-4 w-4" />
+                  </button>
+                  <button
+                    onClick={() => setViewMode('list')}
+                    className={`p-2 rounded ${viewMode === 'list' ? 'bg-muted' : ''}`}
+                  >
+                    <List className="h-4 w-4" />
+                  </button>
+                </div>
               </div>
             </div>
 

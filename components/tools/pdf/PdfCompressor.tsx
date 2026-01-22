@@ -17,6 +17,7 @@ import {
 import { ProcessingStatus } from '../shared/ProcessingStatus';
 import { compressPdf, type CompressionPreset } from '@/lib/workers/pdf-compress';
 import { formatFileSize, type ProgressUpdate } from '@/lib/workers/types';
+import { PdfVisualComparison } from './PdfVisualComparison';
 
 interface PdfCompressorProps {
   file: File;
@@ -392,6 +393,14 @@ export function PdfCompressor({ file, onReset }: PdfCompressorProps) {
           </div>
         </div>
       </Card>
+
+      {/* Visual Comparison */}
+      <PdfVisualComparison 
+        originalFile={file}
+        compressedFile={new Blob([result.data], { type: 'application/pdf' })}
+        originalSize={result.originalSize}
+        compressedSize={result.compressedSize}
+      />
 
       {/* Actions */}
       <div className="flex flex-col sm:flex-row gap-3">

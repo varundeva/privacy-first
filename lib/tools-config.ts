@@ -947,6 +947,56 @@ export const toolsConfig: Tool[] = [
     },
   },
   {
+    id: 'pdf-compress',
+    name: 'PDF Compressor',
+    slug: 'pdf-compress',
+    category: 'pdf',
+    categoryLabel: 'PDF Tools',
+    description: 'Compress PDF files to reduce file size with customizable quality presets',
+    longDescription: 'Free online PDF compressor. Reduce PDF file sizes with four compression presets: Extreme, High, Medium, and Low. Choose the perfect balance between file size and quality. All processing happens in your browser for maximum privacy.',
+    keywords: ['pdf compressor', 'compress pdf', 'reduce pdf size', 'pdf compression', 'shrink pdf', 'optimize pdf', 'free pdf compressor', 'online pdf compressor'],
+    icon: 'FileText',
+    acceptedFormats: ['.pdf'],
+    maxFileSize: 100,
+    seo: {
+      title: 'PDF Compressor - Reduce PDF Size Online | Free & Private',
+      metaDescription: 'Compress PDF files online for free. Choose from 4 quality presets to reduce file size. Browser-based, no upload needed. 100% private and secure.',
+      h1: 'Compress PDF - Reduce File Size Instantly',
+      features: [
+        '4 compression presets',
+        'Adjustable quality levels',
+        'No file upload needed',
+        'Browser-based processing',
+        '100% private & secure',
+        'Free forever',
+      ],
+      useCases: [
+        'Reduce PDF for email',
+        'Optimize for web upload',
+        'Save storage space',
+        'Share large documents',
+      ],
+      faq: [
+        {
+          question: 'What are the compression presets?',
+          answer: 'We offer 4 presets: Extreme (60-80% reduction), High (40-60%), Medium (20-40%), and Low (10-20%). Choose based on your needs for file size vs quality.',
+        },
+        {
+          question: 'Will compression affect PDF quality?',
+          answer: 'Higher compression levels may reduce image quality in the PDF. Text and vector graphics remain sharp. Use Low or Medium presets for documents with important images.',
+        },
+        {
+          question: 'Is my PDF secure?',
+          answer: 'Absolutely! Your PDF is processed entirely in your browser. No data is ever uploaded to any server.',
+        },
+        {
+          question: 'What types of PDFs work best?',
+          answer: 'PDFs with embedded images see the most compression. Text-only documents may not reduce as much since text is already efficient.',
+        },
+      ],
+    },
+  },
+  {
     id: 'word-counter',
     name: 'Word Counter',
     slug: 'word-counter',

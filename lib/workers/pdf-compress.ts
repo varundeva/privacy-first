@@ -1,18 +1,19 @@
 /**
  * PDF Compression Utilities
  * 
- * Uses pdf-lib to compress PDF files by:
- * - Removing unused objects
- * - Optimizing embedded images (re-encoding at lower quality)
- * - Flattening form fields
- * - Removing metadata (optional)
+ * Compresses PDFs by:
+ * 1. Rendering each page as a JPEG image at reduced quality
+ * 2. Rebuilding the PDF from those compressed images
+ * 
+ * This approach achieves significant compression (similar to online compressors)
+ * by reducing image quality throughout the document.
  * 
  * All processing happens in the browser for maximum privacy.
  */
 
 import type { ProgressUpdate } from './types';
 
-export type CompressionPreset = 'extreme' | 'high' | 'medium' | 'low';
+export type CompressionPreset = 'extreme' | 'high' | 'standard' | 'medium' | 'low';
 
 export interface PdfCompressionOptions {
     preset: CompressionPreset;
@@ -30,41 +31,65 @@ export interface PdfCompressionResult {
 }
 
 interface PresetSettings {
+    /** JPEG quality for rendered pages (0-1) */
     imageQuality: number;
+    /** DPI scale factor (1 = 72 DPI, 1.5 = 108 DPI, 2 = 144 DPI) */
+    scale: number;
+    /** Whether to remove metadata */
     removeMetadata: boolean;
-    removeAnnotations: boolean;
-    flattenForms: boolean;
 }
 
 const presetSettings: Record<CompressionPreset, PresetSettings> = {
     extreme: {
-        imageQuality: 0.3,
+        imageQuality: 0.4,
+        scale: 1.0,
         removeMetadata: true,
-        removeAnnotations: true,
-        flattenForms: true,
     },
     high: {
-        imageQuality: 0.5,
+        imageQuality: 0.55,
+        scale: 1.2,
         removeMetadata: true,
-        removeAnnotations: false,
-        flattenForms: true,
+    },
+    standard: {
+        imageQuality: 0.65,
+        scale: 1.4,
+        removeMetadata: false,
     },
     medium: {
-        imageQuality: 0.7,
+        imageQuality: 0.75,
+        scale: 1.6,
         removeMetadata: false,
-        removeAnnotations: false,
-        flattenForms: false,
     },
     low: {
         imageQuality: 0.85,
+        scale: 1.8,
         removeMetadata: false,
-        removeAnnotations: false,
-        flattenForms: false,
     },
 };
 
+// Lazy load pdfjs
+let pdfjsLib: typeof import('pdfjs-dist') | null = null;
+
+async function getPdfJs() {
+    if (typeof window === 'undefined') {
+        throw new Error('PDF processing is only available in the browser');
+    }
+
+    if (!pdfjsLib) {
+        pdfjsLib = await import('pdfjs-dist');
+        pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
+    }
+
+    return pdfjsLib;
+}
+
 /**
  * Compress a PDF file using the specified preset
+ * 
+ * This works by:
+ * 1. Rendering each page to a canvas at the specified scale
+ * 2. Converting the canvas to a JPEG at the specified quality
+ * 3. Creating a new PDF with those JPEG images as pages
  */
 export async function compressPdf(
     file: File,
@@ -77,14 +102,17 @@ export async function compressPdf(
         onProgress?.({
             percent: 0,
             stage: 'loading',
-            message: 'Loading PDF library...',
+            message: 'Loading PDF libraries...',
         });
 
-        // Dynamically import pdf-lib
-        const { PDFDocument } = await import('pdf-lib');
+        // Load both libraries
+        const [pdfjs, { PDFDocument }] = await Promise.all([
+            getPdfJs(),
+            import('pdf-lib'),
+        ]);
 
         onProgress?.({
-            percent: 10,
+            percent: 5,
             stage: 'loading',
             message: 'Reading PDF file...',
         });
@@ -94,85 +122,142 @@ export async function compressPdf(
         const originalSize = arrayBuffer.byteLength;
 
         onProgress?.({
-            percent: 20,
+            percent: 10,
             stage: 'processing',
             message: 'Parsing PDF document...',
         });
 
-        // Load the PDF document
-        const pdfDoc = await PDFDocument.load(arrayBuffer, {
-            ignoreEncryption: true,
-        });
-
-        const pageCount = pdfDoc.getPageCount();
+        // Load with pdfjs for rendering
+        const pdfDoc = await pdfjs.getDocument({ data: arrayBuffer }).promise;
+        const pageCount = pdfDoc.numPages;
 
         onProgress?.({
-            percent: 30,
+            percent: 15,
             stage: 'processing',
             message: `Processing ${pageCount} page${pageCount > 1 ? 's' : ''}...`,
         });
 
-        // Process each page for image compression
-        const pages = pdfDoc.getPages();
+        // Create new PDF document
+        const newPdfDoc = await PDFDocument.create();
 
-        for (let i = 0; i < pages.length; i++) {
-            const progressPercent = 30 + ((i / pages.length) * 40);
+        // Process each page
+        const pageImages: { data: Uint8Array; width: number; height: number }[] = [];
+
+        for (let pageNum = 1; pageNum <= pageCount; pageNum++) {
+            const progressPercent = 15 + ((pageNum - 1) / pageCount) * 60;
             onProgress?.({
                 percent: Math.round(progressPercent),
                 stage: 'processing',
-                message: `Optimizing page ${i + 1} of ${pages.length}...`,
+                message: `Compressing page ${pageNum} of ${pageCount}...`,
             });
 
-            // Note: pdf-lib doesn't have direct image recompression
-            // The main compression comes from the save options
+            // Get the page
+            const page = await pdfDoc.getPage(pageNum);
+            const viewport = page.getViewport({ scale: settings.scale });
+
+            // Create canvas
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+
+            if (!context) {
+                throw new Error('Could not create canvas context');
+            }
+
+            canvas.width = viewport.width;
+            canvas.height = viewport.height;
+
+            // Fill with white background (for JPEG)
+            context.fillStyle = 'white';
+            context.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Render page to canvas
+            await page.render({
+                canvasContext: context,
+                viewport,
+                canvas,
+            }).promise;
+
+            // Convert to JPEG blob
+            const blob = await new Promise<Blob>((resolve, reject) => {
+                canvas.toBlob(
+                    (b) => {
+                        if (b) resolve(b);
+                        else reject(new Error('Failed to create blob'));
+                    },
+                    'image/jpeg',
+                    settings.imageQuality
+                );
+            });
+
+            // Convert blob to Uint8Array
+            const imageData = new Uint8Array(await blob.arrayBuffer());
+
+            pageImages.push({
+                data: imageData,
+                width: viewport.width,
+                height: viewport.height,
+            });
+
+            // Clear canvas to free memory
+            canvas.width = 0;
+            canvas.height = 0;
         }
 
         onProgress?.({
-            percent: 70,
-            stage: 'processing',
-            message: 'Removing unused objects...',
+            percent: 75,
+            stage: 'encoding',
+            message: 'Building compressed PDF...',
         });
+
+        // Add each image as a page to the new PDF
+        for (let i = 0; i < pageImages.length; i++) {
+            const progressPercent = 75 + ((i / pageImages.length) * 15);
+            onProgress?.({
+                percent: Math.round(progressPercent),
+                stage: 'encoding',
+                message: `Adding page ${i + 1} to PDF...`,
+            });
+
+            const { data, width, height } = pageImages[i];
+
+            // Embed the JPEG image
+            const image = await newPdfDoc.embedJpg(data);
+
+            // Add page with the same dimensions as the rendered image
+            // Convert from pixels to points (72 points per inch, and we rendered at settings.scale * 72 DPI)
+            const pageWidth = width / settings.scale;
+            const pageHeight = height / settings.scale;
+
+            const newPage = newPdfDoc.addPage([pageWidth, pageHeight]);
+
+            // Draw the image to fill the page
+            newPage.drawImage(image, {
+                x: 0,
+                y: 0,
+                width: pageWidth,
+                height: pageHeight,
+            });
+        }
 
         // Remove metadata if requested
         if (settings.removeMetadata) {
-            pdfDoc.setTitle('');
-            pdfDoc.setAuthor('');
-            pdfDoc.setSubject('');
-            pdfDoc.setKeywords([]);
-            pdfDoc.setProducer('');
-            pdfDoc.setCreator('');
-        }
-
-        // Flatten form fields if requested
-        if (settings.flattenForms) {
-            const form = pdfDoc.getForm();
-            try {
-                form.flatten();
-            } catch {
-                // Form might not exist or already be flattened
-            }
+            newPdfDoc.setTitle('');
+            newPdfDoc.setAuthor('');
+            newPdfDoc.setSubject('');
+            newPdfDoc.setKeywords([]);
+            newPdfDoc.setProducer('');
+            newPdfDoc.setCreator('');
         }
 
         onProgress?.({
-            percent: 80,
+            percent: 92,
             stage: 'encoding',
-            message: 'Compressing and saving PDF...',
+            message: 'Saving compressed PDF...',
         });
 
-        // Save with compression options
-        // pdf-lib uses object stream compression by default
-        // We can also use addDefaultPage option to avoid adding empty pages
-        const compressedBytes = await pdfDoc.save({
+        // Save the new PDF
+        const compressedBytes = await newPdfDoc.save({
             useObjectStreams: true,
-            addDefaultPage: false,
-            // Additional optimization: don't update modification date
-            updateFieldAppearances: false,
-        });
-
-        onProgress?.({
-            percent: 95,
-            stage: 'encoding',
-            message: 'Finalizing...',
         });
 
         const compressedSize = compressedBytes.byteLength;
@@ -219,20 +304,24 @@ export async function compressPdf(
 export function getPresetEstimates(fileSize: number): Record<CompressionPreset, { min: number; max: number }> {
     return {
         extreme: {
+            min: Math.round(fileSize * 0.1),
+            max: Math.round(fileSize * 0.3),
+        },
+        high: {
             min: Math.round(fileSize * 0.2),
             max: Math.round(fileSize * 0.4),
         },
-        high: {
-            min: Math.round(fileSize * 0.4),
-            max: Math.round(fileSize * 0.6),
+        standard: {
+            min: Math.round(fileSize * 0.25),
+            max: Math.round(fileSize * 0.45),
         },
         medium: {
-            min: Math.round(fileSize * 0.6),
-            max: Math.round(fileSize * 0.8),
+            min: Math.round(fileSize * 0.35),
+            max: Math.round(fileSize * 0.55),
         },
         low: {
-            min: Math.round(fileSize * 0.8),
-            max: Math.round(fileSize * 0.9),
+            min: Math.round(fileSize * 0.5),
+            max: Math.round(fileSize * 0.7),
         },
     };
 }

@@ -45,45 +45,80 @@ interface PresetOption {
   icon: React.ReactNode;
   color: string;
   bgColor: string;
+  borderColor: string;
   expectedReduction: string;
+  quality: string;
+  dpi: string;
+  tradeoff: string;
+  isRecommended?: boolean;
 }
 
 const presetOptions: PresetOption[] = [
   {
     id: 'extreme',
     name: 'Extreme',
-    description: 'Maximum compression, may reduce quality significantly',
+    description: 'Maximum file size reduction',
     icon: <Zap className="h-5 w-5" />,
     color: 'text-red-500',
     bgColor: 'bg-red-100 dark:bg-red-900/30',
-    expectedReduction: '60-80%',
+    borderColor: 'hover:border-red-500',
+    expectedReduction: '70-90%',
+    quality: '40%',
+    dpi: '72 DPI',
+    tradeoff: 'Lowest quality, text may be blurry',
   },
   {
     id: 'high',
     name: 'High',
-    description: 'Strong compression with noticeable quality reduction',
+    description: 'Strong compression',
     icon: <HardDrive className="h-5 w-5" />,
     color: 'text-orange-500',
     bgColor: 'bg-orange-100 dark:bg-orange-900/30',
-    expectedReduction: '40-60%',
+    borderColor: 'hover:border-orange-500',
+    expectedReduction: '60-80%',
+    quality: '55%',
+    dpi: '86 DPI',
+    tradeoff: 'Reduced quality, acceptable for viewing',
+  },
+  {
+    id: 'standard',
+    name: 'Standard',
+    description: 'Best balance of size & quality',
+    icon: <Check className="h-5 w-5" />,
+    color: 'text-purple-500',
+    bgColor: 'bg-purple-100 dark:bg-purple-900/30',
+    borderColor: 'hover:border-purple-500',
+    expectedReduction: '55-75%',
+    quality: '65%',
+    dpi: '100 DPI',
+    tradeoff: 'Good quality, suitable for most documents',
+    isRecommended: true,
   },
   {
     id: 'medium',
     name: 'Medium',
-    description: 'Balanced compression and quality',
+    description: 'Moderate compression',
     icon: <Scale className="h-5 w-5" />,
     color: 'text-yellow-500',
     bgColor: 'bg-yellow-100 dark:bg-yellow-900/30',
-    expectedReduction: '20-40%',
+    borderColor: 'hover:border-yellow-500',
+    expectedReduction: '45-65%',
+    quality: '75%',
+    dpi: '115 DPI',
+    tradeoff: 'Better quality, larger file size',
   },
   {
     id: 'low',
     name: 'Low',
-    description: 'Light compression, preserves most quality',
+    description: 'Light compression',
     icon: <Sparkles className="h-5 w-5" />,
     color: 'text-green-500',
     bgColor: 'bg-green-100 dark:bg-green-900/30',
-    expectedReduction: '10-20%',
+    borderColor: 'hover:border-green-500',
+    expectedReduction: '30-50%',
+    quality: '85%',
+    dpi: '130 DPI',
+    tradeoff: 'High quality, minimal compression',
   },
 ];
 
@@ -190,36 +225,72 @@ export function PdfCompressor({ file, onReset }: PdfCompressorProps) {
 
         {/* Preset Selection */}
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold">Choose Compression Level</h3>
-          <p className="text-sm text-muted-foreground">
-            Select a compression preset based on your needs. Higher compression means smaller files but may affect quality.
-          </p>
-          
-          <div className="grid gap-3 sm:grid-cols-2">
-            {presetOptions.map((preset) => (
-              <button
-                key={preset.id}
-                onClick={() => handlePresetSelect(preset.id)}
-                className={`group relative flex items-start gap-4 rounded-xl border-2 p-4 text-left transition-all hover:border-purple-500 hover:shadow-lg ${
-                  selectedPreset === preset.id 
-                    ? 'border-purple-500 bg-purple-50/50 dark:bg-purple-900/20' 
-                    : 'border-border hover:bg-muted/50'
-                }`}
-              >
+          <div>
+            <h3 className="text-lg font-semibold">Choose Compression Level</h3>
+            <p className="text-sm text-muted-foreground mt-1">
+              Higher compression = smaller files but lower quality. Text becomes non-selectable.
+            </p>
+          </div>
+
+          {/* Standard Preset - Highlighted at top */}
+          {presetOptions.filter(p => p.isRecommended).map((preset) => (
+            <button
+              key={preset.id}
+              onClick={() => handlePresetSelect(preset.id)}
+              className="w-full relative rounded-xl border-2 border-purple-500 bg-purple-50/50 dark:bg-purple-900/20 p-3 text-left transition-all hover:shadow-lg ring-2 ring-purple-500/20"
+            >
+              <div className="absolute -top-2.5 left-3 px-2 py-0.5 bg-purple-600 text-white text-xs font-bold rounded-full">
+                ✨ RECOMMENDED
+              </div>
+              <div className="flex items-center gap-3">
                 <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg ${preset.bgColor} ${preset.color}`}>
                   {preset.icon}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between gap-2">
-                    <h4 className="font-semibold">{preset.name}</h4>
-                    <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${preset.bgColor} ${preset.color}`}>
-                      ~{preset.expectedReduction}
-                    </span>
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold">{preset.name}</span>
+                    <span className="text-xs text-muted-foreground">•</span>
+                    <span className="text-sm text-muted-foreground">{preset.description}</span>
                   </div>
-                  <p className="mt-1 text-sm text-muted-foreground line-clamp-2">
-                    {preset.description}
-                  </p>
                 </div>
+                <div className="hidden sm:flex items-center gap-4 text-xs text-muted-foreground">
+                  <span><strong className="text-foreground">{preset.quality}</strong> Quality</span>
+                  <span><strong className="text-foreground">{preset.dpi}</strong></span>
+                </div>
+                <span className={`text-sm font-bold px-2 py-1 rounded-full ${preset.bgColor} ${preset.color}`}>
+                  ~{preset.expectedReduction}
+                </span>
+              </div>
+            </button>
+          ))}
+
+          {/* Other Presets - 2x2 Grid */}
+          <div className="grid gap-3 sm:grid-cols-2">
+            {presetOptions.filter(p => !p.isRecommended).map((preset) => (
+              <button
+                key={preset.id}
+                onClick={() => handlePresetSelect(preset.id)}
+                className={`group relative rounded-lg border p-3 text-left transition-all ${preset.borderColor} hover:shadow-md border-border hover:bg-muted/50`}
+              >
+                <div className="flex items-center gap-3">
+                  <div className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg ${preset.bgColor} ${preset.color}`}>
+                    {preset.icon}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between">
+                      <span className="font-semibold">{preset.name}</span>
+                      <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${preset.bgColor} ${preset.color}`}>
+                        ~{preset.expectedReduction}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-3 mt-1 text-xs text-muted-foreground">
+                      <span>{preset.quality} quality</span>
+                      <span>•</span>
+                      <span>{preset.dpi}</span>
+                    </div>
+                  </div>
+                </div>
+                <p className="mt-2 text-xs text-muted-foreground">{preset.tradeoff}</p>
               </button>
             ))}
           </div>

@@ -997,6 +997,52 @@ export const toolsConfig: Tool[] = [
     },
   },
   {
+    id: 'pdf-split',
+    name: 'Split PDF',
+    slug: 'pdf-split',
+    category: 'pdf',
+    categoryLabel: 'PDF Tools',
+    description: 'Split PDF files and extract pages',
+    longDescription: 'Free online PDF splitter. Extract pages from your PDF documents easily. Select pages visually or by page number. No quality loss - extracted pages maintain original quality. All processing happens in your browser.',
+    keywords: ['split pdf', 'extract pdf pages', 'separate pdf pages', 'cut pdf', 'pdf splitter', 'free pdf splitter'],
+    icon: 'Split',
+    acceptedFormats: ['.pdf'],
+    maxFileSize: 100,
+    seo: {
+      title: 'Split PDF - Extract Pages Online | Free & Private',
+      metaDescription: 'Split PDF files online for free. Extract specific pages or ranges. Visual page selection. No quality loss. 100% private and secure.',
+      h1: 'Split PDF - Extract Pages Accurately',
+      features: [
+        'Visual page selector',
+        'Extract specific ranges',
+        'No quality loss',
+        'Browser-based processing',
+        '100% private & secure',
+        'Free forever',
+      ],
+      useCases: [
+        'Extract specific chapters',
+        'Remove unwanted pages',
+        'Separate merged documents',
+        'Create smaller PDFs',
+      ],
+      faq: [
+        {
+          question: 'Will splitting reduce quality?',
+          answer: 'No! Our tool extracts the exact original pages without re-encoding, so 100% of the quality is preserved.',
+        },
+        {
+          question: 'How do I select pages?',
+          answer: 'You can click on the page thumbnails to select pages, or type ranges like "1-5, 8" in the input box.',
+        },
+        {
+          question: 'Can I reorder pages?',
+          answer: 'Currently this tool extracts pages in their original order. For reordering, use our upcoming Organize PDF tool.',
+        },
+      ],
+    },
+  },
+  {
     id: 'word-counter',
     name: 'Word Counter',
     slug: 'word-counter',

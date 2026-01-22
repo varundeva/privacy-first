@@ -10,3 +10,8 @@ export { PdfToJpgConverter } from './PdfToJpgConverter';
 // PDF Compression
 // ============================================
 export { PdfCompressor } from './PdfCompressor';
+
+// ============================================
+// PDF Splitter
+// ============================================
+export { PdfSplitter } from './PdfSplitter';

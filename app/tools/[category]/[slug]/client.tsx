@@ -36,7 +36,7 @@ import {
 } from '@/components/tools/image';
 
 // Import PDF tools
-import { PdfToPngConverter, PdfToJpgConverter, PdfCompressor } from '@/components/tools/pdf';
+import { PdfToPngConverter, PdfToJpgConverter, PdfCompressor, PdfSplitter } from '@/components/tools/pdf';
 
 // Import Text tools
 import { WordCounter, CaseConverter } from '@/components/tools/text';
@@ -58,7 +58,7 @@ interface ToolPageClientProps {
  * Maps tool IDs to their respective standalone components.
  * Each tool component is completely self-contained with its own logic.
  * 
- * Total: 16 image converters + 3 PDF tools + 2 Text tools = 21 tools
+ * Total: 16 image converters + 4 PDF tools + 2 Text tools = 22 tools
  */
 export function ToolPageClient({
   toolId,
@@ -181,6 +181,8 @@ export function ToolPageClient({
             return <PdfToJpgConverter file={file} onReset={onReset} />;
           case 'pdf-compress':
             return <PdfCompressor file={file} onReset={onReset} />;
+          case 'pdf-split':
+            return <PdfSplitter file={file} onReset={onReset} />;
           
           default:
             return (

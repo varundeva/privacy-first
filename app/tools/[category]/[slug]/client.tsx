@@ -36,7 +36,7 @@ import {
 } from '@/components/tools/image';
 
 // Import PDF tools
-import { PdfToPngConverter, PdfToJpgConverter, PdfCompressor, PdfSplitter, PdfMerger, PdfOrganizer, PdfUnlocker } from '@/components/tools/pdf';
+import { PdfToPngConverter, PdfToJpgConverter, PdfCompressor, PdfSplitter, PdfMerger, PdfOrganizer, PdfUnlocker, PdfRotator } from '@/components/tools/pdf';
 
 // Import Text tools
 import { WordCounter, CaseConverter } from '@/components/tools/text';
@@ -189,6 +189,8 @@ export function ToolPageClient({
             return <PdfOrganizer file={file} onReset={onReset} />;
           case 'pdf-unlock':
             return <PdfUnlocker file={file} onReset={onReset} />;
+          case 'pdf-rotate':
+            return <PdfRotator file={file} onReset={onReset} />;
 
           default:
             return (

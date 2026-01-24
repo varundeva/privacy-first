@@ -1189,6 +1189,56 @@ export const toolsConfig: Tool[] = [
     },
   },
   {
+    id: 'pdf-rotate',
+    name: 'Rotate PDF',
+    slug: 'pdf-rotate',
+    category: 'pdf',
+    categoryLabel: 'PDF Tools',
+    description: 'Rotate PDF pages by 90°, 180°, or 270°',
+    longDescription: 'Free online PDF rotator. Rotate all pages or select specific pages to rotate. Preview changes before saving. Supports 90°, 180°, and 270° rotation. All processing happens in your browser for complete privacy.',
+    keywords: ['rotate pdf', 'pdf rotator', 'turn pdf pages', 'flip pdf', 'rotate pdf online', 'pdf page rotation', 'fix pdf orientation'],
+    icon: 'RotateCw',
+    acceptedFormats: ['.pdf'],
+    maxFileSize: 100,
+    seo: {
+      title: 'Rotate PDF Pages - 90°, 180°, 270° | Free Online Tool',
+      metaDescription: 'Rotate PDF pages online for free. Select pages or rotate all at once. Preview rotation before saving. 100% private browser processing.',
+      h1: 'Rotate PDF Pages - Visual Editor',
+      features: [
+        'Rotate 90°, 180°, or 270°',
+        'Visual page previews',
+        'Select individual pages',
+        'Rotate all at once',
+        'Preview before saving',
+        '100% private & secure',
+      ],
+      useCases: [
+        'Fix scanned documents',
+        'Correct landscape pages',
+        'Rotate photos in PDF',
+        'Fix upside-down pages',
+      ],
+      faq: [
+        {
+          question: 'Can I rotate individual pages?',
+          answer: 'Yes! Click on pages to select them, then use the rotation buttons. Or use quick rotate to rotate all pages at once.',
+        },
+        {
+          question: 'What rotation angles are supported?',
+          answer: 'You can rotate pages by 90° clockwise, 180° (upside down), or 90° counter-clockwise (270°).',
+        },
+        {
+          question: 'Is the rotation permanent?',
+          answer: 'Yes, the rotation is saved permanently in the downloaded PDF. Your original file is never modified.',
+        },
+        {
+          question: 'Is my PDF secure?',
+          answer: 'Yes! Your PDF is processed entirely in your browser. No files are uploaded to any server.',
+        },
+      ],
+    },
+  },
+  {
     id: 'word-counter',
     name: 'Word Counter',
     slug: 'word-counter',

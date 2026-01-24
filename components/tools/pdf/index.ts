@@ -30,3 +30,8 @@ export { PdfOrganizer } from './PdfOrganizer';
 // PDF Unlocker
 // ============================================
 export { PdfUnlocker } from './PdfUnlocker';
+
+// ============================================
+// PDF Rotator
+// ============================================
+export { PdfRotator } from './PdfRotator';

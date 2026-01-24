@@ -1724,6 +1724,53 @@ export const toolsConfig: Tool[] = [
       ],
     },
   },
+
+  {
+    id: 'text-to-slug',
+    name: 'Text to Slug',
+    slug: 'text-to-slug',
+    category: 'text',
+    categoryLabel: 'Text Tools',
+    description: 'Convert text to SEO-friendly URL slugs',
+    longDescription: 'Free online Text to Slug converter. Transform any text into SEO-friendly URL slugs instantly. Normalize characters, remove stop words, and customize separators. Perfect for bloggers, developers, and SEO specialists.',
+    keywords: ['text to slug', 'slug generator', 'url slug converter', 'seo friendly url', 'string to slug', 'clean url generator'],
+    icon: 'Link',
+    acceptedFormats: [],
+    maxFileSize: 0,
+    seo: {
+      title: 'Text to Slug Converter - SEO URL Generator | Free Online',
+      metaDescription: 'Convert text to URL slugs online for free. SEO-friendly formatting, custom separators, and stop word removal. Instant preview and copy.',
+      h1: 'Text to URL Slug Converter',
+      features: [
+        'SEO-friendly formatting',
+        'Custom separators (- or _)',
+        'Remove special characters',
+        'Unicode normalization (e.g. é → e)',
+        'Optional stop words removal',
+        'Instant conversion',
+      ],
+      useCases: [
+        'Blog post URLs',
+        'Product page links',
+        'File naming conventions',
+        'Database keys',
+      ],
+      faq: [
+        {
+          question: 'What is a URL slug?',
+          answer: 'A slug is the part of a URL that identifies a particular page on a website in a human-readable form.',
+        },
+        {
+          question: 'How does it handle special characters?',
+          answer: 'It automatically removes special characters and accents (e.g., converts "Café" to "cafe") for clean, safe URLs.',
+        },
+        {
+          question: 'What stop words are removed?',
+          answer: 'Common words like "a", "an", "the", "and", "or", etc., which are often unnecessary for SEO-friendly URLs.',
+        },
+      ],
+    },
+  },
 ];
 
 // ============================================

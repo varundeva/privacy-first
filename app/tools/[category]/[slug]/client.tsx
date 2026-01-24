@@ -44,7 +44,7 @@ import {
 import { PdfToPngConverter, PdfToJpgConverter, PdfCompressor, PdfSplitter, PdfMerger, PdfOrganizer, PdfUnlocker, PdfRotator, PdfPageNumbers, PdfMetadataEditor } from '@/components/tools/pdf';
 
 // Import Text tools
-import { WordCounter, CaseConverter, TextDiff, FindAndReplace, LoremIpsumGenerator } from '@/components/tools/text';
+import { WordCounter, CaseConverter, TextDiff, FindAndReplace, LoremIpsumGenerator, TextToSlug } from '@/components/tools/text';
 
 interface ToolPageClientProps {
   toolId: string;
@@ -148,6 +148,19 @@ export function ToolPageClient({
   if (toolId === 'lorem-ipsum') {
     return (
       <LoremIpsumGenerator
+        title={title}
+        description={description}
+        features={features}
+        useCases={useCases}
+        faq={faq}
+      />
+    );
+  }
+
+  // Special case for Text to Slug
+  if (toolId === 'text-to-slug') {
+    return (
+      <TextToSlug
         title={title}
         description={description}
         features={features}

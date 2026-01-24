@@ -848,6 +848,148 @@ export const toolsConfig: Tool[] = [
   },
 
   // ─────────────────────────────────────────
+  // Image Metadata & Utilities
+  // ─────────────────────────────────────────
+  {
+    id: 'image-metadata',
+    name: 'Image Metadata Viewer',
+    slug: 'image-metadata',
+    category: 'image',
+    categoryLabel: 'Image Tools',
+    description: 'View detailed metadata and properties of your images',
+    longDescription: 'Free online image metadata viewer. See file info, dimensions, color depth, and more. Analyze image properties instantly in your browser without uploading.',
+    keywords: ['image metadata', 'image properties', 'image info', 'exif viewer', 'image analyzer', 'image dimensions'],
+    icon: 'Info',
+    acceptedFormats: ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.bmp', '.svg', '.ico'],
+    maxFileSize: 50,
+    seo: {
+      title: 'Image Metadata Viewer - View Image Properties | Free Online',
+      metaDescription: 'View image metadata online for free. See dimensions, file size, color info, and more. 100% private - no upload required.',
+      h1: 'Image Metadata Viewer - Analyze Images',
+      features: [
+        'View dimensions & size',
+        'Color information',
+        'Aspect ratio',
+        'File type detection',
+        'Copy values easily',
+        '100% private',
+      ],
+      useCases: [
+        'Check image dimensions',
+        'Analyze file properties',
+        'Verify image quality',
+        'Debug image issues',
+      ],
+      faq: [
+        {
+          question: 'What metadata can I see?',
+          answer: 'You can see file name, size, type, dimensions, aspect ratio, megapixels, color depth, and transparency info.',
+        },
+        {
+          question: 'Does this read EXIF data?',
+          answer: 'This viewer shows basic image properties. For detailed EXIF data (camera info, GPS), a specialized EXIF tool may be needed.',
+        },
+        {
+          question: 'Is my image uploaded?',
+          answer: 'No! Your image is processed entirely in your browser. It never leaves your device.',
+        },
+      ],
+    },
+  },
+  {
+    id: 'image-to-base64',
+    name: 'Image to Base64',
+    slug: 'image-to-base64',
+    category: 'image',
+    categoryLabel: 'Image Tools',
+    description: 'Convert images to Base64 encoded strings',
+    longDescription: 'Free online image to Base64 converter. Convert any image to Data URL or raw Base64 string. Perfect for embedding images in HTML, CSS, or JSON. All processing happens in your browser.',
+    keywords: ['image to base64', 'convert image to base64', 'base64 encoder', 'data url', 'embed image', 'inline image'],
+    icon: 'Code',
+    acceptedFormats: ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.bmp', '.svg', '.ico'],
+    maxFileSize: 10,
+    seo: {
+      title: 'Image to Base64 Converter - Encode Images | Free Online',
+      metaDescription: 'Convert images to Base64 online for free. Get Data URL, HTML img tag, or CSS code. Perfect for embedding images. 100% private.',
+      h1: 'Convert Image to Base64',
+      features: [
+        'Data URL output',
+        'Raw Base64 string',
+        'HTML img tag',
+        'CSS background code',
+        'Copy & download',
+        '100% private',
+      ],
+      useCases: [
+        'Embed in HTML/CSS',
+        'Store in databases',
+        'Send via APIs',
+        'Reduce HTTP requests',
+      ],
+      faq: [
+        {
+          question: 'Why use Base64 for images?',
+          answer: 'Base64 lets you embed images directly in HTML/CSS/JSON, reducing HTTP requests and simplifying deployment.',
+        },
+        {
+          question: 'Does Base64 increase file size?',
+          answer: 'Yes, Base64 encoding increases size by about 33%. It is best for small images like icons.',
+        },
+        {
+          question: 'What formats are supported?',
+          answer: 'All common image formats: JPG, PNG, GIF, WebP, BMP, SVG, and ICO.',
+        },
+      ],
+    },
+  },
+  {
+    id: 'base64-to-image',
+    name: 'Base64 to Image',
+    slug: 'base64-to-image',
+    category: 'image',
+    categoryLabel: 'Image Tools',
+    description: 'Convert Base64 strings back to image files',
+    longDescription: 'Free online Base64 to image converter. Decode Base64 strings or Data URLs back to downloadable images. Supports PNG, JPEG, and WebP output formats.',
+    keywords: ['base64 to image', 'decode base64', 'base64 decoder', 'data url to image', 'convert base64 to png'],
+    icon: 'Image',
+    acceptedFormats: [],
+    maxFileSize: 10,
+    seo: {
+      title: 'Base64 to Image Converter - Decode Base64 | Free Online',
+      metaDescription: 'Convert Base64 to image online for free. Decode Base64 strings to PNG, JPEG, or WebP. Preview and download instantly. 100% private.',
+      h1: 'Convert Base64 to Image',
+      features: [
+        'Paste Base64 string',
+        'Supports data URLs',
+        'Auto-detect format',
+        'Download as PNG/JPEG/WebP',
+        'Preview before download',
+        '100% private',
+      ],
+      useCases: [
+        'Decode embedded images',
+        'Extract from APIs',
+        'Debug Base64 data',
+        'Convert for editing',
+      ],
+      faq: [
+        {
+          question: 'What input formats work?',
+          answer: 'Both raw Base64 strings and complete data URLs (data:image/...) are supported.',
+        },
+        {
+          question: 'Can I choose output format?',
+          answer: 'Yes! Download as PNG (best quality), JPEG (smaller size), or WebP (modern format).',
+        },
+        {
+          question: 'Is my data secure?',
+          answer: 'Yes! Everything is processed in your browser. No data is sent to any server.',
+        },
+      ],
+    },
+  },
+
+  // ─────────────────────────────────────────
   // PDF Tools
   // ─────────────────────────────────────────
   {

@@ -33,6 +33,11 @@ import {
 
   // ICO Converter
   IcoToPngConverter,
+
+  // Image Utilities
+  ImageMetadataViewer,
+  ImageToBase64,
+  Base64ToImage,
 } from '@/components/tools/image';
 
 // Import PDF tools
@@ -93,6 +98,19 @@ export function ToolPageClient({
         description={description}
         acceptedFormats={acceptedFormats}
         maxFileSize={maxFileSize}
+        features={features}
+        useCases={useCases}
+        faq={faq}
+      />
+    );
+  }
+
+  // Special case for Base64 to Image which takes text input instead of file
+  if (toolId === 'base64-to-image') {
+    return (
+      <Base64ToImage
+        title={title}
+        description={description}
         features={features}
         useCases={useCases}
         faq={faq}
@@ -171,6 +189,14 @@ export function ToolPageClient({
           // ─────────────────────────────────────────
           case 'ico-to-png':
             return <IcoToPngConverter file={file} onReset={onReset} />;
+
+          // ─────────────────────────────────────────
+          // Image Utilities
+          // ─────────────────────────────────────────
+          case 'image-metadata':
+            return <ImageMetadataViewer file={file} onReset={onReset} />;
+          case 'image-to-base64':
+            return <ImageToBase64 file={file} onReset={onReset} />;
 
           // ─────────────────────────────────────────
           // PDF Tools

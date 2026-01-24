@@ -43,3 +43,14 @@ export { SvgToWebpConverter } from './SvgToWebpConverter';
 // ICO Converters
 // ============================================
 export { IcoToPngConverter } from './IcoToPngConverter';
+
+// ============================================
+// Image Metadata
+// ============================================
+export { ImageMetadataViewer } from './ImageMetadataViewer';
+
+// ============================================
+// Base64 Converters
+// ============================================
+export { ImageToBase64 } from './ImageToBase64';
+export { Base64ToImage } from './Base64ToImage';

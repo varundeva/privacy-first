@@ -2238,6 +2238,41 @@ export const toolsConfig: Tool[] = [
       ],
     },
   },
+  {
+    id: 'json-to-typescript',
+    name: 'JSON to TypeScript',
+    slug: 'json-to-typescript',
+    category: 'json',
+    categoryLabel: 'JSON Tools',
+    description: 'Convert JSON to TypeScript Interfaces',
+    longDescription: 'Free online JSON to TypeScript Converter. Instantly generate TypeScript interfaces or types from your JSON objects. Simplifies API typing.',
+    keywords: ['json to typescript', 'json to ts', 'typescript interface generator', 'convert json to type', 'json type'],
+    icon: 'FileCode',
+    acceptedFormats: ['.json', '.txt'],
+    maxFileSize: 5,
+    seo: {
+      title: 'JSON to TypeScript Converter - Generate Interfaces Online',
+      metaDescription: 'Convert JSON to TypeScript interfaces or types instantly. Auto-detect types for arrays and nested objects. Copy-paste ready code.',
+      h1: 'Convert JSON to TypeScript Interfaces',
+      features: [
+        'Generate TypeScript Interfaces or Types',
+        'Auto-detect nested objects',
+        'Auto-detect array types',
+        'Custom Root Name',
+      ],
+      useCases: [
+        'Generating API response types',
+        'Typing legacy JSON data',
+        'Quick scaffolding',
+      ],
+      faq: [
+        {
+          question: 'Does it handle nested objects?',
+          answer: 'Yes, it recursively generates interfaces for nested objects.',
+        },
+      ],
+    },
+  },
 ];
 
 // ============================================

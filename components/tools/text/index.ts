@@ -3,3 +3,5 @@
 export { WordCounter } from './WordCounter';
 export { CaseConverter } from './CaseConverter';
 export { TextDiff } from './TextDiff';
+export { FindAndReplace } from './FindAndReplace';
+export { LoremIpsumGenerator } from './LoremIpsumGenerator';

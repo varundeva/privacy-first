@@ -44,7 +44,7 @@ import {
 import { PdfToPngConverter, PdfToJpgConverter, PdfCompressor, PdfSplitter, PdfMerger, PdfOrganizer, PdfUnlocker, PdfRotator, PdfPageNumbers, PdfMetadataEditor } from '@/components/tools/pdf';
 
 // Import Text tools
-import { WordCounter, CaseConverter, TextDiff } from '@/components/tools/text';
+import { WordCounter, CaseConverter, TextDiff, FindAndReplace, LoremIpsumGenerator } from '@/components/tools/text';
 
 interface ToolPageClientProps {
   toolId: string;
@@ -118,10 +118,36 @@ export function ToolPageClient({
     );
   }
 
-  // Special case for Text Diff which takes two text inputs instead of file
+  // Special case for Text Diff
   if (toolId === 'text-diff') {
     return (
       <TextDiff
+        title={title}
+        description={description}
+        features={features}
+        useCases={useCases}
+        faq={faq}
+      />
+    );
+  }
+
+  // Special case for Find & Replace
+  if (toolId === 'find-replace') {
+    return (
+      <FindAndReplace
+        title={title}
+        description={description}
+        features={features}
+        useCases={useCases}
+        faq={faq}
+      />
+    );
+  }
+
+  // Special case for Lorem Ipsum Generator
+  if (toolId === 'lorem-ipsum') {
+    return (
+      <LoremIpsumGenerator
         title={title}
         description={description}
         features={features}

@@ -1622,6 +1622,108 @@ export const toolsConfig: Tool[] = [
       ],
     },
   },
+
+  {
+    id: 'find-replace',
+    name: 'Find & Replace',
+    slug: 'find-replace',
+    category: 'text',
+    categoryLabel: 'Text Tools',
+    description: 'Bulk find and replace text with Regex support',
+    longDescription: 'Free online bulk find and replace tool. Search and replace text patterns instantly. Supports regular expressions (Regex), case sensitivity, and whole word matching. Perfect for code refactoring and content editing.',
+    keywords: ['find and replace', 'search replace', 'regex replace', 'text replacer', 'bulk replace', 'string substitution'],
+    icon: 'Replace',
+    acceptedFormats: [],
+    maxFileSize: 10,
+    seo: {
+      title: 'Find & Replace Tool - Bulk Text Replacement | Fre Online',
+      metaDescription: 'Bulk find and replace text online for free. Support for Regex, case sensitivity, and whole word matching. Instant results with match statistics. 100% private.',
+      h1: 'Bulk Find & Replace Tool with Regex',
+      features: [
+        'Regular Expression (Regex) support',
+        'Case sensitive matching',
+        'Whole word matching',
+        'Real-time match counting',
+        'Instant result preview',
+        'One-click copy result',
+      ],
+      useCases: [
+        'Refactor code variables',
+        'Update content templates',
+        'Clean up data formatting',
+        'Complex regex substitutions',
+      ],
+      faq: [
+        {
+          question: 'How to use Regular Expressions (Regex)?',
+          answer: 'Toggle the "Regular Expression" switch. You can now use standard JavaScript RegEx patterns. For example, use \\d+ to match matching numbers, ^Start to match the start of a line, or \\w+ to match words.',
+        },
+        {
+          question: 'Can I use capturing groups?',
+          answer: 'Yes! You can use parentheses () to create capturing groups in the Find field, and reference them in the Replace field using $1, $2, etc. For example, Find: (\\w+)-(\\d+) and Replace: $2-$1 will swap the word and number.',
+        },
+        {
+          question: 'Common Regex Examples',
+          answer: '• Remove all numbers: \\d+ • Find emails: [\\w.-]+@[\\w.-]+\\.[a-z]{2,} • Match start of line: ^ • Match end of line: $',
+        },
+        {
+          question: 'Is it case sensitive?',
+          answer: 'By default no, but you can enable "Match Case" for strict case sensitivity.',
+        },
+        {
+          question: 'Is my text private?',
+          answer: 'Absolutely. All processing happens in your browser. Nothing is ever sent to a server.',
+        },
+      ],
+    },
+  },
+
+  {
+    id: 'lorem-ipsum',
+    name: 'Lorem Ipsum Generator',
+    slug: 'lorem-ipsum',
+    category: 'text',
+    categoryLabel: 'Text Tools',
+    description: 'Generate placeholder text for designs and mockups',
+    longDescription: 'Free online Lorem Ipsum generator. Create placeholder text for your designs, mockups, and prototypes settings. Generate paragraphs, sentences, or words. Copy to clipboard instantly.',
+    keywords: ['lorem ipsum generator', 'placeholder text', 'dummy text', 'text generator', 'lorem ipsum', 'design mockups'],
+    icon: 'FileText',
+    acceptedFormats: [],
+    maxFileSize: 0,
+    seo: {
+      title: 'Lorem Ipsum Generator - Free Placeholder Text Tool',
+      metaDescription: 'Generate Lorem Ipsum dummy text for free. Create paragraphs, sentences, or words for your designs. Instant copy and download.',
+      h1: 'Lorem Ipsum Text Generator',
+      features: [
+        'Generate paragraphs, sentences, or words',
+        'Customizable text length',
+        'Start with "Lorem ipsum" option',
+        'Instant copy to clipboard',
+        'Download as text file',
+        'No limits',
+      ],
+      useCases: [
+        'Web design mockups',
+        'Print layout prototypes',
+        'Content placeholders',
+        'Typography testing',
+      ],
+      faq: [
+        {
+          question: 'What is Lorem Ipsum?',
+          answer: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry, used as a placeholder since the 1500s.',
+        },
+        {
+          question: 'Is the text random?',
+          answer: 'It is based on a standard Latin text by Cicero, but randomized to look like natural sentence structures.',
+        },
+        {
+          question: 'Can I generate words only?',
+          answer: 'Yes! Select the "Words" tab to generate a specific number of random Latin words.',
+        },
+      ],
+    },
+  },
 ];
 
 // ============================================

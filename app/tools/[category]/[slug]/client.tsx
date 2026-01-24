@@ -46,6 +46,9 @@ import { PdfToPngConverter, PdfToJpgConverter, PdfCompressor, PdfSplitter, PdfMe
 // Import Text tools
 import { WordCounter, CaseConverter, TextDiff, FindAndReplace, LoremIpsumGenerator, TextToSlug, RemoveDuplicateLines } from '@/components/tools/text';
 
+// Import Date tools
+import { UnixTimestampConverter, TimeDifferenceCalculator, TimeZoneConverter, DateFormatConverter } from '@/components/tools/date';
+
 interface ToolPageClientProps {
   toolId: string;
   title: string;
@@ -174,6 +177,58 @@ export function ToolPageClient({
   if (toolId === 'remove-duplicate-lines') {
     return (
       <RemoveDuplicateLines
+        title={title}
+        description={description}
+        features={features}
+        useCases={useCases}
+        faq={faq}
+      />
+    );
+  }
+
+  // Special case for Unix Timestamp
+  if (toolId === 'unix-timestamp') {
+    return (
+      <UnixTimestampConverter
+        title={title}
+        description={description}
+        features={features}
+        useCases={useCases}
+        faq={faq}
+      />
+    );
+  }
+
+  // Special case for Time Difference
+  if (toolId === 'time-difference') {
+    return (
+      <TimeDifferenceCalculator
+        title={title}
+        description={description}
+        features={features}
+        useCases={useCases}
+        faq={faq}
+      />
+    );
+  }
+
+  // Special case for Time Zone Converter
+  if (toolId === 'time-zone-converter') {
+    return (
+      <TimeZoneConverter
+        title={title}
+        description={description}
+        features={features}
+        useCases={useCases}
+        faq={faq}
+      />
+    );
+  }
+
+  // Special case for Date Format Converter
+  if (toolId === 'date-format-converter') {
+    return (
+      <DateFormatConverter
         title={title}
         description={description}
         features={features}

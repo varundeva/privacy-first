@@ -28,7 +28,7 @@ export interface Tool {
   };
 }
 
-export type ToolCategoryId = 'image' | 'pdf' | 'text' | 'video' | 'audio';
+export type ToolCategoryId = 'image' | 'pdf' | 'text' | 'date' | 'video' | 'audio';
 
 export interface ToolCategory {
   id: ToolCategoryId;
@@ -63,6 +63,13 @@ export const toolCategories: ToolCategory[] = [
     description: 'Text formatting, conversion, and analysis',
     icon: 'Type',
     color: 'bg-green-500',
+  },
+  {
+    id: 'date',
+    label: 'Date & Time',
+    description: 'Timestamp, formatting, and duration tools',
+    icon: 'Calendar',
+    color: 'bg-orange-500',
   },
 ];
 
@@ -1814,6 +1821,194 @@ export const toolsConfig: Tool[] = [
         {
           question: 'Does it sort the output?',
           answer: 'No, this tool preserves the original order of the first occurrence of each line. Use the "Sort Lines" tool if you need sorting.',
+        },
+      ],
+    },
+  },
+
+  {
+    id: 'unix-timestamp',
+    name: 'Unix Timestamp Converter',
+    slug: 'unix-timestamp',
+    category: 'date',
+    categoryLabel: 'Date & Time',
+    description: 'Convert Unix Timestamps to Human-Readable Dates',
+    longDescription: 'Free online Unix Timestamp converter. Convert seconds or milliseconds to human-readable dates and vice versa. View current epoch time, generate specific timestamps, and format dates instantly.',
+    keywords: ['unix timestamp', 'epoch converter', 'timestamp to date', 'date to timestamp', 'unix time', 'epoch time'],
+    icon: 'Clock',
+    acceptedFormats: [],
+    maxFileSize: 0,
+    seo: {
+      title: 'Unix Timestamp Converter - Epoch Time Tool | Free Online',
+      metaDescription: 'Convert Unix timestamps to human-readable dates and vice versa. Support for seconds and milliseconds. View current epoch time live.',
+      h1: 'Unix Timestamp Converter & Epoch Time',
+      features: [
+        'Live Unix timestamp clock',
+        'Timestamp to Date conversion',
+        'Date to Timestamp generation',
+        'Seconds & Milliseconds support',
+        'Local & UTC time display',
+        'One-click copy',
+      ],
+      useCases: [
+        'Debug API timestamps',
+        'Convert database dates',
+        'Calculate event times',
+        'Generate expirations',
+      ],
+      faq: [
+        {
+          question: 'What is a Unix Timestamp?',
+          answer: 'It is the number of seconds that have elapsed since January 1, 1970 (UTC), not counting leap seconds.',
+        },
+        {
+          question: 'Does it support milliseconds?',
+          answer: 'Yes! The tool automatically detects if you enter a 13-digit timestamp (milliseconds) vs a 10-digit one (seconds).',
+        },
+        {
+          question: 'Is it accurate?',
+          answer: 'Yes, it uses your browser\'s native Date engine, so it handles time zones and leap years correctly for your system.',
+        },
+      ],
+    },
+  },
+
+  {
+    id: 'time-difference',
+    name: 'Time Difference Calculator',
+    slug: 'time-difference',
+    category: 'date',
+    categoryLabel: 'Date & Time',
+    description: 'Calculate duration between two dates',
+    longDescription: 'Free online Time Difference calculator. Calculate the exact duration between two dates and times. Get results in years, months, days, hours, minutes, and seconds. Perfect for planning, countdowns, and age calculation.',
+    keywords: ['time difference', 'duration calculator', 'date difference', 'days between dates', 'time span', 'age calculator'],
+    icon: 'Calendar',
+    acceptedFormats: [],
+    maxFileSize: 0,
+    seo: {
+      title: 'Time Difference Calculator - Calculate Duration | Free Tool',
+      metaDescription: 'Calculate the difference between two dates and times online. Get exact duration in years, months, days, hours, and minutes. 100% free and accurate.',
+      h1: 'Time Difference & Duration Calculator',
+      features: [
+        'Precise duration calculation',
+        'Years/Months/Days breakdown',
+        'Total days/hours/minutes stats',
+        'Negative duration handling',
+        'Instant updates',
+        'Copy results easily',
+      ],
+      useCases: [
+        'Calculate age exact to the minute',
+        'Project management durations',
+        'Event countdowns',
+        'Time tracking intervals',
+      ],
+      faq: [
+        {
+          question: 'Does it count leap years?',
+          answer: 'Yes, the calculation relies on standard calendar rules, so leap years and variable month lengths are handled correctly.',
+        },
+        {
+          question: 'Can I calculate backwards?',
+          answer: 'Yes! If the end date is before the start date, the tool will show the negative duration.',
+        },
+        {
+          question: 'Is it accurate across time zones?',
+          answer: 'The tool uses your local browser time for both inputs, so the relative difference is preserved accurately.',
+        },
+      ],
+    },
+  },
+
+  {
+    id: 'time-zone-converter',
+    name: 'Time Zone Converter',
+    slug: 'time-zone-converter',
+    category: 'date',
+    categoryLabel: 'Date & Time',
+    description: 'Convert time across multiple time zones',
+    longDescription: 'Free online Time Zone Converter. Add multiple cities and time zones to compare times instantly. Interactive slider to plan meetings across global time zones. Real-time conversion.',
+    keywords: ['time zone converter', 'timezone map', 'world time', 'meeting planner', 'time difference', 'global clock'],
+    icon: 'Globe',
+    acceptedFormats: [],
+    maxFileSize: 0,
+    seo: {
+      title: 'Time Zone Converter - Global Meeting Planner | Free Tool',
+      metaDescription: 'Convert time across multiple international time zones instantly. Interactive slider for meeting planning. Compare local times for unlimited cities.',
+      h1: 'Time Zone Converter & World Clock',
+      features: [
+        'Add unlimited cities/zones',
+        'Interactive time slider',
+        'Visual daylight representation',
+        'Automatic Daylight Saving',
+        'Local time detection',
+        'Meeting planner view',
+      ],
+      useCases: [
+        'Schedule international meetings',
+        'Check webinar times',
+        'Coordinate remote teams',
+        'Travel planning',
+      ],
+      faq: [
+        {
+          question: 'Does it handle Daylight Saving Time (DST)?',
+          answer: 'Yes, it uses your browser\'s internationalization API which automatically handles DST rules for every selected region.',
+        },
+        {
+          question: 'Can I add any city?',
+          answer: 'We support all major IANA time zones (e.g., America/New_York, Asia/Tokyo). You can add as many as you need.',
+        },
+        {
+          question: 'How do I plan a meeting?',
+          answer: 'Use the slider to drag the time forward or backward. You can instantly see what time it will be in all your selected cities simultaneously.',
+        },
+      ],
+    },
+  },
+
+  {
+    id: 'date-format-converter',
+    name: 'Date Format Converter',
+    slug: 'date-format-converter',
+    category: 'date',
+    categoryLabel: 'Date & Time',
+    description: 'Parse and format dates into standard strings',
+    longDescription: 'Free online Date Format Converter. Parse dates from natural language or ISO formats and convert them to standard ISO 8601, UTC, local, and custom date strings. Developer friendly tool.',
+    keywords: ['date formatter', 'iso 8601 converter', 'date parser', 'utc date', 'local date string', 'date to string'],
+    icon: 'Calendar',
+    acceptedFormats: [],
+    maxFileSize: 0,
+    seo: {
+      title: 'Date Format Converter - ISO, UTC, Local | Free Tool',
+      metaDescription: 'Convert any date to standard formats like ISO 8601, UTC, and locale strings. Parse natural language dates instantly. Developer friendly.',
+      h1: 'Date Format Converter & Parser',
+      features: [
+        'Parse natural language dates',
+        'Convert to ISO 8601',
+        'Convert to UTC / GMT',
+        'Convert to Unix Timestamp',
+        'Locale-specific formatting',
+        'Instant copy',
+      ],
+      useCases: [
+        'Standardize date formats for APIs',
+        'Debug date strings',
+        'Convert timestamps to human text',
+        'Localize dates',
+      ],
+      faq: [
+        {
+          question: 'What input formats are supported?',
+          answer: 'We support anything the JavaScript Date object accepts, including ISO strings (YYYY-MM-DD), short dates (MM/DD/YYYY), and long dates (January 1, 2024).',
+        },
+        {
+          question: 'Is it local or server time?',
+          answer: 'The conversion happens in your browser based on your system\'s local time zone, unless the input string specifies a timezone.',
+        },
+        {
+          question: 'Can I convert to JSON format?',
+          answer: 'Yes, the tool provides the .toJSON() output which is the standard ISO string format used in JSON APIs.',
         },
       ],
     },

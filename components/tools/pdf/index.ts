@@ -25,3 +25,8 @@ export { PdfMerger } from './PdfMerger';
 // PDF Organizer
 // ============================================
 export { PdfOrganizer } from './PdfOrganizer';
+
+// ============================================
+// PDF Unlocker
+// ============================================
+export { PdfUnlocker } from './PdfUnlocker';

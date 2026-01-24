@@ -1139,6 +1139,56 @@ export const toolsConfig: Tool[] = [
     },
   },
   {
+    id: 'pdf-unlock',
+    name: 'Unlock PDF',
+    slug: 'pdf-unlock',
+    category: 'pdf',
+    categoryLabel: 'PDF Tools',
+    description: 'Remove password protection from PDF files',
+    longDescription: 'Free online PDF password remover. Remove password protection from PDF files to create an unlocked copy. Enter the password once and download a password-free PDF. All processing happens in your browser for complete privacy.',
+    keywords: ['unlock pdf', 'remove pdf password', 'pdf password remover', 'decrypt pdf', 'unprotect pdf', 'pdf unlocker', 'open protected pdf'],
+    icon: 'Unlock',
+    acceptedFormats: ['.pdf'],
+    maxFileSize: 100,
+    seo: {
+      title: 'Unlock PDF - Remove Password Protection | Free Online Tool',
+      metaDescription: 'Remove password protection from PDF files online for free. Enter the password and get an unlocked copy. Browser-based, 100% private.',
+      h1: 'Unlock PDF - Remove Password Protection',
+      features: [
+        'Remove password protection',
+        'Create unlocked copy',
+        'Preserves all content',
+        'Browser-based processing',
+        '100% private & secure',
+        'No file upload needed',
+      ],
+      useCases: [
+        'Remove forgotten passwords',
+        'Share documents without password',
+        'Archive PDFs without protection',
+        'Simplify document access',
+      ],
+      faq: [
+        {
+          question: 'Do I need to know the password?',
+          answer: 'Yes, you must know the original password to unlock the PDF. This tool cannot crack or bypass passwords - it removes protection after you verify ownership with the correct password.',
+        },
+        {
+          question: 'Is this legal?',
+          answer: 'Yes, when used on your own documents or documents you have permission to access. This tool is meant for legitimate use cases like removing passwords from your own files.',
+        },
+        {
+          question: 'Is my password secure?',
+          answer: 'Absolutely! Your password is never sent to any server. All processing happens entirely in your browser.',
+        },
+        {
+          question: 'What types of PDF encryption are supported?',
+          answer: 'This tool supports standard PDF password encryption (both user and owner passwords). It may not work with some advanced DRM systems.',
+        },
+      ],
+    },
+  },
+  {
     id: 'word-counter',
     name: 'Word Counter',
     slug: 'word-counter',

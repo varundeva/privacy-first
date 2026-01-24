@@ -17,12 +17,19 @@ const nextConfig = {
       },
     },
   },
-  // Webpack configuration for Web Workers (production build)
+  // Webpack configuration for Web Workers and WebAssembly
   webpack: (config, { isServer }) => {
     if (!isServer) {
       // Enable web workers
       config.output.globalObject = 'self';
     }
+
+    // Enable WebAssembly support for qpdf-wasm
+    config.experiments = {
+      ...config.experiments,
+      asyncWebAssembly: true,
+    };
+
     return config;
   },
 }

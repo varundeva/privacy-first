@@ -2168,6 +2168,41 @@ export const toolsConfig: Tool[] = [
       ],
     },
   },
+  {
+    id: 'json-to-csv',
+    name: 'JSON to CSV',
+    slug: 'json-to-csv',
+    category: 'json',
+    categoryLabel: 'JSON Tools',
+    description: 'Convert JSON array to CSV',
+    longDescription: 'Free online JSON to CSV Converter. Convert JSON objects and arrays into Comma Separated Values (CSV). Flattens nested objects automatically.',
+    keywords: ['json to csv', 'json converter', 'convert json', 'csv export', 'flatten json'],
+    icon: 'FileSpreadsheet',
+    acceptedFormats: ['.json', '.txt'],
+    maxFileSize: 5,
+    seo: {
+      title: 'JSON to CSV Converter - Free Online Tool',
+      metaDescription: 'Convert JSON to CSV format online. Automatically flatters nested objects and handles arrays. Download or copy CSV output instantly.',
+      h1: 'Convert JSON to CSV Online',
+      features: [
+        'Automatic flattening of nested objects',
+        'Handles arrays of objects',
+        'Smart quoting for CSV',
+        'One-click Download',
+      ],
+      useCases: [
+        'Exporting data to Excel',
+        'Data analysis',
+        'Reporting',
+      ],
+      faq: [
+        {
+          question: 'How are nested objects handled?',
+          answer: 'Nested objects are flattened using DOT notation (e.g. user.address.city).',
+        },
+      ],
+    },
+  },
 ];
 
 // ============================================

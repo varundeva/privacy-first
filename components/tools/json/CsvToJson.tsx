@@ -17,7 +17,9 @@ import {
     Trash2,
     FileJson,
     Settings2,
-    Upload
+    Upload,
+    Grid3X3,
+    FileText
 } from 'lucide-react';
 import {
     Accordion,
@@ -30,6 +32,7 @@ import { Switch } from '@/components/ui/switch';
 import Editor, { OnValidate } from '@monaco-editor/react';
 import { useTheme } from 'next-themes';
 import Papa from 'papaparse';
+import { CsvGridView } from './CsvGridView';
 
 interface CsvToJsonProps {
     title: string;
@@ -44,13 +47,14 @@ export function CsvToJson({ title, description, features, useCases, faq }: CsvTo
     const [output, setOutput] = useState('');
     const [error, setError] = useState<string | null>(null);
     const [status, setStatus] = useState<'idle' | 'valid' | 'invalid'>('idle');
+    const [viewMode, setViewMode] = useState<'text' | 'grid'>('text');
     const { theme } = useTheme();
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     // Options
     const [useHeader, setUseHeader] = useState(true);
     const [dynamicTyping, setDynamicTyping] = useState(true);
-    const [unflattenKeys, setUnflattenKeys] = useState(true); // Default true for round-trip
+    const [unflattenKeys, setUnflattenKeys] = useState(true);
 
     const unflatten = (data: any[]) => {
         return data.map(row => {
@@ -67,7 +71,6 @@ export function CsvToJson({ title, description, features, useCases, faq }: CsvTo
                     const last = parts[parts.length - 1];
                     let val = row[key];
 
-                    // Try to parse if it looks like JSON array/object (from previous JSON stringify in JsonToCsv)
                     if (typeof val === 'string') {
                         const v = val.trim();
                         if ((v.startsWith('[') && v.endsWith(']')) || (v.startsWith('{') && v.endsWith('}'))) {
@@ -210,10 +213,33 @@ export function CsvToJson({ title, description, features, useCases, faq }: CsvTo
                     <Card className={`flex flex-col border-2 overflow-hidden h-full ${status === 'invalid' ? 'border-red-200 dark:border-red-900' : 'border-border'
                         }`}>
                         <div className="p-3 bg-muted/30 border-b flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                                <FileSpreadsheet className="h-4 w-4" />
-                                <span className="text-sm font-medium">CSV Input</span>
+                            <div className="flex items-center gap-4">
+                                <div className="flex items-center gap-2">
+                                    <FileSpreadsheet className="h-4 w-4" />
+                                    <span className="text-sm font-medium">CSV Input</span>
+                                </div>
+
+                                {/* View Toggle */}
+                                <div className="flex items-center bg-background border rounded-md p-0.5 h-7">
+                                    <button
+                                        onClick={() => setViewMode('text')}
+                                        className={`px-2 flex items-center gap-1.5 text-xs font-medium rounded-sm h-full transition-all ${viewMode === 'text' ? 'bg-muted text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'
+                                            }`}
+                                    >
+                                        <FileText className="h-3 w-3" />
+                                        Text
+                                    </button>
+                                    <button
+                                        onClick={() => setViewMode('grid')}
+                                        className={`px-2 flex items-center gap-1.5 text-xs font-medium rounded-sm h-full transition-all ${viewMode === 'grid' ? 'bg-muted text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'
+                                            }`}
+                                    >
+                                        <Grid3X3 className="h-3 w-3" />
+                                        Grid
+                                    </button>
+                                </div>
                             </div>
+
                             <div className="flex items-center gap-2">
                                 <Button
                                     onClick={() => fileInputRef.current?.click()}
@@ -233,25 +259,31 @@ export function CsvToJson({ title, description, features, useCases, faq }: CsvTo
                                 />
                             </div>
                         </div>
-                        <div className="flex-1 relative">
-                            <Editor
-                                height="100%"
-                                language="csv"
-                                value={input}
-                                theme={editorTheme}
-                                onChange={handleEditorChange}
-                                options={{
-                                    minimap: { enabled: false },
-                                    fontSize: 13,
-                                    lineNumbers: 'on',
-                                    automaticLayout: true,
-                                    scrollBeyondLastLine: false,
-                                }}
-                            />
-                            {error && (
-                                <div className="absolute bottom-4 left-4 right-4 bg-red-100 dark:bg-red-900/90 text-red-700 dark:text-red-200 p-2 rounded text-xs font-mono border border-red-200 dark:border-red-800 shadow-sm z-10 transition-all animate-in slide-in-from-bottom-2">
-                                    {error}
-                                </div>
+                        <div className="flex-1 relative overflow-hidden">
+                            {viewMode === 'text' ? (
+                                <>
+                                    <Editor
+                                        height="100%"
+                                        language="csv"
+                                        value={input}
+                                        theme={editorTheme}
+                                        onChange={handleEditorChange}
+                                        options={{
+                                            minimap: { enabled: false },
+                                            fontSize: 13,
+                                            lineNumbers: 'on',
+                                            automaticLayout: true,
+                                            scrollBeyondLastLine: false,
+                                        }}
+                                    />
+                                    {error && (
+                                        <div className="absolute bottom-4 left-4 right-4 bg-red-100 dark:bg-red-900/90 text-red-700 dark:text-red-200 p-2 rounded text-xs font-mono border border-red-200 dark:border-red-800 shadow-sm z-10 transition-all animate-in slide-in-from-bottom-2">
+                                            {error}
+                                        </div>
+                                    )}
+                                </>
+                            ) : (
+                                <CsvGridView data={input} />
                             )}
                         </div>
                     </Card>

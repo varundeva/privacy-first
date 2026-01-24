@@ -17,7 +17,9 @@ import {
     ChevronRight,
     FileType,
     Trash2,
-    Upload
+    Upload,
+    Grid3X3,
+    FileText
 } from 'lucide-react';
 import {
     Select,
@@ -34,6 +36,7 @@ import {
 } from '@/components/ui/accordion';
 import Editor, { OnValidate } from '@monaco-editor/react';
 import { useTheme } from 'next-themes';
+import { CsvGridView } from './CsvGridView';
 
 interface JsonToCsvProps {
     title: string;
@@ -48,6 +51,7 @@ export function JsonToCsv({ title, description, features, useCases, faq }: JsonT
     const [output, setOutput] = useState('');
     const [error, setError] = useState<string | null>(null);
     const [status, setStatus] = useState<'idle' | 'valid' | 'invalid'>('idle');
+    const [viewMode, setViewMode] = useState<'text' | 'grid'>('text');
     const { theme } = useTheme();
     const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -59,7 +63,6 @@ export function JsonToCsv({ title, description, features, useCases, faq }: JsonT
                 if (typeof val === 'object' && val !== null && !Array.isArray(val)) {
                     flattenObject(val, newKey, res);
                 } else if (Array.isArray(val)) {
-                    // Stringify arrays to preserve structure for round-trip
                     res[newKey] = JSON.stringify(val);
                 } else {
                     res[newKey] = val;
@@ -94,13 +97,11 @@ export function JsonToCsv({ title, description, features, useCases, faq }: JsonT
                 return;
             }
 
-            // Flatten all items
             const flatItems = items.map(item => {
                 if (typeof item !== 'object' || item === null) return { value: item };
                 return flattenObject(item);
             });
 
-            // Extract all unique headers
             const headers = Array.from(new Set(flatItems.flatMap(Object.keys)));
 
             if (headers.length === 0) {
@@ -109,15 +110,13 @@ export function JsonToCsv({ title, description, features, useCases, faq }: JsonT
                 return;
             }
 
-            // Build CSV
             const csvRows = [
-                headers.join(','), // Header row
+                headers.join(','),
                 ...flatItems.map(item => {
                     return headers.map(header => {
                         let val = item[header];
                         if (val === undefined || val === null) val = '';
                         const strVal = String(val);
-                        // Escape quotes and wrap in quotes if contains comma, quote or newline
                         if (strVal.includes(',') || strVal.includes('"') || strVal.includes('\n')) {
                             return `"${strVal.replace(/"/g, '""')}"`;
                         }
@@ -176,7 +175,6 @@ export function JsonToCsv({ title, description, features, useCases, faq }: JsonT
             const text = e.target?.result as string;
             if (text) {
                 setInput(text);
-                // clear error state potentially
                 if (status === 'invalid') {
                     setStatus('idle');
                     setError(null);
@@ -202,7 +200,7 @@ export function JsonToCsv({ title, description, features, useCases, faq }: JsonT
         } else {
             if (input.trim().length > 0) {
                 setError(null);
-                setStatus('valid'); // Just syntactically valid JSON
+                setStatus('valid');
             }
         }
     }, [input]);
@@ -276,10 +274,32 @@ export function JsonToCsv({ title, description, features, useCases, faq }: JsonT
                     {/* CSV Output */}
                     <Card className="flex flex-col border-2 border-border overflow-hidden h-full">
                         <div className="p-3 bg-muted/30 border-b flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                                <FileType className="h-4 w-4" />
-                                <span className="text-sm font-medium">CSV Output</span>
+                            <div className="flex items-center gap-4">
+                                <div className="flex items-center gap-2">
+                                    <FileType className="h-4 w-4" />
+                                    <span className="text-sm font-medium">CSV Output</span>
+                                </div>
+                                {/* View Toggle */}
+                                <div className="flex items-center bg-background border rounded-md p-0.5 h-7">
+                                    <button
+                                        onClick={() => setViewMode('text')}
+                                        className={`px-2 flex items-center gap-1.5 text-xs font-medium rounded-sm h-full transition-all ${viewMode === 'text' ? 'bg-muted text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'
+                                            }`}
+                                    >
+                                        <FileText className="h-3 w-3" />
+                                        Text
+                                    </button>
+                                    <button
+                                        onClick={() => setViewMode('grid')}
+                                        className={`px-2 flex items-center gap-1.5 text-xs font-medium rounded-sm h-full transition-all ${viewMode === 'grid' ? 'bg-muted text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'
+                                            }`}
+                                    >
+                                        <Grid3X3 className="h-3 w-3" />
+                                        Grid
+                                    </button>
+                                </div>
                             </div>
+
                             <div className="flex items-center gap-1">
                                 <Button onClick={handleCopy} variant="ghost" size="icon" className="h-7 w-7" title="Copy CSV">
                                     <Copy className="h-3.5 w-3.5" />
@@ -289,21 +309,25 @@ export function JsonToCsv({ title, description, features, useCases, faq }: JsonT
                                 </Button>
                             </div>
                         </div>
-                        <div className="flex-1">
-                            <Editor
-                                height="100%"
-                                language="csv"
-                                value={output}
-                                theme={editorTheme}
-                                options={{
-                                    readOnly: true,
-                                    minimap: { enabled: false },
-                                    fontSize: 13,
-                                    lineNumbers: 'on',
-                                    automaticLayout: true,
-                                    scrollBeyondLastLine: false,
-                                }}
-                            />
+                        <div className="flex-1 relative overflow-hidden">
+                            {viewMode === 'text' ? (
+                                <Editor
+                                    height="100%"
+                                    language="csv"
+                                    value={output}
+                                    theme={editorTheme}
+                                    options={{
+                                        readOnly: true,
+                                        minimap: { enabled: false },
+                                        fontSize: 13,
+                                        lineNumbers: 'on',
+                                        automaticLayout: true,
+                                        scrollBeyondLastLine: false,
+                                    }}
+                                />
+                            ) : (
+                                <CsvGridView data={output} />
+                            )}
                         </div>
                     </Card>
                 </div>

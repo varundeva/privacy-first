@@ -16,8 +16,16 @@ import {
     Shield,
     FolderOpen,
     Trash2,
-    Info
+    Info,
+    Lightbulb,
+    HelpCircle
 } from 'lucide-react';
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from '@/components/ui/accordion';
 import {
     Table,
     TableBody,
@@ -191,7 +199,80 @@ export function UrlParser({ title, description, features, useCases, faq }: UrlPa
                         </div>
                     </Card>
                 )}
+
+                {/* Features & FAQ Section */}
+                {((features && features.length > 0) || (useCases && useCases.length > 0) || (faq && faq.length > 0)) && (
+                    <div className="grid gap-8 pt-8 border-t">
+                        <div className="grid gap-8 md:grid-cols-2">
+                            {/* Features */}
+                            {features && features.length > 0 && (
+                                <div className="space-y-4">
+                                    <div className="flex items-center gap-2">
+                                        <div className="p-2 rounded-lg bg-primary/10 text-primary">
+                                            <Check className="h-5 w-5" />
+                                        </div>
+                                        <h2 className="text-xl font-semibold">Key Features</h2>
+                                    </div>
+                                    <Card className="p-6">
+                                        <ul className="space-y-3">
+                                            {features.map((feature, index) => (
+                                                <li key={index} className="flex items-start gap-3 text-muted-foreground">
+                                                    <div className="mt-1.5 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
+                                                    <span>{feature}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </Card>
+                                </div>
+                            )}
+
+                            {/* Use Cases */}
+                            {useCases && useCases.length > 0 && (
+                                <div className="space-y-4">
+                                    <div className="flex items-center gap-2">
+                                        <div className="p-2 rounded-lg bg-orange-500/10 text-orange-500">
+                                            <Lightbulb className="h-5 w-5" />
+                                        </div>
+                                        <h2 className="text-xl font-semibold">Common Use Cases</h2>
+                                    </div>
+                                    <Card className="p-6">
+                                        <ul className="space-y-3">
+                                            {useCases.map((useCase, index) => (
+                                                <li key={index} className="flex items-start gap-3 text-muted-foreground">
+                                                    <div className="mt-1.5 h-1.5 w-1.5 rounded-full bg-orange-500 flex-shrink-0" />
+                                                    <span>{useCase}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </Card>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* FAQ */}
+                        {faq && faq.length > 0 && (
+                            <div className="space-y-6 max-w-3xl mx-auto w-full">
+                                <div className="flex items-center gap-2 justify-center pb-2">
+                                    <div className="p-2 rounded-lg bg-blue-500/10 text-blue-500">
+                                        <HelpCircle className="h-5 w-5" />
+                                    </div>
+                                    <h2 className="text-2xl font-semibold text-center">Frequently Asked Questions</h2>
+                                </div>
+                                <Accordion type="single" collapsible className="w-full">
+                                    {faq.map((item, index) => (
+                                        <AccordionItem key={index} value={`item-${index}`}>
+                                            <AccordionTrigger className="text-left font-medium">{item.question}</AccordionTrigger>
+                                            <AccordionContent className="text-muted-foreground">
+                                                {item.answer}
+                                            </AccordionContent>
+                                        </AccordionItem>
+                                    ))}
+                                </Accordion>
+                            </div>
+                        )}
+                    </div>
+                )}
             </main>
-        </div>
+        </div >
     );
 }

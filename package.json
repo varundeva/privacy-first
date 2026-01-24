@@ -45,6 +45,7 @@
     "clsx": "^2.1.1",
     "cmdk": "1.0.4",
     "date-fns": "4.1.0",
+    "diff": "^8.0.3",
     "embla-carousel-react": "8.5.1",
     "input-otp": "1.4.1",
     "lucide-react": "^0.454.0",
@@ -66,6 +67,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.9",
+    "@types/diff": "^8.0.0",
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",

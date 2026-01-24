@@ -44,7 +44,7 @@ import {
 import { PdfToPngConverter, PdfToJpgConverter, PdfCompressor, PdfSplitter, PdfMerger, PdfOrganizer, PdfUnlocker, PdfRotator, PdfPageNumbers, PdfMetadataEditor } from '@/components/tools/pdf';
 
 // Import Text tools
-import { WordCounter, CaseConverter } from '@/components/tools/text';
+import { WordCounter, CaseConverter, TextDiff } from '@/components/tools/text';
 
 interface ToolPageClientProps {
   toolId: string;
@@ -109,6 +109,19 @@ export function ToolPageClient({
   if (toolId === 'base64-to-image') {
     return (
       <Base64ToImage
+        title={title}
+        description={description}
+        features={features}
+        useCases={useCases}
+        faq={faq}
+      />
+    );
+  }
+
+  // Special case for Text Diff which takes two text inputs instead of file
+  if (toolId === 'text-diff') {
+    return (
+      <TextDiff
         title={title}
         description={description}
         features={features}

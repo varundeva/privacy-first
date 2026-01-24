@@ -1576,6 +1576,52 @@ export const toolsConfig: Tool[] = [
       ],
     },
   },
+  {
+    id: 'text-diff',
+    name: 'Text Diff/Compare',
+    slug: 'text-diff',
+    category: 'text',
+    categoryLabel: 'Text Tools',
+    description: 'Compare two texts side-by-side and highlight differences',
+    longDescription: 'Free online text comparison tool. Compare two texts side-by-side with line-by-line diff highlighting. See additions, deletions, and modifications instantly. Perfect for code reviews, document comparison, and content editing.',
+    keywords: ['text diff', 'text compare', 'diff tool', 'compare text', 'text difference', 'side by side comparison', 'text comparison tool'],
+    icon: 'GitCompare',
+    acceptedFormats: [],
+    maxFileSize: 10,
+    seo: {
+      title: 'Text Diff/Compare - Side-by-Side Comparison | Free Online Tool',
+      metaDescription: 'Compare two texts online for free. Line-by-line diff with highlighted changes. See additions, deletions, and modifications. 100% private browser processing.',
+      h1: 'Text Diff & Comparison Tool',
+      features: [
+        'Side-by-side comparison',
+        'Line-by-line diff view',
+        'Highlight additions/deletions',
+        'Show modifications',
+        'Change statistics',
+        '100% private & secure',
+      ],
+      useCases: [
+        'Compare document versions',
+        'Review code changes',
+        'Check content edits',
+        'Verify translations',
+      ],
+      faq: [
+        {
+          question: 'How does the comparison work?',
+          answer: 'The tool compares texts line-by-line and highlights lines that are added (green), deleted (red), or modified (yellow).',
+        },
+        {
+          question: 'Can I compare code?',
+          answer: 'Yes! The monospace font and line numbers make it perfect for comparing code snippets or configuration files.',
+        },
+        {
+          question: 'Is my text data secure?',
+          answer: 'Yes! All comparison happens in your browser. Your text is never uploaded to any server.',
+        },
+      ],
+    },
+  },
 ];
 
 // ============================================

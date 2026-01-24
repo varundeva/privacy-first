@@ -36,7 +36,7 @@ import {
 } from '@/components/tools/image';
 
 // Import PDF tools
-import { PdfToPngConverter, PdfToJpgConverter, PdfCompressor, PdfSplitter, PdfMerger } from '@/components/tools/pdf';
+import { PdfToPngConverter, PdfToJpgConverter, PdfCompressor, PdfSplitter, PdfMerger, PdfOrganizer } from '@/components/tools/pdf';
 
 // Import Text tools
 import { WordCounter, CaseConverter } from '@/components/tools/text';
@@ -185,6 +185,8 @@ export function ToolPageClient({
             return <PdfSplitter file={file} onReset={onReset} />;
           case 'pdf-merge':
             return <PdfMerger file={file} onReset={onReset} />;
+          case 'pdf-organize':
+            return <PdfOrganizer file={file} onReset={onReset} />;
 
           default:
             return (

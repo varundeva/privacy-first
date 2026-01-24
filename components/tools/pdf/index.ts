@@ -20,3 +20,8 @@ export { PdfSplitter } from './PdfSplitter';
 // PDF Merger
 // ============================================
 export { PdfMerger } from './PdfMerger';
+
+// ============================================
+// PDF Organizer
+// ============================================
+export { PdfOrganizer } from './PdfOrganizer';

@@ -1089,6 +1089,56 @@ export const toolsConfig: Tool[] = [
     },
   },
   {
+    id: 'pdf-organize',
+    name: 'Organize PDF',
+    slug: 'pdf-organize',
+    category: 'pdf',
+    categoryLabel: 'PDF Tools',
+    description: 'Rearrange, rotate, and delete PDF pages with drag-and-drop',
+    longDescription: 'Free online PDF page organizer. Drag and drop to rearrange pages, rotate pages to any angle, and delete unwanted pages. Visual thumbnails make organizing easy. All processing happens in your browser for complete privacy.',
+    keywords: ['organize pdf', 'rearrange pdf pages', 'reorder pdf', 'rotate pdf pages', 'delete pdf pages', 'pdf page manager', 'drag drop pdf'],
+    icon: 'Layers',
+    acceptedFormats: ['.pdf'],
+    maxFileSize: 100,
+    seo: {
+      title: 'Organize PDF Pages - Rearrange, Rotate & Delete | Free Online',
+      metaDescription: 'Organize PDF pages online for free. Drag and drop to rearrange, rotate pages, delete unwanted pages. Visual editor with thumbnails. 100% private.',
+      h1: 'Organize PDF Pages - Visual Page Editor',
+      features: [
+        'Drag & drop reordering',
+        'Visual page thumbnails',
+        'Rotate pages 90°',
+        'Delete unwanted pages',
+        'Touch-friendly design',
+        '100% private & secure',
+      ],
+      useCases: [
+        'Reorder scanned documents',
+        'Fix page sequence errors',
+        'Remove blank pages',
+        'Rotate sideways pages',
+      ],
+      faq: [
+        {
+          question: 'How do I rearrange PDF pages?',
+          answer: 'Simply drag any page thumbnail and drop it where you want. The pages will automatically reorder. Works with both mouse and touch.',
+        },
+        {
+          question: 'Can I rotate individual pages?',
+          answer: 'Yes! Hover over any page and click the rotate button to rotate it 90° clockwise. Repeat to rotate further.',
+        },
+        {
+          question: 'Is there a page limit?',
+          answer: 'No strict limit, but larger PDFs may take longer to load thumbnails. We recommend PDFs under 100MB for best performance.',
+        },
+        {
+          question: 'Is my PDF secure?',
+          answer: 'Yes! Your PDF is processed entirely in your browser. No data is ever uploaded to any server.',
+        },
+      ],
+    },
+  },
+  {
     id: 'word-counter',
     name: 'Word Counter',
     slug: 'word-counter',

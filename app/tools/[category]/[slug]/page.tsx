@@ -3,6 +3,9 @@ import type { Metadata } from 'next';
 import { getToolBySlug, toolsConfig } from '@/lib/tools-config';
 import { ToolPageClient } from './client';
 
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ||
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://example.com');
+
 interface PageProps {
   params: Promise<{
     category: string;
@@ -43,6 +46,14 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
       description: seo.metaDescription,
       type: 'website',
       siteName: 'Privacy-First Toolbox',
+      images: [
+        {
+          url: `${BASE_URL}/api/og?title=${encodeURIComponent(tool.name)}&description=${encodeURIComponent(tool.description)}&category=${tool.category}&categoryLabel=${encodeURIComponent(tool.categoryLabel)}`,
+          width: 1200,
+          height: 630,
+          alt: seo.title,
+        },
+      ],
     },
 
     // Twitter
@@ -50,8 +61,8 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
       card: 'summary_large_image',
       title: tool.name,
       description: tool.description,
+      images: [`${BASE_URL}/api/og?title=${encodeURIComponent(tool.name)}&description=${encodeURIComponent(tool.description)}&category=${tool.category}&categoryLabel=${encodeURIComponent(tool.categoryLabel)}`],
     },
-
     // Robots
     robots: {
       index: true,

@@ -2,6 +2,9 @@ import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { ToolsClient } from './tools-client';
 
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ||
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://example.com');
+
 // SEO Metadata for Tools Page
 export const metadata: Metadata = {
   title: 'All Free Online Tools | Image Converters, PDF Tools & More',
@@ -18,14 +21,29 @@ export const metadata: Metadata = {
     'privacy tools',
     'no upload tools',
   ].join(', '),
-  
+
   openGraph: {
     title: 'All Free Online Tools | Privacy-First Toolbox',
     description: 'Browse our complete collection of free online tools that process files entirely in your browser.',
     type: 'website',
     siteName: 'Privacy-First Toolbox',
+    images: [
+      {
+        url: `${BASE_URL}/api/og?title=${encodeURIComponent('All Free Online Tools')}&description=${encodeURIComponent('Browse our complete collection of free browser-based tools for file conversion and manipulation.')}&category=web`,
+        width: 1200,
+        height: 630,
+        alt: 'All Tools Collection',
+      },
+    ],
   },
-  
+
+  twitter: {
+    card: 'summary_large_image',
+    title: 'All Free Online Tools',
+    description: 'Browse our complete collection of free browser-based tools.',
+    images: [`${BASE_URL}/api/og?title=${encodeURIComponent('All Free Online Tools')}&description=${encodeURIComponent('Browse our complete collection of free browser-based tools for file conversion and manipulation.')}&category=web`],
+  },
+
   alternates: {
     canonical: '/tools',
   },

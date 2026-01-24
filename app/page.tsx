@@ -29,12 +29,21 @@ export const metadata: Metadata = {
     type: 'website',
     siteName: 'Privacy-First Toolbox',
     locale: 'en_US',
+    images: [
+      {
+        url: `${BASE_URL}/api/og?home=true&title=${encodeURIComponent('Privacy-First Toolbox')}&description=${encodeURIComponent('Free online tools that never upload your files. 100% browser-based.')}`,
+        width: 1200,
+        height: 630,
+        alt: 'Privacy-First Toolbox',
+      },
+    ],
   },
 
   twitter: {
     card: 'summary_large_image',
     title: 'Privacy-First Toolbox',
     description: 'Free online tools that never upload your files. 100% browser-based.',
+    images: [`${BASE_URL}/api/og?home=true&title=${encodeURIComponent('Privacy-First Toolbox')}&description=${encodeURIComponent('Free online tools that never upload your files. 100% browser-based.')}`],
   },
 
   robots: {

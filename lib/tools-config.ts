@@ -28,7 +28,7 @@ export interface Tool {
   };
 }
 
-export type ToolCategoryId = 'image' | 'pdf' | 'text' | 'date' | 'video' | 'audio';
+export type ToolCategoryId = 'image' | 'pdf' | 'text' | 'date' | 'video' | 'audio' | 'json';
 
 export interface ToolCategory {
   id: ToolCategoryId;
@@ -70,6 +70,13 @@ export const toolCategories: ToolCategory[] = [
     description: 'Timestamp, formatting, and duration tools',
     icon: 'Calendar',
     color: 'bg-orange-500',
+  },
+  {
+    id: 'json',
+    label: 'JSON Tools',
+    description: 'Format, validate, and convert JSON data',
+    icon: 'FileJson',
+    color: 'bg-emerald-500',
   },
 ];
 
@@ -2115,6 +2122,48 @@ export const toolsConfig: Tool[] = [
         {
           question: 'Does it include the start date?',
           answer: 'The calculation counts full days between the start and end. It typically includes the start date if it is a working day, standard for business counts.',
+        },
+      ],
+    },
+  },
+  {
+    id: 'json-formatter',
+    name: 'JSON Formatter',
+    slug: 'json-formatter',
+    category: 'json',
+    categoryLabel: 'JSON Tools',
+    description: 'Beautify, minify, and validate JSON',
+    longDescription: 'Free online JSON Formatter and Validator. Beautify your JSON code with proper indentation, minify it to save space, and validate syntax errors instantly.',
+    keywords: ['json formatter', 'json beautifier', 'json validator', 'json minifier', 'pretty print json', 'format json online'],
+    icon: 'FileJson',
+    acceptedFormats: ['.json', '.txt'],
+    maxFileSize: 5,
+    seo: {
+      title: 'JSON Formatter & Validator - Beautify & Minify | Free Tool',
+      metaDescription: 'Format, beautify, and minify JSON code online. Validate JSON syntax errors instantly. Free developer tool for cleaner code.',
+      h1: 'Online JSON Formatter & Validator',
+      features: [
+        'Beautify JSON (Pretty Print)',
+        'Minify JSON (Compress)',
+        'Validate Syntax Errors',
+        'Tree View (Coming Soon)',
+        'Adjustable Indentation',
+        'One-click Copy',
+      ],
+      useCases: [
+        'Debugging API responses',
+        'Formatting config files',
+        'Compressing JSON for storage',
+        'Checking JSON validity',
+      ],
+      faq: [
+        {
+          question: 'Is my JSON data sent to a server?',
+          answer: 'No, all processing happens locally in your browser. Your data is private and secure.',
+        },
+        {
+          question: 'How do I handle large files?',
+          answer: 'The editor is optimized for performance, but very large files (Mb+) might be slow. We recommend sticking to <5MB chunks.',
         },
       ],
     },

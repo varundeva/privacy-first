@@ -1771,6 +1771,53 @@ export const toolsConfig: Tool[] = [
       ],
     },
   },
+
+  {
+    id: 'remove-duplicate-lines',
+    name: 'Remove Duplicate Lines',
+    slug: 'remove-duplicate-lines',
+    category: 'text',
+    categoryLabel: 'Text Tools',
+    description: 'Remove duplicate lines from text lists',
+    longDescription: 'Free online tool to remove duplicate lines from text. Clean up lists, data sets, and logs instantly. Supports case sensitivity and whitespace trimming options. Get unique lines in seconds.',
+    keywords: ['remove duplicates', 'duplicate lines remover', 'deduplicate text', 'unique lines', 'remove repeat lines', 'clean text list'],
+    icon: 'Layers',
+    acceptedFormats: [],
+    maxFileSize: 10,
+    seo: {
+      title: 'Remove Duplicate Lines - Deduplicate Text Online | Free Tool',
+      metaDescription: 'Remove duplicate lines from text lists online for free. Clean up data, emails, or logs. Options for case sensitivity and trimming. Instant results.',
+      h1: 'Remove Duplicate Lines from Text',
+      features: [
+        'Instant deduplication',
+        'Case sensitive option',
+        'Trim whitespace support',
+        'Original vs Unique stats',
+        'Copy result instantly',
+        '100% private',
+      ],
+      useCases: [
+        'Clean email lists',
+        'Deduplicate data logs',
+        'Filter unique values',
+        'Prepare data for Excel/CSV',
+      ],
+      faq: [
+        {
+          question: 'Does it remove empty lines?',
+          answer: 'Empty lines are treated as valid lines. If you have multiple empty lines, all but one will be removed if they are duplicates.',
+        },
+        {
+          question: 'Is it case sensitive?',
+          answer: 'By default, no (A = a). You can enable "Case Sensitive" to treat "Text" and "text" as different lines.',
+        },
+        {
+          question: 'Does it sort the output?',
+          answer: 'No, this tool preserves the original order of the first occurrence of each line. Use the "Sort Lines" tool if you need sorting.',
+        },
+      ],
+    },
+  },
 ];
 
 // ============================================

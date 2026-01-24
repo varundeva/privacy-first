@@ -2308,6 +2308,41 @@ export const toolsConfig: Tool[] = [
       ],
     },
   },
+  {
+    id: 'yaml-to-json',
+    name: 'YAML to JSON',
+    slug: 'yaml-to-json',
+    category: 'json',
+    categoryLabel: 'JSON Tools',
+    description: 'Convert YAML to JSON format',
+    longDescription: 'Free online YAML to JSON Converter. Transform YAML documents into JSON objects. Support for clean conversion and file input.',
+    keywords: ['yaml to json', 'json converter', 'yaml converter', 'parse yaml', 'yaml parser'],
+    icon: 'FileJson',
+    acceptedFormats: ['.yaml', '.yml', '.txt'],
+    maxFileSize: 5,
+    seo: {
+      title: 'YAML to JSON Converter - Free Online Tool',
+      metaDescription: 'Convert YAML to JSON format online. Parse YAML configurations to standard JSON. Fast, secure, and client-side processing.',
+      h1: 'Convert YAML to JSON Online',
+      features: [
+        'Convert YAML to JSON',
+        'Validate YAML syntax',
+        'Auto-detect structure',
+        'Copy and Download',
+      ],
+      useCases: [
+        'Configuration management',
+        'Data migration',
+        'API testing',
+      ],
+      faq: [
+        {
+          question: 'Are aliases supported?',
+          answer: 'Yes, standard YAML aliases and anchors are resolved.',
+        },
+      ],
+    },
+  },
 ];
 
 // ============================================

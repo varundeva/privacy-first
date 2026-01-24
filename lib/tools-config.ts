@@ -2203,6 +2203,41 @@ export const toolsConfig: Tool[] = [
       ],
     },
   },
+  {
+    id: 'csv-to-json',
+    name: 'CSV to JSON',
+    slug: 'csv-to-json',
+    category: 'json',
+    categoryLabel: 'JSON Tools',
+    description: 'Convert CSV to JSON array',
+    longDescription: 'Free online CSV to JSON Converter. Convert Comma Separated Values (CSV) to JSON array of objects. Supports headers and dynamic typing.',
+    keywords: ['csv to json', 'csv converter', 'convert csv', 'json export', 'parse csv'],
+    icon: 'FileJson',
+    acceptedFormats: ['.csv', '.txt'],
+    maxFileSize: 5,
+    seo: {
+      title: 'CSV to JSON Converter - Free Online Tool',
+      metaDescription: 'Convert CSV files to JSON format online. Parse CSV to JSON array of objects instantly. Handles headers and numbers.',
+      h1: 'Convert CSV to JSON Online',
+      features: [
+        'Parse CSV to JSON array',
+        'Auto-detect headers',
+        'Auto-detect numbers and booleans',
+        'One-click Download',
+      ],
+      useCases: [
+        'Importing data from Excel',
+        'Data migration',
+        'Frontend data mocking',
+      ],
+      faq: [
+        {
+          question: 'Are quotes handled securely?',
+          answer: 'Yes, we use a robust parser that handles quoted fields and newlines correctly.',
+        },
+      ],
+    },
+  },
 ];
 
 // ============================================

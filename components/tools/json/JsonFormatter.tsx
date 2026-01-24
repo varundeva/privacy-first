@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ToolHeader } from '../ToolHeader';
@@ -12,7 +12,8 @@ import {
     Maximize,
     Trash2,
     Lightbulb,
-    HelpCircle
+    HelpCircle,
+    Upload
 } from 'lucide-react';
 import {
     Select,
@@ -44,6 +45,7 @@ export function JsonFormatter({ title, description, features, useCases, faq }: J
     const [error, setError] = useState<string | null>(null);
     const [status, setStatus] = useState<'idle' | 'valid' | 'invalid'>('idle');
     const { theme } = useTheme();
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     const handleFormat = () => {
         if (!input.trim()) {
@@ -95,21 +97,35 @@ export function JsonFormatter({ title, description, features, useCases, faq }: J
         setInput('');
         setError(null);
         setStatus('idle');
+        if (fileInputRef.current) fileInputRef.current.value = '';
+    };
+
+    const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const text = e.target?.result as string;
+            if (text) {
+                setInput(text);
+                if (status !== 'idle') setStatus('idle');
+                setError(null);
+            }
+        };
+        reader.readAsText(file);
     };
 
     const handleEditorChange = (value: string | undefined) => {
         setInput(value || '');
-        if (status !== 'idle' && status !== 'invalid') setStatus('idle'); // Only clear valid status on edit, invalid stays until validated? 
-        // Actually, let Monaco validation handle the error state largely
-        if (!value) {
+        if (status !== 'idle' && status !== 'invalid') setStatus('idle');
+        if (status === 'invalid' && !value) {
             setStatus('idle');
             setError(null);
         }
     };
 
     const handleValidate: OnValidate = useCallback((markers) => {
-        // filter out warnings or infos if strict json validation is desired
-        const errors = markers.filter(m => m.severity === 8); // 8 is Error in Monaco enum
+        const errors = markers.filter(m => m.severity === 8);
         if (errors.length > 0) {
             setError(errors[0].message + ` (Line ${errors[0].startLineNumber})`);
             setStatus('invalid');
@@ -131,6 +147,22 @@ export function JsonFormatter({ title, description, features, useCases, faq }: J
                 {/* Toolbar */}
                 <div className="flex flex-wrap items-center justify-between gap-4">
                     <div className="flex items-center gap-2">
+                        <Button
+                            onClick={() => fileInputRef.current?.click()}
+                            variant="secondary"
+                            className="gap-2"
+                        >
+                            <Upload className="h-4 w-4" />
+                            Load File
+                        </Button>
+                        <input
+                            type="file"
+                            ref={fileInputRef}
+                            className="hidden"
+                            accept=".json,.txt"
+                            onChange={handleFileUpload}
+                        />
+
                         <Select value={indentation} onValueChange={setIndentation}>
                             <SelectTrigger className="w-[140px]">
                                 <SelectValue placeholder="Indentation" />
@@ -154,8 +186,8 @@ export function JsonFormatter({ title, description, features, useCases, faq }: J
 
                     <div className="flex items-center gap-2">
                         <div className={`px-3 py-1.5 rounded-md text-sm font-medium flex items-center gap-2 transition-colors ${status === 'valid' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' :
-                                status === 'invalid' ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' :
-                                    'bg-muted text-muted-foreground'
+                            status === 'invalid' ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' :
+                                'bg-muted text-muted-foreground'
                             }`}>
                             {status === 'valid' && <Check className="h-4 w-4" />}
                             {status === 'invalid' && <AlertCircle className="h-4 w-4" />}
@@ -173,7 +205,7 @@ export function JsonFormatter({ title, description, features, useCases, faq }: J
 
                 {/* Editor Area */}
                 <Card className={`relative flex-1 min-h-[600px] flex flex-col border-2 overflow-hidden transition-colors ${status === 'invalid' ? 'border-red-200 dark:border-red-900' :
-                        status === 'valid' ? 'border-green-200 dark:border-green-900' : 'border-border'
+                    status === 'valid' ? 'border-green-200 dark:border-green-900' : 'border-border'
                     }`}>
                     <Editor
                         height="600px"

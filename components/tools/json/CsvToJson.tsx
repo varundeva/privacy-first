@@ -13,29 +13,25 @@ import {
     Download,
     Lightbulb,
     HelpCircle,
-    ChevronDown,
-    ChevronRight,
     FileType,
     Trash2,
+    FileJson,
+    Settings2,
     Upload
 } from 'lucide-react';
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui/select';
 import {
     Accordion,
     AccordionContent,
     AccordionItem,
     AccordionTrigger,
 } from '@/components/ui/accordion';
+import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
 import Editor, { OnValidate } from '@monaco-editor/react';
 import { useTheme } from 'next-themes';
+import Papa from 'papaparse';
 
-interface JsonToCsvProps {
+interface CsvToJsonProps {
     title: string;
     description: string;
     features?: string[];
@@ -43,7 +39,7 @@ interface JsonToCsvProps {
     faq?: { question: string; answer: string }[];
 }
 
-export function JsonToCsv({ title, description, features, useCases, faq }: JsonToCsvProps) {
+export function CsvToJson({ title, description, features, useCases, faq }: CsvToJsonProps) {
     const [input, setInput] = useState('');
     const [output, setOutput] = useState('');
     const [error, setError] = useState<string | null>(null);
@@ -51,22 +47,42 @@ export function JsonToCsv({ title, description, features, useCases, faq }: JsonT
     const { theme } = useTheme();
     const fileInputRef = useRef<HTMLInputElement>(null);
 
-    const flattenObject = (obj: any, prefix = '', res: any = {}) => {
-        for (const key in obj) {
-            if (Object.prototype.hasOwnProperty.call(obj, key)) {
-                const val = obj[key];
-                const newKey = prefix ? `${prefix}.${key}` : key;
-                if (typeof val === 'object' && val !== null && !Array.isArray(val)) {
-                    flattenObject(val, newKey, res);
-                } else if (Array.isArray(val)) {
-                    // Stringify arrays to preserve structure for round-trip
-                    res[newKey] = JSON.stringify(val);
-                } else {
-                    res[newKey] = val;
+    // Options
+    const [useHeader, setUseHeader] = useState(true);
+    const [dynamicTyping, setDynamicTyping] = useState(true);
+    const [unflattenKeys, setUnflattenKeys] = useState(true); // Default true for round-trip
+
+    const unflatten = (data: any[]) => {
+        return data.map(row => {
+            const result: any = {};
+            for (const key in row) {
+                if (Object.prototype.hasOwnProperty.call(row, key)) {
+                    const parts = key.split('.');
+                    let current = result;
+                    for (let i = 0; i < parts.length - 1; i++) {
+                        const part = parts[i];
+                        if (!current[part]) current[part] = {};
+                        current = current[part];
+                    }
+                    const last = parts[parts.length - 1];
+                    let val = row[key];
+
+                    // Try to parse if it looks like JSON array/object (from previous JSON stringify in JsonToCsv)
+                    if (typeof val === 'string') {
+                        const v = val.trim();
+                        if ((v.startsWith('[') && v.endsWith(']')) || (v.startsWith('{') && v.endsWith('}'))) {
+                            try {
+                                val = JSON.parse(v);
+                            } catch (e) {
+                                // keep as string if parse fails
+                            }
+                        }
+                    }
+                    current[last] = val;
                 }
             }
-        }
-        return res;
+            return result;
+        });
     };
 
     const handleConvert = () => {
@@ -76,76 +92,39 @@ export function JsonToCsv({ title, description, features, useCases, faq }: JsonT
             return;
         }
 
-        try {
-            const parsed = JSON.parse(input);
-            let items: any[] = [];
+        Papa.parse(input, {
+            header: useHeader,
+            skipEmptyLines: 'greedy',
+            dynamicTyping: dynamicTyping,
+            complete: (results) => {
+                if (results.errors && results.errors.length > 0) {
+                    setError(`Error on row ${results.errors[0].row}: ${results.errors[0].message}`);
+                    setStatus('invalid');
+                } else {
+                    let data = results.data;
+                    if (unflattenKeys && useHeader) {
+                        data = unflatten(data);
+                    }
 
-            if (Array.isArray(parsed)) {
-                items = parsed;
-            } else if (typeof parsed === 'object' && parsed !== null) {
-                items = [parsed];
-            } else {
-                throw new Error('Input must be a JSON object or array of objects');
-            }
-
-            if (items.length === 0) {
-                setOutput('');
-                setStatus('valid');
-                return;
-            }
-
-            // Flatten all items
-            const flatItems = items.map(item => {
-                if (typeof item !== 'object' || item === null) return { value: item };
-                return flattenObject(item);
-            });
-
-            // Extract all unique headers
-            const headers = Array.from(new Set(flatItems.flatMap(Object.keys)));
-
-            if (headers.length === 0) {
-                setOutput('');
-                setStatus('valid');
-                return;
-            }
-
-            // Build CSV
-            const csvRows = [
-                headers.join(','), // Header row
-                ...flatItems.map(item => {
-                    return headers.map(header => {
-                        let val = item[header];
-                        if (val === undefined || val === null) val = '';
-                        const strVal = String(val);
-                        // Escape quotes and wrap in quotes if contains comma, quote or newline
-                        if (strVal.includes(',') || strVal.includes('"') || strVal.includes('\n')) {
-                            return `"${strVal.replace(/"/g, '""')}"`;
-                        }
-                        return strVal;
-                    }).join(',');
-                })
-            ];
-
-            setOutput(csvRows.join('\n'));
-            setError(null);
-            setStatus('valid');
-        } catch (err) {
-            if (err instanceof Error) {
+                    setOutput(JSON.stringify(data, null, 2));
+                    setError(null);
+                    setStatus('valid');
+                }
+            },
+            error: (err: Error) => {
                 setError(err.message);
-            } else {
-                setError('Invalid JSON');
+                setStatus('invalid');
             }
-            setStatus('invalid');
-        }
+        });
     };
 
     const handleDownload = () => {
         if (!output) return;
-        const blob = new Blob([output], { type: 'text/csv' });
+        const blob = new Blob([output], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'converted.csv';
+        a.download = 'converted.json';
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
@@ -176,7 +155,6 @@ export function JsonToCsv({ title, description, features, useCases, faq }: JsonT
             const text = e.target?.result as string;
             if (text) {
                 setInput(text);
-                // clear error state potentially
                 if (status === 'invalid') {
                     setStatus('idle');
                     setError(null);
@@ -194,19 +172,6 @@ export function JsonToCsv({ title, description, features, useCases, faq }: JsonT
         }
     };
 
-    const handleValidate: OnValidate = useCallback((markers) => {
-        const errors = markers.filter(m => m.severity === 8);
-        if (errors.length > 0) {
-            setError(errors[0].message);
-            setStatus('invalid');
-        } else {
-            if (input.trim().length > 0) {
-                setError(null);
-                setStatus('valid'); // Just syntactically valid JSON
-            }
-        }
-    }, [input]);
-
     const editorTheme = theme === 'dark' ? 'vs-dark' : 'light';
 
     return (
@@ -214,28 +179,48 @@ export function JsonToCsv({ title, description, features, useCases, faq }: JsonT
             <ToolHeader title={title} description={description} />
 
             <main className="flex-1 mx-auto max-w-7xl px-4 py-8 sm:px-6 w-full space-y-8">
+                {/* Options Toolbar */}
+                <div className="flex flex-wrap gap-6 p-4 border rounded-xl bg-card">
+                    <div className="flex items-center gap-2">
+                        <div className="p-2 bg-primary/10 text-primary rounded-lg">
+                            <Settings2 className="h-4 w-4" />
+                        </div>
+                        <span className="font-semibold text-sm">Conversion Options</span>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                        <Switch id="header-mode" checked={useHeader} onCheckedChange={setUseHeader} />
+                        <Label htmlFor="header-mode">First row is header</Label>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                        <Switch id="dynamic-mode" checked={dynamicTyping} onCheckedChange={setDynamicTyping} />
+                        <Label htmlFor="dynamic-mode">Auto-detect types</Label>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                        <Switch id="unflatten-mode" checked={unflattenKeys} onCheckedChange={setUnflattenKeys} disabled={!useHeader} />
+                        <Label htmlFor="unflatten-mode" className={!useHeader ? 'text-muted-foreground' : ''}>Expand dot keys (unflatten)</Label>
+                    </div>
+                </div>
+
                 {/* Editors Layout */}
                 <div className="grid lg:grid-cols-2 gap-6 h-[600px]">
-                    {/* JSON Input */}
+                    {/* CSV Input */}
                     <Card className={`flex flex-col border-2 overflow-hidden h-full ${status === 'invalid' ? 'border-red-200 dark:border-red-900' : 'border-border'
                         }`}>
                         <div className="p-3 bg-muted/30 border-b flex items-center justify-between">
                             <div className="flex items-center gap-2">
                                 <FileSpreadsheet className="h-4 w-4" />
-                                <span className="text-sm font-medium">JSON Input</span>
+                                <span className="text-sm font-medium">CSV Input</span>
                             </div>
                             <div className="flex items-center gap-2">
-                                <span className={`text-xs px-2 py-0.5 rounded ${status === 'valid' ? 'bg-green-100 text-green-700' :
-                                        status === 'invalid' ? 'bg-red-100 text-red-700' : ''
-                                    }`}>
-                                    {status === 'valid' ? 'Valid' : status === 'invalid' ? 'Error' : ''}
-                                </span>
                                 <Button
                                     onClick={() => fileInputRef.current?.click()}
                                     variant="ghost"
                                     size="icon"
                                     className="h-7 w-7"
-                                    title="Upload File"
+                                    title="Upload CSV"
                                 >
                                     <Upload className="h-3.5 w-3.5" />
                                 </Button>
@@ -243,7 +228,7 @@ export function JsonToCsv({ title, description, features, useCases, faq }: JsonT
                                     type="file"
                                     ref={fileInputRef}
                                     className="hidden"
-                                    accept=".json,.txt"
+                                    accept=".csv,.txt"
                                     onChange={handleFileUpload}
                                 />
                             </div>
@@ -251,40 +236,38 @@ export function JsonToCsv({ title, description, features, useCases, faq }: JsonT
                         <div className="flex-1 relative">
                             <Editor
                                 height="100%"
-                                language="json"
+                                language="csv"
                                 value={input}
                                 theme={editorTheme}
                                 onChange={handleEditorChange}
-                                onValidate={handleValidate}
                                 options={{
                                     minimap: { enabled: false },
                                     fontSize: 13,
                                     lineNumbers: 'on',
-                                    folding: true,
                                     automaticLayout: true,
                                     scrollBeyondLastLine: false,
                                 }}
                             />
                             {error && (
-                                <div className="absolute bottom-4 left-4 right-4 bg-red-100 dark:bg-red-900/90 text-red-700 dark:text-red-200 p-2 rounded text-xs font-mono border border-red-200 dark:border-red-800 shadow-sm z-10">
+                                <div className="absolute bottom-4 left-4 right-4 bg-red-100 dark:bg-red-900/90 text-red-700 dark:text-red-200 p-2 rounded text-xs font-mono border border-red-200 dark:border-red-800 shadow-sm z-10 transition-all animate-in slide-in-from-bottom-2">
                                     {error}
                                 </div>
                             )}
                         </div>
                     </Card>
 
-                    {/* CSV Output */}
+                    {/* JSON Output */}
                     <Card className="flex flex-col border-2 border-border overflow-hidden h-full">
                         <div className="p-3 bg-muted/30 border-b flex items-center justify-between">
                             <div className="flex items-center gap-2">
-                                <FileType className="h-4 w-4" />
-                                <span className="text-sm font-medium">CSV Output</span>
+                                <FileJson className="h-4 w-4" />
+                                <span className="text-sm font-medium">JSON Output</span>
                             </div>
                             <div className="flex items-center gap-1">
-                                <Button onClick={handleCopy} variant="ghost" size="icon" className="h-7 w-7" title="Copy CSV">
+                                <Button onClick={handleCopy} variant="ghost" size="icon" className="h-7 w-7" title="Copy JSON">
                                     <Copy className="h-3.5 w-3.5" />
                                 </Button>
-                                <Button onClick={handleDownload} variant="ghost" size="icon" className="h-7 w-7" title="Download CSV">
+                                <Button onClick={handleDownload} variant="ghost" size="icon" className="h-7 w-7" title="Download JSON">
                                     <Download className="h-3.5 w-3.5" />
                                 </Button>
                             </div>
@@ -292,7 +275,7 @@ export function JsonToCsv({ title, description, features, useCases, faq }: JsonT
                         <div className="flex-1">
                             <Editor
                                 height="100%"
-                                language="csv"
+                                language="json"
                                 value={output}
                                 theme={editorTheme}
                                 options={{
@@ -300,6 +283,7 @@ export function JsonToCsv({ title, description, features, useCases, faq }: JsonT
                                     minimap: { enabled: false },
                                     fontSize: 13,
                                     lineNumbers: 'on',
+                                    folding: true,
                                     automaticLayout: true,
                                     scrollBeyondLastLine: false,
                                 }}
@@ -316,7 +300,7 @@ export function JsonToCsv({ title, description, features, useCases, faq }: JsonT
                     </Button>
                     <Button onClick={handleConvert} size="lg" className="gap-2 px-8">
                         <ArrowRightLeft className="h-5 w-5" />
-                        Convert to CSV
+                        Convert to JSON
                     </Button>
                 </div>
 

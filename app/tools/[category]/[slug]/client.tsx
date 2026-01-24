@@ -1,6 +1,8 @@
 'use client';
 
 import { ToolShell } from '@/components/tools/ToolShell';
+import { RelatedTools } from '@/components/tools/RelatedTools';
+import { getCategoryLabel } from '@/lib/tools-config';
 
 // Import all image converters
 import {
@@ -61,16 +63,9 @@ interface ToolPageClientProps {
   features?: string[];
   useCases?: string[];
   faq?: { question: string; answer: string }[];
+  category: string;
 }
 
-/**
- * Tool Page Client Component
- * 
- * Maps tool IDs to their respective standalone components.
- * Each tool component is completely self-contained with its own logic.
- * 
- * Total: 16 image converters + 5 PDF tools + 2 Text tools = 23 tools
- */
 export function ToolPageClient({
   toolId,
   title,
@@ -80,11 +75,98 @@ export function ToolPageClient({
   features,
   useCases,
   faq,
+  category,
 }: ToolPageClientProps) {
-  // Special case for Word Counter which manages its own state and layout (file/text input tabs)
-  if (toolId === 'word-counter') {
-    return (
-      <WordCounter
+  const categoryLabel = getCategoryLabel(category as any);
+
+  // Render logic for special tools (+ internal linking)
+  const renderSpecialTool = () => {
+    switch (toolId) {
+      case 'word-counter':
+        return <WordCounter title={title} description={description} acceptedFormats={acceptedFormats} maxFileSize={maxFileSize} features={features} useCases={useCases} faq={faq} />;
+      case 'case-converter':
+        return <CaseConverter title={title} description={description} acceptedFormats={acceptedFormats} maxFileSize={maxFileSize} features={features} useCases={useCases} faq={faq} />;
+      case 'base64-to-image':
+        return <Base64ToImage title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+      case 'text-diff':
+        return <TextDiff title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+      case 'find-replace':
+        return <FindAndReplace title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+      case 'lorem-ipsum':
+        return <LoremIpsumGenerator title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+      case 'text-to-slug':
+        return <TextToSlug title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+      case 'remove-duplicate-lines':
+        return <RemoveDuplicateLines title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+      case 'unix-timestamp':
+        return <UnixTimestampConverter title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+      case 'time-difference':
+        return <TimeDifferenceCalculator title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+      case 'time-zone-converter':
+        return <TimeZoneConverter title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+      case 'date-format-converter':
+        return <DateFormatConverter title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+      case 'week-number-calculator':
+        return <WeekNumberCalculator title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+      case 'age-calculator':
+        return <AgeCalculator title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+      case 'business-days-calculator':
+        return <BusinessDaysCalculator title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+      case 'json-formatter':
+        return <JsonFormatter title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+      case 'json-to-csv':
+        return <JsonToCsv title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+      case 'csv-to-json':
+        return <CsvToJson title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+      case 'json-to-typescript':
+        return <JsonToTypescript title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+      case 'json-to-yaml':
+        return <JsonToYaml title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+      case 'yaml-to-json':
+        return <YamlToJson title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+      case 'md5-generator':
+        return <Md5Generator title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+      case 'sha-generator':
+        return <ShaGenerator title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+      case 'bcrypt-generator':
+        return <BcryptGenerator title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+      case 'aes-encryption':
+        return <AesEncryption title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+      case 'base64-encoder':
+        return <Base64Encoder title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+      case 'sql-formatter':
+        return <SqlFormatter title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+      case 'html-formatter':
+        return <HtmlFormatter title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+      case 'css-formatter':
+        return <CssFormatter title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+      case 'url-encoder':
+        return <UrlEncoder title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+      case 'url-parser':
+        return <UrlParser title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+      case 'user-agent-parser':
+        return <UserAgentParser title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+      case 'html-entity-converter':
+        return <HtmlEntityConverter title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+      case 'color-converter':
+        return <ColorConverter title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+      case 'css-unit-converter':
+        return <CssUnitConverter title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+      case 'jwt-debugger':
+        return <JwtDebugger title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+      default:
+        return null;
+    }
+  };
+
+  const specialTool = renderSpecialTool();
+
+  let toolContent;
+  if (specialTool) {
+    toolContent = specialTool;
+  } else {
+    toolContent = (
+      <ToolShell
         title={title}
         description={description}
         acceptedFormats={acceptedFormats}
@@ -92,581 +174,62 @@ export function ToolPageClient({
         features={features}
         useCases={useCases}
         faq={faq}
-      />
-    );
-  }
-
-  // Special case for Case Converter which manages its own text-focused interface
-  if (toolId === 'case-converter') {
-    return (
-      <CaseConverter
-        title={title}
-        description={description}
-        acceptedFormats={acceptedFormats}
-        maxFileSize={maxFileSize}
-        features={features}
-        useCases={useCases}
-        faq={faq}
-      />
-    );
-  }
-
-  // Special case for Base64 to Image which takes text input instead of file
-  if (toolId === 'base64-to-image') {
-    return (
-      <Base64ToImage
-        title={title}
-        description={description}
-        features={features}
-        useCases={useCases}
-        faq={faq}
-      />
-    );
-  }
-
-  // Special case for Text Diff
-  if (toolId === 'text-diff') {
-    return (
-      <TextDiff
-        title={title}
-        description={description}
-        features={features}
-        useCases={useCases}
-        faq={faq}
-      />
-    );
-  }
-
-  // Special case for Find & Replace
-  if (toolId === 'find-replace') {
-    return (
-      <FindAndReplace
-        title={title}
-        description={description}
-        features={features}
-        useCases={useCases}
-        faq={faq}
-      />
-    );
-  }
-
-  // Special case for Lorem Ipsum Generator
-  if (toolId === 'lorem-ipsum') {
-    return (
-      <LoremIpsumGenerator
-        title={title}
-        description={description}
-        features={features}
-        useCases={useCases}
-        faq={faq}
-      />
-    );
-  }
-
-  // Special case for Text to Slug
-  if (toolId === 'text-to-slug') {
-    return (
-      <TextToSlug
-        title={title}
-        description={description}
-        features={features}
-        useCases={useCases}
-        faq={faq}
-      />
-    );
-  }
-
-  // Special case for Remove Duplicate Lines
-  if (toolId === 'remove-duplicate-lines') {
-    return (
-      <RemoveDuplicateLines
-        title={title}
-        description={description}
-        features={features}
-        useCases={useCases}
-        faq={faq}
-      />
-    );
-  }
-
-  // Special case for Unix Timestamp
-  if (toolId === 'unix-timestamp') {
-    return (
-      <UnixTimestampConverter
-        title={title}
-        description={description}
-        features={features}
-        useCases={useCases}
-        faq={faq}
-      />
-    );
-  }
-
-  // Special case for Time Difference
-  if (toolId === 'time-difference') {
-    return (
-      <TimeDifferenceCalculator
-        title={title}
-        description={description}
-        features={features}
-        useCases={useCases}
-        faq={faq}
-      />
-    );
-  }
-
-  // Special case for Time Zone Converter
-  if (toolId === 'time-zone-converter') {
-    return (
-      <TimeZoneConverter
-        title={title}
-        description={description}
-        features={features}
-        useCases={useCases}
-        faq={faq}
-      />
-    );
-  }
-
-  // Special case for Date Format Converter
-  if (toolId === 'date-format-converter') {
-    return (
-      <DateFormatConverter
-        title={title}
-        description={description}
-        features={features}
-        useCases={useCases}
-        faq={faq}
-      />
-    );
-  }
-
-  // Special case for Week Number Calculator
-  if (toolId === 'week-number-calculator') {
-    return (
-      <WeekNumberCalculator
-        title={title}
-        description={description}
-        features={features}
-        useCases={useCases}
-        faq={faq}
-      />
-    );
-  }
-
-  // Special case for Age Calculator
-  if (toolId === 'age-calculator') {
-    return (
-      <AgeCalculator
-        title={title}
-        description={description}
-        features={features}
-        useCases={useCases}
-        faq={faq}
-      />
-    );
-  }
-
-  // Special case for Business Days Calculator
-  if (toolId === 'business-days-calculator') {
-    return (
-      <BusinessDaysCalculator
-        title={title}
-        description={description}
-        features={features}
-        useCases={useCases}
-        faq={faq}
-      />
-    );
-  }
-
-  // Special case for JSON Formatter
-  if (toolId === 'json-formatter') {
-    return (
-      <JsonFormatter
-        title={title}
-        description={description}
-        features={features}
-        useCases={useCases}
-        faq={faq}
-      />
-    );
-  }
-
-  // Special case for JSON to CSV
-  if (toolId === 'json-to-csv') {
-    return (
-      <JsonToCsv
-        title={title}
-        description={description}
-        features={features}
-        useCases={useCases}
-        faq={faq}
-      />
-    );
-  }
-
-  // Special case for CSV to JSON
-  if (toolId === 'csv-to-json') {
-    return (
-      <CsvToJson
-        title={title}
-        description={description}
-        features={features}
-        useCases={useCases}
-        faq={faq}
-      />
-    );
-  }
-
-  // Special case for JSON to TypeScript
-  if (toolId === 'json-to-typescript') {
-    return (
-      <JsonToTypescript
-        title={title}
-        description={description}
-        features={features}
-        useCases={useCases}
-        faq={faq}
-      />
-    );
-  }
-
-  // Special case for JSON to YAML
-  if (toolId === 'json-to-yaml') {
-    return (
-      <JsonToYaml
-        title={title}
-        description={description}
-        features={features}
-        useCases={useCases}
-        faq={faq}
-      />
-    );
-  }
-
-  // Special case for YAML to JSON
-  if (toolId === 'yaml-to-json') {
-    return (
-      <YamlToJson
-        title={title}
-        description={description}
-        features={features}
-        useCases={useCases}
-        faq={faq}
-      />
-    );
-  }
-
-  // Special case for MD5 Generator
-  if (toolId === 'md5-generator') {
-    return (
-      <Md5Generator
-        title={title}
-        description={description}
-        features={features}
-        useCases={useCases}
-        faq={faq}
-      />
-    );
-  }
-
-  // Special case for SHA Generator
-  if (toolId === 'sha-generator') {
-    return (
-      <ShaGenerator
-        title={title}
-        description={description}
-        features={features}
-        useCases={useCases}
-        faq={faq}
-      />
-    );
-  }
-
-  // Special case for Bcrypt Generator
-  if (toolId === 'bcrypt-generator') {
-    return (
-      <BcryptGenerator
-        title={title}
-        description={description}
-        features={features}
-        useCases={useCases}
-        faq={faq}
-      />
-    );
-  }
-
-  // Special case for AES Encryption
-  if (toolId === 'aes-encryption') {
-    return (
-      <AesEncryption
-        title={title}
-        description={description}
-        features={features}
-        useCases={useCases}
-        faq={faq}
-      />
-    );
-  }
-
-  // Special case for Base64 Encoder
-  if (toolId === 'base64-encoder') {
-    return (
-      <Base64Encoder
-        title={title}
-        description={description}
-        features={features}
-        useCases={useCases}
-        faq={faq}
-      />
-    );
-  }
-
-  // Special case for SQL Formatter
-  if (toolId === 'sql-formatter') {
-    return (
-      <SqlFormatter
-        title={title}
-        description={description}
-        features={features}
-        useCases={useCases}
-        faq={faq}
-      />
-    );
-  }
-
-  // Special case for HTML Formatter
-  if (toolId === 'html-formatter') {
-    return (
-      <HtmlFormatter
-        title={title}
-        description={description}
-        features={features}
-        useCases={useCases}
-        faq={faq}
-      />
-    );
-  }
-
-  // Special case for CSS Formatter
-  if (toolId === 'css-formatter') {
-    return (
-      <CssFormatter
-        title={title}
-        description={description}
-        features={features}
-        useCases={useCases}
-        faq={faq}
-      />
-    );
-  }
-
-  // Special case for URL Encoder
-  if (toolId === 'url-encoder') {
-    return (
-      <UrlEncoder
-        title={title}
-        description={description}
-        features={features}
-        useCases={useCases}
-        faq={faq}
-      />
-    );
-  }
-
-  // Special case for URL Parser
-  if (toolId === 'url-parser') {
-    return (
-      <UrlParser
-        title={title}
-        description={description}
-        features={features}
-        useCases={useCases}
-        faq={faq}
-      />
-    );
-  }
-
-  // Special case for User Agent Parser
-  if (toolId === 'user-agent-parser') {
-    return (
-      <UserAgentParser
-        title={title}
-        description={description}
-        features={features}
-        useCases={useCases}
-        faq={faq}
-      />
-    );
-  }
-
-  // Special case for HTML Entity Converter
-  if (toolId === 'html-entity-converter') {
-    return (
-      <HtmlEntityConverter
-        title={title}
-        description={description}
-        features={features}
-        useCases={useCases}
-        faq={faq}
-      />
-    );
-  }
-
-  // Special case for Color Converter
-  if (toolId === 'color-converter') {
-    return (
-      <ColorConverter
-        title={title}
-        description={description}
-        features={features}
-        useCases={useCases}
-        faq={faq}
-      />
-    );
-  }
-
-  // Special case for CSS Unit Converter
-  if (toolId === 'css-unit-converter') {
-    return (
-      <CssUnitConverter
-        title={title}
-        description={description}
-        features={features}
-        useCases={useCases}
-        faq={faq}
-      />
-    );
-  }
-
-  // Special case for JWT Debugger
-  if (toolId === 'jwt-debugger') {
-    return (
-      <JwtDebugger
-        title={title}
-        description={description}
-        features={features}
-        useCases={useCases}
-        faq={faq}
-      />
+      >
+        {({ file, onReset }) => {
+          switch (toolId) {
+            case 'jpg-to-png': return <JpgToPngConverter file={file} onReset={onReset} />;
+            case 'jpg-to-webp': return <JpgToWebpConverter file={file} onReset={onReset} />;
+            case 'png-to-jpg': return <PngToJpgConverter file={file} onReset={onReset} />;
+            case 'png-to-webp': return <PngToWebpConverter file={file} onReset={onReset} />;
+            case 'webp-to-png': return <WebpToPngConverter file={file} onReset={onReset} />;
+            case 'webp-to-jpg': return <WebpToJpgConverter file={file} onReset={onReset} />;
+            case 'gif-to-png': return <GifToPngConverter file={file} onReset={onReset} />;
+            case 'gif-to-jpg': return <GifToJpgConverter file={file} onReset={onReset} />;
+            case 'gif-to-webp': return <GifToWebpConverter file={file} onReset={onReset} />;
+            case 'bmp-to-png': return <BmpToPngConverter file={file} onReset={onReset} />;
+            case 'bmp-to-jpg': return <BmpToJpgConverter file={file} onReset={onReset} />;
+            case 'bmp-to-webp': return <BmpToWebpConverter file={file} onReset={onReset} />;
+            case 'svg-to-png': return <SvgToPngConverter file={file} onReset={onReset} />;
+            case 'svg-to-jpg': return <SvgToJpgConverter file={file} onReset={onReset} />;
+            case 'svg-to-webp': return <SvgToWebpConverter file={file} onReset={onReset} />;
+            case 'ico-to-png': return <IcoToPngConverter file={file} onReset={onReset} />;
+            case 'image-metadata': return <ImageMetadataViewer file={file} onReset={onReset} />;
+            case 'image-to-base64': return <ImageToBase64 file={file} onReset={onReset} />;
+            case 'pdf-to-png': return <PdfToPngConverter file={file} onReset={onReset} />;
+            case 'pdf-to-jpg': return <PdfToJpgConverter file={file} onReset={onReset} />;
+            case 'pdf-compress': return <PdfCompressor file={file} onReset={onReset} />;
+            case 'pdf-split': return <PdfSplitter file={file} onReset={onReset} />;
+            case 'pdf-merge': return <PdfMerger file={file} onReset={onReset} />;
+            case 'pdf-organize': return <PdfOrganizer file={file} onReset={onReset} />;
+            case 'pdf-unlock': return <PdfUnlocker file={file} onReset={onReset} />;
+            case 'pdf-rotate': return <PdfRotator file={file} onReset={onReset} />;
+            case 'pdf-page-numbers': return <PdfPageNumbers file={file} onReset={onReset} />;
+            case 'pdf-metadata': return <PdfMetadataEditor file={file} onReset={onReset} />;
+            default:
+              return (
+                <div className="rounded-lg border border-dashed p-8 text-center text-muted-foreground">
+                  <p className="font-medium">Tool component not found</p>
+                  <p className="mt-2 text-sm">Tool ID: {toolId}</p>
+                </div>
+              );
+          }
+        }}
+      </ToolShell>
     );
   }
 
   return (
-    <ToolShell
-      title={title}
-      description={description}
-      acceptedFormats={acceptedFormats}
-      maxFileSize={maxFileSize}
-      features={features}
-      useCases={useCases}
-      faq={faq}
-    >
-      {({ file, onReset }) => {
-        switch (toolId) {
-          // ─────────────────────────────────────────
-          // JPG/JPEG Converters
-          // ─────────────────────────────────────────
-          case 'jpg-to-png':
-            return <JpgToPngConverter file={file} onReset={onReset} />;
-          case 'jpg-to-webp':
-            return <JpgToWebpConverter file={file} onReset={onReset} />;
-
-          // ─────────────────────────────────────────
-          // PNG Converters
-          // ─────────────────────────────────────────
-          case 'png-to-jpg':
-            return <PngToJpgConverter file={file} onReset={onReset} />;
-          case 'png-to-webp':
-            return <PngToWebpConverter file={file} onReset={onReset} />;
-
-          // ─────────────────────────────────────────
-          // WebP Converters
-          // ─────────────────────────────────────────
-          case 'webp-to-png':
-            return <WebpToPngConverter file={file} onReset={onReset} />;
-          case 'webp-to-jpg':
-            return <WebpToJpgConverter file={file} onReset={onReset} />;
-
-          // ─────────────────────────────────────────
-          // GIF Converters
-          // ─────────────────────────────────────────
-          case 'gif-to-png':
-            return <GifToPngConverter file={file} onReset={onReset} />;
-          case 'gif-to-jpg':
-            return <GifToJpgConverter file={file} onReset={onReset} />;
-          case 'gif-to-webp':
-            return <GifToWebpConverter file={file} onReset={onReset} />;
-
-          // ─────────────────────────────────────────
-          // BMP Converters
-          // ─────────────────────────────────────────
-          case 'bmp-to-png':
-            return <BmpToPngConverter file={file} onReset={onReset} />;
-          case 'bmp-to-jpg':
-            return <BmpToJpgConverter file={file} onReset={onReset} />;
-          case 'bmp-to-webp':
-            return <BmpToWebpConverter file={file} onReset={onReset} />;
-
-          // ─────────────────────────────────────────
-          // SVG Converters (Rasterize)
-          // ─────────────────────────────────────────
-          case 'svg-to-png':
-            return <SvgToPngConverter file={file} onReset={onReset} />;
-          case 'svg-to-jpg':
-            return <SvgToJpgConverter file={file} onReset={onReset} />;
-          case 'svg-to-webp':
-            return <SvgToWebpConverter file={file} onReset={onReset} />;
-
-          // ─────────────────────────────────────────
-          // ICO Converter
-          // ─────────────────────────────────────────
-          case 'ico-to-png':
-            return <IcoToPngConverter file={file} onReset={onReset} />;
-
-          // ─────────────────────────────────────────
-          // Image Utilities
-          // ─────────────────────────────────────────
-          case 'image-metadata':
-            return <ImageMetadataViewer file={file} onReset={onReset} />;
-          case 'image-to-base64':
-            return <ImageToBase64 file={file} onReset={onReset} />;
-
-          // ─────────────────────────────────────────
-          // PDF Tools
-          // ─────────────────────────────────────────
-          case 'pdf-to-png':
-            return <PdfToPngConverter file={file} onReset={onReset} />;
-          case 'pdf-to-jpg':
-            return <PdfToJpgConverter file={file} onReset={onReset} />;
-          case 'pdf-compress':
-            return <PdfCompressor file={file} onReset={onReset} />;
-          case 'pdf-split':
-            return <PdfSplitter file={file} onReset={onReset} />;
-          case 'pdf-merge':
-            return <PdfMerger file={file} onReset={onReset} />;
-          case 'pdf-organize':
-            return <PdfOrganizer file={file} onReset={onReset} />;
-          case 'pdf-unlock':
-            return <PdfUnlocker file={file} onReset={onReset} />;
-          case 'pdf-rotate':
-            return <PdfRotator file={file} onReset={onReset} />;
-          case 'pdf-page-numbers':
-            return <PdfPageNumbers file={file} onReset={onReset} />;
-          case 'pdf-metadata':
-            return <PdfMetadataEditor file={file} onReset={onReset} />;
-
-          default:
-            return (
-              <div className="rounded-lg border border-dashed p-8 text-center text-muted-foreground">
-                <p className="font-medium">Tool component not found</p>
-                <p className="mt-2 text-sm">Tool ID: {toolId}</p>
-              </div>
-            );
-        }
-      }}
-    </ToolShell>
+    <div className="flex flex-col min-h-screen">
+      <div className="flex-1">
+        {toolContent}
+      </div>
+      <div className="mx-auto max-w-4xl px-4 pb-24 sm:px-6 w-full border-t border-border/40 mt-16">
+        <RelatedTools
+          categoryId={category}
+          currentToolId={toolId}
+          categoryLabel={categoryLabel}
+        />
+      </div>
+    </div>
   );
 }
-

@@ -1,11 +1,9 @@
 'use client';
 
 import React, { useState, useCallback } from 'react';
-import Link from 'next/link';
 import { ToolHeader } from './ToolHeader';
 import { FileUploader } from './FileUploader';
-import { ArrowLeft, Check, Lightbulb, HelpCircle } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Check, Lightbulb, HelpCircle } from 'lucide-react';
 import {
   Accordion,
   AccordionContent,
@@ -26,15 +24,7 @@ interface ToolShellProps {
 }
 
 /**
- * ToolShell - Container component for all tools
- * 
- * Handles:
- * - File selection and validation
- * - Navigation back to home
- * - Consistent layout across all tools
- * - Displaying rich SEO content (Features, Use Cases, FAQ)
- * 
- * The tool-specific component receives the file and a reset callback
+ * ToolShell - Container component for file-based tools
  */
 export function ToolShell({
   title,
@@ -57,12 +47,12 @@ export function ToolShell({
   }, []);
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="flex flex-col">
       {/* Tool Header */}
       <ToolHeader title={title} description={description} />
 
       {/* Main Content */}
-      <main className="flex-1 mx-auto max-w-4xl px-4 py-8 sm:px-6 w-full space-y-16">
+      <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 w-full space-y-16">
         {/* Tool Interface */}
         <div className="min-h-[400px]">
           {!selectedFile ? (
@@ -79,7 +69,7 @@ export function ToolShell({
         {/* SEO Content Sections */}
         {((features && features.length > 0) || (useCases && useCases.length > 0) || (faq && faq.length > 0)) && (
           <div className="grid gap-12 pt-8 border-t">
-            
+
             {/* Features & Use Cases Grid */}
             <div className="grid gap-8 md:grid-cols-2">
               {/* Features */}
@@ -136,7 +126,7 @@ export function ToolShell({
                   </div>
                   <h2 className="text-2xl font-semibold text-center">Frequently Asked Questions</h2>
                 </div>
-                
+
                 <Accordion type="single" collapsible className="w-full">
                   {faq.map((item, index) => (
                     <AccordionItem key={index} value={`item-${index}`}>
@@ -151,23 +141,15 @@ export function ToolShell({
             )}
           </div>
         )}
-      </main>
+      </div>
 
-      {/* Privacy Footer */}
-      <footer className="border-t mt-auto py-8 bg-muted/10">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6">
-          <div className="flex flex-col items-center justify-center gap-4 text-center">
-            <span className="text-2xl">🔒</span>
-            <div>
-              <h3 className="font-medium text-foreground">100% Privacy Guarantee</h3>
-              <p className="mt-1 text-sm text-muted-foreground max-w-md mx-auto">
-                This tool processes files entirely in your browser using secure web technologies. 
-                Your files never leave your device and are never uploaded to any server.
-              </p>
-            </div>
-          </div>
+      {/* Privacy Guarantee Banner (simplified) */}
+      <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 w-full text-center border-t border-dashed mt-8">
+        <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-muted/50 text-sm text-muted-foreground">
+          <span>🔒</span>
+          <span>100% Client-Side: Your files never leave your device.</span>
         </div>
-      </footer>
+      </div>
     </div>
   );
 }

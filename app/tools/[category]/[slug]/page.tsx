@@ -36,7 +36,7 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
     title: seo.title,
     description: seo.metaDescription,
     keywords: tool.keywords.join(', '),
-    
+
     // Open Graph
     openGraph: {
       title: seo.title,
@@ -44,14 +44,14 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
       type: 'website',
       siteName: 'Privacy-First Toolbox',
     },
-    
+
     // Twitter
     twitter: {
       card: 'summary_large_image',
       title: tool.name,
       description: tool.description,
     },
-    
+
     // Robots
     robots: {
       index: true,
@@ -61,7 +61,7 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
         follow: true,
       },
     },
-    
+
     // Alternates
     alternates: {
       canonical: `/tools/${tool.category}/${tool.slug}`,
@@ -131,7 +131,7 @@ export default async function ToolPage(props: PageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqStructuredData) }}
       />
-      
+
       <ToolPageClient
         toolId={tool.id}
         title={tool.name}
@@ -141,6 +141,7 @@ export default async function ToolPage(props: PageProps) {
         features={tool.seo.features}
         useCases={tool.seo.useCases}
         faq={tool.seo.faq}
+        category={tool.category}
       />
     </>
   );

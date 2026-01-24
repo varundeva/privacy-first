@@ -2,16 +2,16 @@ import React from "react"
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { ThemeProvider } from '@/components/theme-provider'
-import { Header} from '@/components/layout'
+import { Header } from '@/components/layout'
 import { Footer } from '@/components/layout'
 import './globals.css'
 
-const geist = Geist({ 
+const geist = Geist({
   subsets: ["latin"],
   variable: '--font-geist-sans',
 });
 
-const geistMono = Geist_Mono({ 
+const geistMono = Geist_Mono({
   subsets: ["latin"],
   variable: '--font-geist-mono',
 });
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   keywords: ['privacy', 'tools', 'converter', 'image', 'pdf', 'text', 'online tools', 'browser-based', 'no upload'],
   authors: [{ name: 'Privacy-First Toolbox' }],
   creator: 'Privacy-First Toolbox',
-  metadataBase: new URL('https://example.com'), // Update with actual domain
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://example.com')),
   icons: {
     icon: [
       {

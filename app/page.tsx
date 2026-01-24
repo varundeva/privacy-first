@@ -3,6 +3,9 @@ import type { Metadata } from 'next';
 import { HomeClient } from './home-client';
 import Loading from './loading';
 
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ||
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://example.com');
+
 // SEO Metadata for Homepage
 export const metadata: Metadata = {
   title: 'Privacy-First Toolbox | Free Online Tools That Never Upload Your Files',
@@ -19,7 +22,7 @@ export const metadata: Metadata = {
     'no upload required',
     'offline tools',
   ].join(', '),
-  
+
   openGraph: {
     title: 'Privacy-First Toolbox | Free Online Tools',
     description: 'Free online tools that process files entirely in your browser. Your data never leaves your device.',
@@ -27,13 +30,13 @@ export const metadata: Metadata = {
     siteName: 'Privacy-First Toolbox',
     locale: 'en_US',
   },
-  
+
   twitter: {
     card: 'summary_large_image',
     title: 'Privacy-First Toolbox',
     description: 'Free online tools that never upload your files. 100% browser-based.',
   },
-  
+
   robots: {
     index: true,
     follow: true,
@@ -45,7 +48,7 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  
+
   alternates: {
     canonical: '/',
   },
@@ -58,12 +61,12 @@ function generateStructuredData() {
     '@type': 'WebSite',
     name: 'Privacy-First Toolbox',
     description: 'Free online tools that process files entirely in your browser. Your data never leaves your device.',
-    url: 'https://example.com', // Update with actual domain
+    url: BASE_URL,
     potentialAction: {
       '@type': 'SearchAction',
       target: {
         '@type': 'EntryPoint',
-        urlTemplate: 'https://example.com/?q={search_term_string}',
+        urlTemplate: `${BASE_URL}/?q={search_term_string}`,
       },
       'query-input': 'required name=search_term_string',
     },
@@ -72,7 +75,7 @@ function generateStructuredData() {
       name: 'Privacy-First Toolbox',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://example.com/logo.png',
+        url: `${BASE_URL}/logo.png`,
       },
     },
   };
@@ -85,7 +88,7 @@ function generateOrganizationSchema() {
     '@type': 'Organization',
     name: 'Privacy-First Toolbox',
     description: 'Free online tools with privacy-first approach',
-    url: 'https://example.com',
+    url: BASE_URL,
   };
 }
 
@@ -132,7 +135,7 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }}
       />
-      
+
       <Suspense fallback={<Loading />}>
         <HomeClient />
       </Suspense>

@@ -2013,6 +2013,112 @@ export const toolsConfig: Tool[] = [
       ],
     },
   },
+
+  {
+    id: 'week-number-calculator',
+    name: 'Week Number Calculator',
+    slug: 'week-number-calculator',
+    category: 'date',
+    categoryLabel: 'Date & Time',
+    description: 'Find ISO week number for any date',
+    longDescription: 'Free online Week Number Calculator. Find the current ISO 8601 week number or calculate the week number for any specific date. See week start and end dates.',
+    keywords: ['week number', 'iso week', 'current week', 'week calculator', 'what week is it'],
+    icon: 'Calendar',
+    acceptedFormats: [],
+    maxFileSize: 0,
+    seo: {
+      title: 'Week Number Calculator - Current ISO Level | Free Tool',
+      metaDescription: 'Find the current week number or calculate the ISO week number for any date. Useful for planning and business schedules.',
+      h1: 'ISO Week Number Calculator',
+      features: [
+        'Current ISO week display',
+        'Date to Week conversion',
+        'Week range dates (Mon-Sun)',
+        'Progress through year',
+      ],
+      useCases: [
+        'Business planning',
+        'Production schedules',
+        'Payroll calculation',
+      ],
+      faq: [
+        {
+          question: 'What is an ISO week?',
+          answer: 'ISO 8601 weeks start on Monday. Week 1 is the first week with at least 4 days in the new year.',
+        },
+      ],
+    },
+  },
+  {
+    id: 'age-calculator',
+    name: 'Age Calculator',
+    slug: 'age-calculator',
+    category: 'date',
+    categoryLabel: 'Date & Time',
+    description: 'Calculate exact age & next birthday',
+    longDescription: 'Free online Age Calculator. Calculate your age in years, months, and days. Find out how many days until your next birthday and see total days lived.',
+    keywords: ['age calculator', 'birthday calculator', 'how old am i', 'exact age', 'next birthday'],
+    icon: 'Calendar',
+    acceptedFormats: [],
+    maxFileSize: 0,
+    seo: {
+      title: 'Age Calculator - Exact Age & Birthday | Free Tool',
+      metaDescription: 'Calculate your exact age in years, months, and days. See how long until your next birthday and total days lived.',
+      h1: 'Age Calculator & Birthday Countdown',
+      features: [
+        'Exact age (Y/M/D)',
+        'Next birthday countdown',
+        'Total days lived',
+        'Day of birth info',
+      ],
+      useCases: [
+        'Birthday planning',
+        'Fun facts',
+        'Legal age verification',
+      ],
+      faq: [
+        {
+          question: 'Is it accurate?',
+          answer: 'Yes, it accounts for leap years and exact calendar days.',
+        },
+      ],
+    },
+  },
+  {
+    id: 'business-days-calculator',
+    name: 'Business Days Calculator',
+    slug: 'business-days-calculator',
+    category: 'date',
+    categoryLabel: 'Date & Time',
+    description: 'Calculate working days between dates',
+    longDescription: 'Free online Business Days Calculator. Calculate working days between two dates, excluding weekends and custom holidays. Perfect for project planning.',
+    keywords: ['business days', 'working days', 'work days calculator', 'exclude weekends', 'days between dates'],
+    icon: 'Calendar',
+    acceptedFormats: [],
+    maxFileSize: 0,
+    seo: {
+      title: 'Business Days Calculator - Working Days | Free Tool',
+      metaDescription: 'Calculate the number of working days between two dates. Option to exclude weekends and add custom holidays.',
+      h1: 'Business Days Calculator',
+      features: [
+        'Exclude weekends',
+        'Custom holidays support',
+        'Total business days',
+        'Calendar vs Business days',
+      ],
+      useCases: [
+        'Project deadlines',
+        'Shipping estimates',
+        'Leave calculation',
+      ],
+      faq: [
+        {
+          question: 'Does it include the start date?',
+          answer: 'The calculation counts full days between the start and end. It typically includes the start date if it is a working day, standard for business counts.',
+        },
+      ],
+    },
+  },
 ];
 
 // ============================================

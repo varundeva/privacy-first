@@ -47,7 +47,7 @@ import { PdfToPngConverter, PdfToJpgConverter, PdfCompressor, PdfSplitter, PdfMe
 import { WordCounter, CaseConverter, TextDiff, FindAndReplace, LoremIpsumGenerator, TextToSlug, RemoveDuplicateLines } from '@/components/tools/text';
 
 // Import Date tools
-import { UnixTimestampConverter, TimeDifferenceCalculator, TimeZoneConverter, DateFormatConverter } from '@/components/tools/date';
+import { UnixTimestampConverter, TimeDifferenceCalculator, TimeZoneConverter, DateFormatConverter, WeekNumberCalculator, AgeCalculator, BusinessDaysCalculator } from '@/components/tools/date';
 
 interface ToolPageClientProps {
   toolId: string;
@@ -229,6 +229,45 @@ export function ToolPageClient({
   if (toolId === 'date-format-converter') {
     return (
       <DateFormatConverter
+        title={title}
+        description={description}
+        features={features}
+        useCases={useCases}
+        faq={faq}
+      />
+    );
+  }
+
+  // Special case for Week Number Calculator
+  if (toolId === 'week-number-calculator') {
+    return (
+      <WeekNumberCalculator
+        title={title}
+        description={description}
+        features={features}
+        useCases={useCases}
+        faq={faq}
+      />
+    );
+  }
+
+  // Special case for Age Calculator
+  if (toolId === 'age-calculator') {
+    return (
+      <AgeCalculator
+        title={title}
+        description={description}
+        features={features}
+        useCases={useCases}
+        faq={faq}
+      />
+    );
+  }
+
+  // Special case for Business Days Calculator
+  if (toolId === 'business-days-calculator') {
+    return (
+      <BusinessDaysCalculator
         title={title}
         description={description}
         features={features}

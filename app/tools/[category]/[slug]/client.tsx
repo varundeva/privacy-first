@@ -49,6 +49,8 @@ import { WordCounter, CaseConverter, TextDiff, FindAndReplace, LoremIpsumGenerat
 // Import Date tools
 import { UnixTimestampConverter, TimeDifferenceCalculator, TimeZoneConverter, DateFormatConverter, WeekNumberCalculator, AgeCalculator, BusinessDaysCalculator } from '@/components/tools/date';
 import { JsonFormatter, JsonToCsv, CsvToJson, JsonToTypescript, JsonToYaml, YamlToJson } from '@/components/tools/json';
+import { Md5Generator, ShaGenerator, BcryptGenerator, AesEncryption, Base64Encoder, JwtDebugger } from '@/components/tools/crypto';
+import { SqlFormatter, HtmlFormatter, CssFormatter, UrlEncoder, UrlParser, UserAgentParser } from '@/components/tools/web';
 
 interface ToolPageClientProps {
   toolId: string;
@@ -347,6 +349,162 @@ export function ToolPageClient({
   if (toolId === 'yaml-to-json') {
     return (
       <YamlToJson
+        title={title}
+        description={description}
+        features={features}
+        useCases={useCases}
+        faq={faq}
+      />
+    );
+  }
+
+  // Special case for MD5 Generator
+  if (toolId === 'md5-generator') {
+    return (
+      <Md5Generator
+        title={title}
+        description={description}
+        features={features}
+        useCases={useCases}
+        faq={faq}
+      />
+    );
+  }
+
+  // Special case for SHA Generator
+  if (toolId === 'sha-generator') {
+    return (
+      <ShaGenerator
+        title={title}
+        description={description}
+        features={features}
+        useCases={useCases}
+        faq={faq}
+      />
+    );
+  }
+
+  // Special case for Bcrypt Generator
+  if (toolId === 'bcrypt-generator') {
+    return (
+      <BcryptGenerator
+        title={title}
+        description={description}
+        features={features}
+        useCases={useCases}
+        faq={faq}
+      />
+    );
+  }
+
+  // Special case for AES Encryption
+  if (toolId === 'aes-encryption') {
+    return (
+      <AesEncryption
+        title={title}
+        description={description}
+        features={features}
+        useCases={useCases}
+        faq={faq}
+      />
+    );
+  }
+
+  // Special case for Base64 Encoder
+  if (toolId === 'base64-encoder') {
+    return (
+      <Base64Encoder
+        title={title}
+        description={description}
+        features={features}
+        useCases={useCases}
+        faq={faq}
+      />
+    );
+  }
+
+  // Special case for SQL Formatter
+  if (toolId === 'sql-formatter') {
+    return (
+      <SqlFormatter
+        title={title}
+        description={description}
+        features={features}
+        useCases={useCases}
+        faq={faq}
+      />
+    );
+  }
+
+  // Special case for HTML Formatter
+  if (toolId === 'html-formatter') {
+    return (
+      <HtmlFormatter
+        title={title}
+        description={description}
+        features={features}
+        useCases={useCases}
+        faq={faq}
+      />
+    );
+  }
+
+  // Special case for CSS Formatter
+  if (toolId === 'css-formatter') {
+    return (
+      <CssFormatter
+        title={title}
+        description={description}
+        features={features}
+        useCases={useCases}
+        faq={faq}
+      />
+    );
+  }
+
+  // Special case for URL Encoder
+  if (toolId === 'url-encoder') {
+    return (
+      <UrlEncoder
+        title={title}
+        description={description}
+        features={features}
+        useCases={useCases}
+        faq={faq}
+      />
+    );
+  }
+
+  // Special case for URL Parser
+  if (toolId === 'url-parser') {
+    return (
+      <UrlParser
+        title={title}
+        description={description}
+        features={features}
+        useCases={useCases}
+        faq={faq}
+      />
+    );
+  }
+
+  // Special case for User Agent Parser
+  if (toolId === 'user-agent-parser') {
+    return (
+      <UserAgentParser
+        title={title}
+        description={description}
+        features={features}
+        useCases={useCases}
+        faq={faq}
+      />
+    );
+  }
+
+  // Special case for JWT Debugger
+  if (toolId === 'jwt-debugger') {
+    return (
+      <JwtDebugger
         title={title}
         description={description}
         features={features}

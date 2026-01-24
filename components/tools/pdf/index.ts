@@ -40,3 +40,8 @@ export { PdfRotator } from './PdfRotator';
 // PDF Page Numbers
 // ============================================
 export { PdfPageNumbers } from './PdfPageNumbers';
+
+// ============================================
+// PDF Metadata Editor
+// ============================================
+export { PdfMetadataEditor } from './PdfMetadataEditor';

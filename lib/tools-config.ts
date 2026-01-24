@@ -1289,6 +1289,56 @@ export const toolsConfig: Tool[] = [
     },
   },
   {
+    id: 'pdf-metadata',
+    name: 'Edit PDF Metadata',
+    slug: 'pdf-metadata',
+    category: 'pdf',
+    categoryLabel: 'PDF Tools',
+    description: 'View and edit PDF document metadata',
+    longDescription: 'Free online PDF metadata editor. View and edit title, author, subject, keywords, and more. See creation and modification dates. All processing happens in your browser for complete privacy.',
+    keywords: ['pdf metadata editor', 'edit pdf properties', 'pdf title author', 'pdf document info', 'change pdf metadata'],
+    icon: 'Settings',
+    acceptedFormats: ['.pdf'],
+    maxFileSize: 100,
+    seo: {
+      title: 'Edit PDF Metadata - Title, Author, Keywords | Free Online Tool',
+      metaDescription: 'Edit PDF metadata online for free. Change title, author, subject, keywords and more. View document dates. 100% private browser processing.',
+      h1: 'Edit PDF Metadata & Properties',
+      features: [
+        'Edit title & author',
+        'Set subject & keywords',
+        'View creation date',
+        'Update producer info',
+        'Track changes',
+        '100% private & secure',
+      ],
+      useCases: [
+        'Update document info',
+        'Add author credits',
+        'Organize with keywords',
+        'Prepare for publishing',
+      ],
+      faq: [
+        {
+          question: 'What metadata can I edit?',
+          answer: 'You can edit title, author, subject, keywords, creator application, and PDF producer.',
+        },
+        {
+          question: 'Can I change the creation date?',
+          answer: 'No, creation and modification dates are read-only for integrity. The modification date updates automatically when you save.',
+        },
+        {
+          question: 'Will editing metadata affect content?',
+          answer: 'No, editing metadata only changes document properties. Your PDF content remains completely unchanged.',
+        },
+        {
+          question: 'Is my PDF secure?',
+          answer: 'Yes! Your PDF is processed entirely in your browser. No files are uploaded to any server.',
+        },
+      ],
+    },
+  },
+  {
     id: 'word-counter',
     name: 'Word Counter',
     slug: 'word-counter',

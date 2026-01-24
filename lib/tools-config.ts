@@ -2273,6 +2273,41 @@ export const toolsConfig: Tool[] = [
       ],
     },
   },
+  {
+    id: 'json-to-yaml',
+    name: 'JSON to YAML',
+    slug: 'json-to-yaml',
+    category: 'json',
+    categoryLabel: 'JSON Tools',
+    description: 'Convert JSON to YAML format',
+    longDescription: 'Free online JSON to YAML Converter. Transform JSON objects into YAML format. Useful for configuration files, Kubernetes manifests, and more.',
+    keywords: ['json to yaml', 'yaml converter', 'json converter', 'kubernetes yaml', 'config conversion'],
+    icon: 'FileCode',
+    acceptedFormats: ['.json', '.txt'],
+    maxFileSize: 5,
+    seo: {
+      title: 'JSON to YAML Converter - Free Online Tool',
+      metaDescription: 'Convert JSON to YAML format online. Validate JSON and generate clean YAML. Support for large files and nested structures.',
+      h1: 'Convert JSON to YAML Online',
+      features: [
+        'Convert JSON to YAML',
+        'Validate JSON syntax',
+        'Clean, indented output',
+        'Copy and Download',
+      ],
+      useCases: [
+        'Kubernetes configuration',
+        'CI/CD pipelines',
+        'App configuration files',
+      ],
+      faq: [
+        {
+          question: 'Does it support arrays?',
+          answer: 'Yes, arrays are converted to YAML list syntax.',
+        },
+      ],
+    },
+  },
 ];
 
 // ============================================

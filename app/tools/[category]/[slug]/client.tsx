@@ -48,7 +48,7 @@ import { WordCounter, CaseConverter, TextDiff, FindAndReplace, LoremIpsumGenerat
 
 // Import Date tools
 import { UnixTimestampConverter, TimeDifferenceCalculator, TimeZoneConverter, DateFormatConverter, WeekNumberCalculator, AgeCalculator, BusinessDaysCalculator } from '@/components/tools/date';
-import { JsonFormatter, JsonToCsv, CsvToJson, JsonToTypescript } from '@/components/tools/json';
+import { JsonFormatter, JsonToCsv, CsvToJson, JsonToTypescript, JsonToYaml } from '@/components/tools/json';
 
 interface ToolPageClientProps {
   toolId: string;
@@ -321,6 +321,19 @@ export function ToolPageClient({
   if (toolId === 'json-to-typescript') {
     return (
       <JsonToTypescript
+        title={title}
+        description={description}
+        features={features}
+        useCases={useCases}
+        faq={faq}
+      />
+    );
+  }
+
+  // Special case for JSON to YAML
+  if (toolId === 'json-to-yaml') {
+    return (
+      <JsonToYaml
         title={title}
         description={description}
         features={features}

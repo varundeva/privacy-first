@@ -2777,6 +2777,111 @@ export const toolsConfig: Tool[] = [
       ],
     },
   },
+  {
+    id: 'html-entity-converter',
+    name: 'HTML Entity Converter',
+    slug: 'html-entity-converter',
+    category: 'web',
+    categoryLabel: 'Web Tools',
+    description: 'Encode and decode HTML entities',
+    longDescription: 'Free online HTML Entity Converter. Safely encode special characters into HTML entities or decode entities back to plain text. Essential for web development and escaping content.',
+    keywords: ['html entity converter', 'html encode', 'html decode', 'escape html', 'unescape html', 'html special characters'],
+    icon: 'Code',
+    acceptedFormats: [],
+    maxFileSize: 0,
+    seo: {
+      title: 'HTML Entity Converter - Encode & Decode Entities Online',
+      metaDescription: 'Encode and decode HTML entities online for free. Safely escape HTML characters or unescape entities back to plain text. 100% private and secure.',
+      h1: 'Online HTML Entity Converter',
+      features: [
+        'Secure HTML encoding',
+        'Accurate entity decoding',
+        'Real-time conversion',
+        'Intuitive interface',
+      ],
+      useCases: [
+        'Escaping HTML for display',
+        'Decoding web content',
+        'Email template debugging',
+      ],
+      faq: [
+        {
+          question: 'What are HTML entities?',
+          answer: 'HTML entities are sequences of characters that represent special characters in HTML. For example, "&lt;" represents the "<" character. They are used to display characters that would otherwise be interpreted as HTML tags.',
+        },
+      ],
+    },
+  },
+  {
+    id: 'color-converter',
+    name: 'Color Converter',
+    slug: 'color-converter',
+    category: 'web',
+    categoryLabel: 'Web Tools',
+    description: 'Convert between HEX, RGB, HSL, and CMYK formats',
+    longDescription: 'Free online Color Converter. Convert any color between HEX, RGB, HSL, and CMYK formats instantly. Includes a visual color picker for easy selection.',
+    keywords: ['color converter', 'hex to rgb', 'rgb to hex', 'hsl converter', 'cmyk converter', 'web color tool', 'color picker'],
+    icon: 'Palette',
+    acceptedFormats: [],
+    maxFileSize: 0,
+    seo: {
+      title: 'Color Converter - HEX, RGB, HSL, CMYK Online Tool',
+      metaDescription: 'Convert colors between multiple formats online for free. Support for HEX, RGB, HSL, and CMYK. Visual color picker included. Fast and private.',
+      h1: 'Online Color Converter & Picker',
+      features: [
+        'HEX, RGB, HSL, CMYK support',
+        'Visual color picker',
+        'Instant conversion',
+        'One-click copy',
+      ],
+      useCases: [
+        'UI/UX design',
+        'Web development',
+        'Print design (CMYK)',
+      ],
+      faq: [
+        {
+          question: 'What is CMYK used for?',
+          answer: 'CMYK (Cyan, Magenta, Yellow, Key/Black) is a subtractive color model used in color printing. It is essential for ensuring colors look correct when printed on paper.',
+        },
+      ],
+    },
+  },
+  {
+    id: 'css-unit-converter',
+    name: 'CSS Unit Converter',
+    slug: 'css-unit-converter',
+    category: 'web',
+    categoryLabel: 'Web Tools',
+    description: 'Convert between PX, REM, EM, and viewport units',
+    longDescription: 'Free online CSS Unit Converter. Convert pixels to rem, em, vw, vh, and more instantly. Adjustable base font size for accurate web development and responsive design.',
+    keywords: ['css unit converter', 'px to rem', 'px to em', 'px to vw', 'responsive design tool', 'web units', 'rem calculator'],
+    icon: 'Ruler',
+    acceptedFormats: [],
+    maxFileSize: 0,
+    seo: {
+      title: 'CSS Unit Converter - PX to REM, EM, VW Online',
+      metaDescription: 'Convert CSS units online for free. Rapid conversion between PX, REM, EM, VW, and VH. Adjustable base font size. Perfect for responsive web design.',
+      h1: 'Online CSS Unit Converter',
+      features: [
+        'PX to REM/EM conversion',
+        'Viewport unit support',
+        'Custom base font size',
+        'Real-time calculation',
+      ],
+      useCases: [
+        'Responsive layout design',
+        'Standardizing font sizes',
+        'Mobile-first development',
+      ],
+      faq: [
+        {
+          question: 'Why use REM instead of PX?',
+          answer: 'REM units are relative to the root font size, making them better for accessibility. When a user changes their browser font size settings, REM-based layouts will scale proportionally, whereas PX-based layouts stay fixed.',
+        },
+      ],
+    },
+  },
 ];
 
 // ============================================

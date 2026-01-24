@@ -4,3 +4,6 @@ export { CssFormatter } from './CssFormatter';
 export { UrlEncoder } from './UrlEncoder';
 export { UrlParser } from './UrlParser';
 export { UserAgentParser } from './UserAgentParser';
+export { HtmlEntityConverter } from './HtmlEntityConverter';
+export { ColorConverter } from './ColorConverter';
+export { CssUnitConverter } from './CssUnitConverter';

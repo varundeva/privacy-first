@@ -50,7 +50,7 @@ import { WordCounter, CaseConverter, TextDiff, FindAndReplace, LoremIpsumGenerat
 import { UnixTimestampConverter, TimeDifferenceCalculator, TimeZoneConverter, DateFormatConverter, WeekNumberCalculator, AgeCalculator, BusinessDaysCalculator } from '@/components/tools/date';
 import { JsonFormatter, JsonToCsv, CsvToJson, JsonToTypescript, JsonToYaml, YamlToJson } from '@/components/tools/json';
 import { Md5Generator, ShaGenerator, BcryptGenerator, AesEncryption, Base64Encoder, JwtDebugger } from '@/components/tools/crypto';
-import { SqlFormatter, HtmlFormatter, CssFormatter, UrlEncoder, UrlParser, UserAgentParser } from '@/components/tools/web';
+import { SqlFormatter, HtmlFormatter, CssFormatter, UrlEncoder, UrlParser, UserAgentParser, HtmlEntityConverter, ColorConverter, CssUnitConverter } from '@/components/tools/web';
 
 interface ToolPageClientProps {
   toolId: string;
@@ -492,6 +492,45 @@ export function ToolPageClient({
   if (toolId === 'user-agent-parser') {
     return (
       <UserAgentParser
+        title={title}
+        description={description}
+        features={features}
+        useCases={useCases}
+        faq={faq}
+      />
+    );
+  }
+
+  // Special case for HTML Entity Converter
+  if (toolId === 'html-entity-converter') {
+    return (
+      <HtmlEntityConverter
+        title={title}
+        description={description}
+        features={features}
+        useCases={useCases}
+        faq={faq}
+      />
+    );
+  }
+
+  // Special case for Color Converter
+  if (toolId === 'color-converter') {
+    return (
+      <ColorConverter
+        title={title}
+        description={description}
+        features={features}
+        useCases={useCases}
+        faq={faq}
+      />
+    );
+  }
+
+  // Special case for CSS Unit Converter
+  if (toolId === 'css-unit-converter') {
+    return (
+      <CssUnitConverter
         title={title}
         description={description}
         features={features}

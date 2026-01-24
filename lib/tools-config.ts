@@ -1239,6 +1239,56 @@ export const toolsConfig: Tool[] = [
     },
   },
   {
+    id: 'pdf-page-numbers',
+    name: 'Add Page Numbers',
+    slug: 'pdf-page-numbers',
+    category: 'pdf',
+    categoryLabel: 'PDF Tools',
+    description: 'Add page numbers to your PDF documents',
+    longDescription: 'Free online tool to add page numbers to PDF files. Choose position, format, and styling. Preview before saving. All processing happens in your browser for complete privacy.',
+    keywords: ['add page numbers pdf', 'pdf page numbering', 'number pdf pages', 'pdf pagination', 'insert page numbers'],
+    icon: 'Hash',
+    acceptedFormats: ['.pdf'],
+    maxFileSize: 100,
+    seo: {
+      title: 'Add Page Numbers to PDF | Free Online Tool',
+      metaDescription: 'Add page numbers to PDF files online for free. Choose position, format, and style. Preview before saving. 100% private browser processing.',
+      h1: 'Add Page Numbers to PDF',
+      features: [
+        '6 position options',
+        '4 number formats',
+        'Custom font size',
+        'Adjustable margins',
+        'Preview before saving',
+        '100% private & secure',
+      ],
+      useCases: [
+        'Number document pages',
+        'Prepare for printing',
+        'Organize reports',
+        'Format manuscripts',
+      ],
+      faq: [
+        {
+          question: 'Where can page numbers be placed?',
+          answer: 'You can place page numbers in 6 positions: top-left, top-center, top-right, bottom-left, bottom-center, or bottom-right.',
+        },
+        {
+          question: 'What number formats are available?',
+          answer: 'Choose from: simple numbers (1, 2, 3), "Page N", "N of Total", or "Page N of Total".',
+        },
+        {
+          question: 'Can I skip certain pages?',
+          answer: 'Currently all pages are numbered, but you can set a custom starting number.',
+        },
+        {
+          question: 'Is my PDF secure?',
+          answer: 'Yes! Your PDF is processed entirely in your browser. No files are uploaded to any server.',
+        },
+      ],
+    },
+  },
+  {
     id: 'word-counter',
     name: 'Word Counter',
     slug: 'word-counter',

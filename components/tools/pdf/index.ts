@@ -35,3 +35,8 @@ export { PdfUnlocker } from './PdfUnlocker';
 // PDF Rotator
 // ============================================
 export { PdfRotator } from './PdfRotator';
+
+// ============================================
+// PDF Page Numbers
+// ============================================
+export { PdfPageNumbers } from './PdfPageNumbers';

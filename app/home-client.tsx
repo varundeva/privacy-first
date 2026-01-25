@@ -149,18 +149,18 @@ function HeroSection() {
             <span>100% Browser-Based • No Upload Required</span>
           </div>
 
-          {/* Main Heading */}
+          {/* Main Heading - SEO Optimized */}
           <h1 className="text-4xl font-bold tracking-tight sm:text-6xl lg:text-7xl">
-            Privacy-First
+            Free Online Tools
             <span className="block mt-2 bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent">
-              Online Toolbox
+              That Never Upload Your Files
             </span>
           </h1>
 
           {/* Subheading */}
           <p className="mx-auto mt-6 max-w-2xl text-lg text-slate-300 sm:text-xl">
-            Free online tools that process your files entirely in your browser.
-            Your data <strong className="text-white">never leaves your device</strong>.
+            <strong className="text-white">Privacy-First Toolbox</strong> - process your files entirely in your browser.
+            Your data never leaves your device. No registration required.
           </p>
 
           {/* CTA Buttons */}
@@ -525,7 +525,7 @@ export function HomeClient() {
     if (newFilters.category) params.set('category', newFilters.category);
     if (newFilters.inputFormat) params.set('from', newFilters.inputFormat);
     if (newFilters.outputFormat) params.set('to', newFilters.outputFormat);
-    
+
     const queryString = params.toString();
     router.replace(queryString ? `?${queryString}` : '/', { scroll: false });
   }, [router]);

@@ -47,7 +47,7 @@ const toolCategories = configCategories.map(category => {
   // The original hardcoded list had these specific ones.
   // The icon logic needs to map the string 'Image' to the component Image
   const IconComponent = iconMap[category.icon] || Wrench;
-  
+
   return {
     name: category.label,
     href: `/tools?category=${category.id}`,
@@ -69,9 +69,9 @@ export function Header() {
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-purple-600 to-blue-600">
               <Shield className="h-5 w-5 text-white" />
             </div>
-            <div className="hidden sm:block">
-              <span className="text-lg font-bold">Privacy-First</span>
-              <span className="text-lg font-light text-muted-foreground ml-1">Toolbox</span>
+            <div>
+              <span className="text-base sm:text-lg font-bold">Privacy-First</span>
+              <span className="text-base sm:text-lg font-light text-muted-foreground ml-1">Toolbox</span>
             </div>
           </Link>
 
@@ -92,7 +92,7 @@ export function Header() {
                 </Link>
               );
             })}
-            
+
             {/* Tools Dropdown - Simple hover for now */}
             <div className="relative group">
               <Button variant="ghost" size="sm" className="gap-2">
@@ -128,7 +128,7 @@ export function Header() {
 
             {/* GitHub Link */}
             <Button variant="ghost" size="icon" className="hidden sm:flex h-9 w-9" asChild>
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer">
+              <a href="https://github.com/varundeva/privacy-first" target="_blank" rel="noopener noreferrer">
                 <Github className="h-4 w-4" />
                 <span className="sr-only">GitHub</span>
               </a>
@@ -161,14 +161,13 @@ export function Header() {
                     {navigation.map((item) => {
                       const isActive = pathname === item.href;
                       return (
-                        <Link 
-                          key={item.name} 
+                        <Link
+                          key={item.name}
                           href={item.href}
                           onClick={() => setMobileMenuOpen(false)}
                         >
-                          <div className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-colors ${
-                            isActive ? 'bg-muted' : 'hover:bg-muted'
-                          }`}>
+                          <div className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-colors ${isActive ? 'bg-muted' : 'hover:bg-muted'
+                            }`}>
                             <item.icon className="h-5 w-5" />
                             <span className="font-medium">{item.name}</span>
                           </div>
@@ -183,8 +182,8 @@ export function Header() {
                       Tool Categories
                     </p>
                     {toolCategories.map((category) => (
-                      <Link 
-                        key={category.name} 
+                      <Link
+                        key={category.name}
                         href={category.href}
                         onClick={() => setMobileMenuOpen(false)}
                       >

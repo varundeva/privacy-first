@@ -62,6 +62,7 @@ const companyLinks = [
   { name: 'Privacy Policy', href: '/privacy-policy' },
   { name: 'Terms of Service', href: '/terms-of-service' },
   { name: 'Cookie Policy', href: '/cookie-policy' },
+  { name: 'Credits', href: '/credits' },
 ];
 
 export function Footer() {

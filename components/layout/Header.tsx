@@ -23,12 +23,23 @@ import {
   Home,
   Wrench,
   Github,
+  Calendar,
+  FileJson,
+  ShieldCheck,
+  Globe,
   LucideIcon,
+  Info,
+  MessageSquare,
 } from 'lucide-react';
 
-const navigation = [
+const primaryNav = [
   { name: 'Home', href: '/', icon: Home },
   { name: 'All Tools', href: '/tools', icon: Wrench },
+];
+
+const secondaryNav = [
+  { name: 'About', href: '/about', icon: Info },
+  { name: 'Contact', href: '/contact', icon: MessageSquare },
 ];
 
 // Map string icon names from config to Lucide components
@@ -38,6 +49,10 @@ const iconMap: Record<string, LucideIcon> = {
   Type,
   Video,
   Music,
+  Calendar,
+  FileJson,
+  ShieldLock: ShieldCheck,  // ShieldLock doesn't exist in lucide, using ShieldCheck
+  Globe,
 };
 
 // Calculate counts dynamically from filtered toolsConfig
@@ -77,7 +92,8 @@ export function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-1">
-            {navigation.map((item) => {
+            {/* Primary Nav: Home, All Tools */}
+            {primaryNav.map((item) => {
               const isActive = pathname === item.href;
               return (
                 <Link key={item.name} href={item.href}>
@@ -93,7 +109,7 @@ export function Header() {
               );
             })}
 
-            {/* Tools Dropdown - Simple hover for now */}
+            {/* Tools Dropdown - Categories */}
             <div className="relative group">
               <Button variant="ghost" size="sm" className="gap-2">
                 <Image className="h-4 w-4" />
@@ -119,6 +135,23 @@ export function Header() {
                 </div>
               </div>
             </div>
+
+            {/* Secondary Nav: About, Contact */}
+            {secondaryNav.map((item) => {
+              const isActive = pathname === item.href;
+              return (
+                <Link key={item.name} href={item.href}>
+                  <Button
+                    variant={isActive ? 'secondary' : 'ghost'}
+                    size="sm"
+                    className="gap-2"
+                  >
+                    <item.icon className="h-4 w-4" />
+                    {item.name}
+                  </Button>
+                </Link>
+              );
+            })}
           </nav>
 
           {/* Right Side Actions */}
@@ -158,7 +191,7 @@ export function Header() {
                     <p className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                       Navigation
                     </p>
-                    {navigation.map((item) => {
+                    {primaryNav.map((item) => {
                       const isActive = pathname === item.href;
                       return (
                         <Link
@@ -200,6 +233,29 @@ export function Header() {
                         </div>
                       </Link>
                     ))}
+                  </div>
+
+                  {/* About & Contact */}
+                  <div className="space-y-1">
+                    <p className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                      More
+                    </p>
+                    {secondaryNav.map((item) => {
+                      const isActive = pathname === item.href;
+                      return (
+                        <Link
+                          key={item.name}
+                          href={item.href}
+                          onClick={() => setMobileMenuOpen(false)}
+                        >
+                          <div className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-colors ${isActive ? 'bg-muted' : 'hover:bg-muted'
+                            }`}>
+                            <item.icon className="h-5 w-5" />
+                            <span className="font-medium">{item.name}</span>
+                          </div>
+                        </Link>
+                      );
+                    })}
                   </div>
 
                   {/* Privacy Badge */}

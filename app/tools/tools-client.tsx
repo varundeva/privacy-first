@@ -31,6 +31,9 @@ import {
   LayoutGrid,
   List,
   SlidersHorizontal,
+  Calendar,
+  Lock,
+  Globe,
 } from 'lucide-react';
 
 // ============================================
@@ -131,6 +134,10 @@ function getCategoryIcon(category: string) {
     case 'text': return Type;
     case 'video': return Video;
     case 'audio': return Music;
+    case 'date': return Calendar;
+    case 'json': return FileText;
+    case 'crypto': return Lock;
+    case 'web': return Globe;
     default: return Sparkles;
   }
 }

@@ -16,7 +16,7 @@ export function RelatedTools({ categoryId, currentToolId, categoryLabel }: Relat
     if (relatedTools.length === 0) return null;
 
     return (
-        <section className="mt-16 pt-16 border-t border-border/60">
+        <section className=" pt-16 border-t border-border/60">
             <div className="flex flex-col gap-2 mb-8">
                 <h2 className="text-2xl font-bold tracking-tight">More {categoryLabel}</h2>
                 <p className="text-muted-foreground">Discover other helpful tools in this category.</p>

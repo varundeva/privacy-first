@@ -223,7 +223,7 @@ export function ToolPageClient({
       <div className="flex-1">
         {toolContent}
       </div>
-      <div className="mx-auto max-w-4xl px-4 pb-24 sm:px-6 w-full border-t border-border/40 mt-16">
+      <div className="mx-auto max-w-4xl px-4 pb-24 sm:px-6 w-full">
         <RelatedTools
           categoryId={category}
           currentToolId={toolId}

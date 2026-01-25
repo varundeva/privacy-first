@@ -15,7 +15,7 @@ A free, open-source collection of browser-based tools that process your files *e
 
 **To build a world where privacy is the default, not a premium feature.**
 
-We envision a future where every person has access to powerful, free tools that work entirely on their own devices—no data handed over to corporations, no hidden trackers, no compromises. Privacy-First Toolbox is our contribution to that future.
+We envision a future where every person has access to powerful, free tools that work entirely on their own devices - no data handed over to corporations, no hidden trackers, no compromises. Privacy-First Toolbox is our contribution to that future.
 
 ---
 

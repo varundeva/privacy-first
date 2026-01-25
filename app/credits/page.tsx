@@ -247,6 +247,12 @@ const credits: Category[] = [
                 url: 'https://github.com/nickelov/ua-parser-js',
                 license: 'MIT',
             },
+            {
+                name: 'react-next-google-tools',
+                description: 'Lightweight library for integrating Google Analytics into React and Next.js applications',
+                url: 'https://www.npmjs.com/package/react-next-google-tools',
+                license: 'MIT',
+            },
         ],
     },
     {

@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Header } from '@/components/layout'
 import { Footer } from '@/components/layout'
+import { GoogleAnalytics } from 'react-next-google-tools'
 import './globals.css'
 
 const geist = Geist({
@@ -75,9 +76,16 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geist.variable} ${geistMono.variable} font-sans antialiased`}>
+        {/* Google Analytics - Only in production with valid ID */}
+        {process.env.NODE_ENV === 'production' && gaId && (
+          <GoogleAnalytics id={gaId} isNextJs />
+        )}
+
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -96,3 +104,4 @@ export default function RootLayout({
     </html>
   )
 }
+

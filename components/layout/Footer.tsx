@@ -32,8 +32,15 @@ const convertersByOutput = [
 const resources = [
   { name: 'All Tools', href: '/tools' },
   { name: 'Image Tools', href: '/tools?category=image' },
-  { name: 'About Privacy', href: '#privacy' },
+  { name: 'About Us', href: '/about' },
   { name: 'How It Works', href: '/#how-it-works' },
+];
+
+const legalLinks = [
+  { name: 'Privacy Policy', href: '/privacy-policy' },
+  { name: 'Terms of Service', href: '/terms-of-service' },
+  { name: 'Cookie Policy', href: '/cookie-policy' },
+  { name: 'Contact Us', href: '/contact' },
 ];
 
 export function Footer() {
@@ -54,10 +61,10 @@ export function Footer() {
               </div>
             </Link>
             <p className="mt-4 text-sm text-muted-foreground max-w-md">
-              Free online tools that process your files entirely in your browser. 
+              Free online tools that process your files entirely in your browser.
               Your data never leaves your device. No uploads, no tracking, no accounts required.
             </p>
-            
+
             {/* Trust Badges */}
             <div className="mt-6 flex flex-wrap gap-3">
               <div className="flex items-center gap-2 rounded-full bg-green-100 dark:bg-green-900/30 px-3 py-1 text-xs text-green-700 dark:text-green-400">
@@ -79,7 +86,7 @@ export function Footer() {
             <ul className="mt-4 space-y-2">
               {popularTools.map((tool) => (
                 <li key={tool.name}>
-                  <Link 
+                  <Link
                     href={tool.href}
                     className="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1 group"
                   >
@@ -99,7 +106,7 @@ export function Footer() {
             <ul className="mt-4 space-y-2">
               {convertersByInput.map((item) => (
                 <li key={item.name}>
-                  <Link 
+                  <Link
                     href={item.href}
                     className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >
@@ -118,7 +125,7 @@ export function Footer() {
             <ul className="mt-4 space-y-2">
               {convertersByOutput.map((item) => (
                 <li key={item.name}>
-                  <Link 
+                  <Link
                     href={item.href}
                     className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >
@@ -134,7 +141,23 @@ export function Footer() {
             <ul className="mt-4 space-y-2">
               {resources.map((item) => (
                 <li key={item.name}>
-                  <Link 
+                  <Link
+                    href={item.href}
+                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+
+            <h3 className="mt-6 text-sm font-semibold uppercase tracking-wider text-foreground">
+              Legal
+            </h3>
+            <ul className="mt-4 space-y-2">
+              {legalLinks.map((item) => (
+                <li key={item.name}>
+                  <Link
                     href={item.href}
                     className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >
@@ -152,21 +175,21 @@ export function Footer() {
             <div>
               <h4 className="font-semibold text-sm">Why Browser-Based?</h4>
               <p className="mt-2 text-xs text-muted-foreground">
-                Our tools use modern Web Workers and Canvas APIs to process files directly in your browser. 
+                Our tools use modern Web Workers and Canvas APIs to process files directly in your browser.
                 This means your sensitive images and documents never leave your device, ensuring complete privacy.
               </p>
             </div>
             <div>
               <h4 className="font-semibold text-sm">Supported Formats</h4>
               <p className="mt-2 text-xs text-muted-foreground">
-                Convert between JPG, PNG, WebP, GIF, BMP, SVG, and ICO formats. 
+                Convert between JPG, PNG, WebP, GIF, BMP, SVG, and ICO formats.
                 Our image converters preserve quality while optimizing file sizes for web, email, and print.
               </p>
             </div>
             <div>
               <h4 className="font-semibold text-sm">Works Offline</h4>
               <p className="mt-2 text-xs text-muted-foreground">
-                Once loaded, our tools work without an internet connection. 
+                Once loaded, our tools work without an internet connection.
                 Perfect for handling sensitive documents or working in areas with limited connectivity.
               </p>
             </div>

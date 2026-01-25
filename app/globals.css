@@ -123,3 +123,137 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Prose/Typography Styles for Content Pages */
+@layer components {
+  .prose {
+    font-size: 1rem;
+    line-height: 1.75;
+  }
+
+  .prose h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid oklch(0.922 0 0);
+    letter-spacing: -0.025em;
+  }
+
+  .prose h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .prose h4 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .prose p {
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
+    opacity: 0.8;
+  }
+
+  .prose > p:first-of-type {
+    margin-top: 0;
+  }
+
+  .prose ul,
+  .prose ol {
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
+    padding-left: 1.5rem;
+  }
+
+  .prose ul {
+    list-style-type: disc;
+  }
+
+  .prose ol {
+    list-style-type: decimal;
+  }
+
+  .prose li {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding-left: 0.5rem;
+    opacity: 0.8;
+  }
+
+  .prose strong {
+    font-weight: 600;
+    opacity: 1;
+  }
+
+  .prose a {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    font-weight: 500;
+  }
+
+  .prose a:hover {
+    opacity: 0.7;
+  }
+
+  .prose blockquote {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    padding-left: 1rem;
+    border-left: 4px solid oklch(0.556 0 0);
+    font-style: italic;
+    opacity: 0.8;
+  }
+
+  .prose code {
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+    background-color: oklch(0.97 0 0);
+    padding: 0.2em 0.4em;
+    border-radius: 0.25rem;
+  }
+
+  .prose pre {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background-color: oklch(0.97 0 0);
+    border-radius: 0.5rem;
+    overflow-x: auto;
+  }
+
+  .prose pre code {
+    background-color: transparent;
+    padding: 0;
+  }
+
+  .prose hr {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .prose .not-prose {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+/* Dark mode adjustments */
+.dark .prose h2 {
+  border-bottom-color: oklch(0.269 0 0);
+}
+
+.dark .prose code,
+.dark .prose pre {
+  background-color: oklch(0.269 0 0);
+}
+
+.dark .prose blockquote {
+  border-left-color: oklch(0.708 0 0);
+}

@@ -9,11 +9,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     const routes = [
         '',
         '/tools',
+        '/about',
+        '/contact',
+        '/privacy-policy',
+        '/terms-of-service',
+        '/cookie-policy',
     ].map((route) => ({
         url: `${BASE_URL}${route}`,
         lastModified: new Date(),
-        changeFrequency: 'daily' as const,
-        priority: route === '' ? 1 : 0.8,
+        changeFrequency: (route === '' ? 'daily' : route === '/tools' ? 'daily' : 'monthly') as 'daily' | 'monthly',
+        priority: route === '' ? 1 : route === '/tools' ? 0.9 : route === '/about' ? 0.7 : 0.5,
     }))
 
     // Tool specific routes generated from config

@@ -1,6 +1,11 @@
 // Image Tool Components - Each is a standalone, self-contained converter
 
 // ============================================
+// Image Resizer - Top featured tool
+// ============================================
+export { ImageResizer } from './ImageResizer';
+
+// ============================================
 // JPG/JPEG Converters
 // ============================================
 export { JpgToPngConverter } from './JpgToPngConverter';

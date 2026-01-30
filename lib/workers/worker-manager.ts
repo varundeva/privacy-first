@@ -9,6 +9,8 @@ import type {
     WorkerResponse,
     ImageConversionPayload,
     ImageConversionResult,
+    ImageResizePayload,
+    ImageResizeResult,
     ProgressUpdate,
 } from './types';
 
@@ -133,14 +135,15 @@ class WorkerPool<TPayload, TResult> {
 // Image Worker Instance
 // ============================================
 
-let imageWorkerPool: WorkerPool<ImageConversionPayload, ImageConversionResult> | null = null;
+// Use unknown for flexibility with multiple operation types
+let imageWorkerPool: WorkerPool<unknown, unknown> | null = null;
 
 /**
  * Get or create the image worker pool
  */
-function getImageWorkerPool(): WorkerPool<ImageConversionPayload, ImageConversionResult> {
+function getImageWorkerPool(): WorkerPool<unknown, unknown> {
     if (!imageWorkerPool) {
-        imageWorkerPool = new WorkerPool<ImageConversionPayload, ImageConversionResult>(
+        imageWorkerPool = new WorkerPool<unknown, unknown>(
             () => new Worker(new URL('./image.worker.ts', import.meta.url), { type: 'module' })
         );
     }
@@ -177,7 +180,42 @@ export async function convertImage(
     };
 
     // Transfer the ArrayBuffer to avoid copying
-    return pool.execute('convert', payload, options?.onProgress, [arrayBuffer]);
+    return pool.execute('convert', payload, options?.onProgress, [arrayBuffer]) as Promise<ImageConversionResult>;
+}
+
+/**
+ * Resize an image using the image worker
+ */
+export async function resizeImage(
+    file: File,
+    targetWidth: number,
+    targetHeight: number,
+    options?: {
+        outputFormat?: 'jpeg' | 'png' | 'webp';
+        quality?: number;
+        onProgress?: ProgressCallback;
+    }
+): Promise<ImageResizeResult> {
+    const pool = getImageWorkerPool();
+
+    // Read file as ArrayBuffer
+    const arrayBuffer = await file.arrayBuffer();
+
+    // Get source format from file extension
+    const sourceFormat = file.name.split('.').pop()?.toLowerCase() || 'unknown';
+
+    const payload: ImageResizePayload = {
+        imageData: arrayBuffer,
+        fileName: file.name,
+        sourceFormat,
+        targetWidth,
+        targetHeight,
+        outputFormat: options?.outputFormat || 'jpeg',
+        quality: options?.quality,
+    };
+
+    // Transfer the ArrayBuffer to avoid copying
+    return pool.execute('resize', payload, options?.onProgress, [arrayBuffer]) as Promise<ImageResizeResult>;
 }
 
 /**
@@ -189,4 +227,5 @@ export function terminateAllWorkers(): void {
 }
 
 // Export types
-export type { ProgressCallback, ProgressUpdate, ImageConversionResult };
+export type { ProgressCallback, ProgressUpdate, ImageConversionResult, ImageResizeResult };
+

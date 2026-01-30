@@ -37,6 +37,34 @@ export interface ImageConversionResult {
     error?: string;
 }
 
+// ============================================
+// Image Resize Types
+// ============================================
+
+export interface ImageResizePayload {
+    imageData: ArrayBuffer;
+    fileName: string;
+    sourceFormat: string;
+    targetWidth: number;
+    targetHeight: number;
+    outputFormat: 'jpeg' | 'png' | 'webp';
+    quality?: number; // 0-1 for lossy formats
+}
+
+export interface ImageResizeResult {
+    success: boolean;
+    data?: ArrayBuffer;
+    fileName?: string;
+    mimeType?: string;
+    originalSize: number;
+    resizedSize?: number;
+    originalWidth?: number;
+    originalHeight?: number;
+    newWidth?: number;
+    newHeight?: number;
+    error?: string;
+}
+
 export interface ImageMetadata {
     name: string;
     size: string;

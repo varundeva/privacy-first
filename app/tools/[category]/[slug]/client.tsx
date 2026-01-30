@@ -5,6 +5,9 @@ import { RelatedTools } from '@/components/tools/RelatedTools';
 
 // Import all image converters
 import {
+  // Image Resizer - Featured tool
+  ImageResizer,
+
   // JPG/JPEG Converters
   JpgToPngConverter,
   JpgToWebpConverter,
@@ -92,6 +95,11 @@ export function ToolPageClient({
     };
 
     switch (toolId) {
+      // Image Tools
+      case 'image-resizer':
+        return <ImageResizer {...commonProps} acceptedFormats={acceptedFormats} maxFileSize={maxFileSize} />;
+
+      // Text Tools
       case 'word-counter':
         return <WordCounter {...commonProps} acceptedFormats={acceptedFormats} maxFileSize={maxFileSize} />;
       case 'case-converter':

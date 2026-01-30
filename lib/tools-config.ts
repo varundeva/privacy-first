@@ -100,6 +100,129 @@ export const toolCategories: ToolCategory[] = [
 
 export const toolsConfig: Tool[] = [
   // ─────────────────────────────────────────
+  // Image Resizer - Top tool for SEO
+  // ─────────────────────────────────────────
+  {
+    id: 'image-resizer',
+    name: 'Image Resizer',
+    slug: 'image-resizer',
+    category: 'image',
+    categoryLabel: 'Image Tools',
+    description: 'Resize images online free. Change photo dimensions by pixels, percentage, or social media presets. No upload required.',
+    longDescription: 'Free online image resizer tool to change photo dimensions instantly. Resize images by exact pixels, scale by percentage, or use built-in presets for Facebook, Instagram, Twitter, LinkedIn, YouTube thumbnails, and more. No file upload - your photos never leave your browser. Perfect for resizing images for websites, social media, email attachments, and printing.',
+    keywords: [
+      'image resizer',
+      'resize image online',
+      'photo resizer',
+      'resize photo',
+      'image dimension changer',
+      'resize image free',
+      'image size reducer',
+      'picture resizer',
+      'resize jpg',
+      'resize png',
+      'resize image for instagram',
+      'resize image for facebook',
+      'resize image for twitter',
+      'resize image for linkedin',
+      'resize image for youtube thumbnail',
+      'resize images for web',
+      'bulk image resizer',
+      'change image size',
+      'reduce image dimensions',
+      'photo dimension changer',
+      'online photo resizer free',
+      'resize image without losing quality',
+      'image scaler',
+      'resize multiple images',
+      'social media image resizer',
+      'passport photo resizer',
+      'thumbnail maker',
+      'resize image to specific size',
+      'crop and resize image',
+      'resize picture online',
+    ],
+    icon: 'Maximize2',
+    acceptedFormats: ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.bmp'],
+    maxFileSize: 50,
+    seo: {
+      title: 'Image Resizer - Resize Images Online Free | No Upload Required',
+      metaDescription: 'Resize images online for free. Change photo dimensions by pixels, percentage, or social media presets. No upload needed - 100% private browser-based tool.',
+      h1: 'Resize Images Online - Free Photo Resizer Tool',
+      features: [
+        'Resize by exact pixel dimensions (width & height)',
+        'Scale images by percentage (25%, 50%, 75%, 100%, 150%, 200%)',
+        'Social media presets for Instagram, Facebook, Twitter, LinkedIn, YouTube',
+        'Maintain aspect ratio to prevent image distortion',
+        'Export to JPG, PNG, or WebP format',
+        'Adjustable quality settings for optimal file size vs quality',
+        'Real-time preview of resized output',
+        'No file upload - 100% browser-based processing',
+        'Works offline after page load',
+        'Free forever with no registration required',
+        'Supports batch resizing of multiple images',
+        'High-quality resizing using advanced interpolation',
+      ],
+      useCases: [
+        'Resize images for website optimization and faster page loading',
+        'Prepare photos for social media (Instagram posts, Facebook covers, Twitter headers)',
+        'Create YouTube video thumbnails (1280×720)',
+        'Resize profile pictures and avatars',
+        'Reduce image file size for email attachments',
+        'Prepare passport photos and ID card images',
+        'Create favicons and app icons',
+        'Resize product images for e-commerce (Amazon, eBay, Etsy)',
+        'Prepare images for print (posters, flyers, business cards)',
+        'Optimize images for blog posts and articles',
+        'Resize screenshots for documentation',
+        'Create banner ads and web graphics',
+      ],
+      faq: [
+        {
+          question: 'How do I resize an image to a specific size?',
+          answer: 'Upload your image, then enter the exact width and height in pixels. You can also lock the aspect ratio to maintain proportions while resizing. The image resizer will instantly generate a preview of your resized photo.',
+        },
+        {
+          question: 'Can I resize an image without losing quality?',
+          answer: 'Yes! Our image resizer uses high-quality interpolation algorithms to preserve image quality. For best results when enlarging, use PNG or WebP format, and when reducing size, JPEG with 85-92% quality provides the best balance.',
+        },
+        {
+          question: 'What are the ideal image sizes for social media?',
+          answer: 'Instagram: 1080×1080 (square), 1080×1350 (portrait), 1080×1920 (story). Facebook: 1200×630 (post), 820×312 (cover). Twitter: 1200×675 (post), 1500×500 (header). LinkedIn: 1200×627 (post). YouTube thumbnail: 1280×720.',
+        },
+        {
+          question: 'Is this image resizer really free?',
+          answer: 'Yes, completely free! No watermarks, no registration, no hidden fees. The tool runs entirely in your browser, so there are no server costs for us to pass on to you.',
+        },
+        {
+          question: 'Are my images uploaded to a server?',
+          answer: 'No! Your images are processed 100% locally in your browser using JavaScript Canvas API. Files never leave your device, ensuring complete privacy and security.',
+        },
+        {
+          question: 'What image formats can I resize?',
+          answer: 'Our resizer supports all common image formats including JPEG/JPG, PNG, WebP, GIF, and BMP. You can also choose your output format (JPEG, PNG, or WebP) regardless of the input format.',
+        },
+        {
+          question: 'How do I resize an image by percentage?',
+          answer: 'Switch to the "Percent" tab after uploading your image. Use the slider or quick buttons (25%, 50%, 75%, 100%) to scale your image proportionally. This is perfect when you need to make an image smaller but don\'t know the exact dimensions.',
+        },
+        {
+          question: 'Can I resize images for printing?',
+          answer: 'Yes! For high-quality prints, keep the resolution at 300 DPI. For a 4×6 inch print, size your image to 1200×1800 pixels. For posters and large prints, scale up accordingly while maintaining high quality settings.',
+        },
+        {
+          question: 'What\'s the maximum file size I can resize?',
+          answer: 'You can resize images up to 50MB. Larger files may be slow to process depending on your device\'s capabilities since all processing happens locally in your browser.',
+        },
+        {
+          question: 'Can I resize multiple images at once?',
+          answer: 'Currently, you can resize one image at a time. This ensures maximum quality and gives you precise control over each image. Batch resizing feature is coming soon!',
+        },
+      ],
+    },
+  },
+
+  // ─────────────────────────────────────────
   // JPG/JPEG Converters
   // ─────────────────────────────────────────
   {

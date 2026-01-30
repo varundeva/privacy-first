@@ -9,6 +9,7 @@ const viralTools = [
   { name: 'JPG to PNG', href: '/tools/image/jpg-to-png', hot: true },
   { name: 'PNG to JPG', href: '/tools/image/png-to-jpg', hot: true },
   { name: 'WebP to PNG', href: '/tools/image/webp-to-png' },
+  { name: 'Image Resizer', href: '/tools/image/image-resizer', hot: true },
   { name: 'WebP to JPG', href: '/tools/image/webp-to-jpg' },
   { name: 'PDF Compressor', href: '/tools/pdf/pdf-compress', hot: true },
   { name: 'Merge PDF', href: '/tools/pdf/pdf-merge' },
@@ -48,12 +49,6 @@ const textTools = [
   { name: 'Text Diff', href: '/tools/text/text-diff' },
   { name: 'Lorem Ipsum', href: '/tools/text/lorem-ipsum' },
   { name: 'Text to Slug', href: '/tools/text/text-to-slug' },
-];
-
-const dateTools = [
-  { name: 'Unix Timestamp', href: '/tools/date/unix-timestamp' },
-  { name: 'Age Calculator', href: '/tools/date/age-calculator' },
-  { name: 'Time Zone Converter', href: '/tools/date/time-zone-converter' },
 ];
 
 const companyLinks = [

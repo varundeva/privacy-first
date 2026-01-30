@@ -153,6 +153,7 @@ export default async function ToolPage(props: PageProps) {
         useCases={tool.seo.useCases}
         faq={tool.seo.faq}
         category={tool.category}
+        categoryLabel={tool.categoryLabel}
       />
     </>
   );

@@ -20,6 +20,8 @@ interface ToolShellProps {
   features?: string[];
   useCases?: string[];
   faq?: { question: string; answer: string }[];
+  category?: string;
+  categoryLabel?: string;
   children: (props: { file: File; onReset: () => void }) => React.ReactNode;
 }
 
@@ -34,6 +36,8 @@ export function ToolShell({
   features = [],
   useCases = [],
   faq = [],
+  category,
+  categoryLabel,
   children,
 }: ToolShellProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -49,7 +53,12 @@ export function ToolShell({
   return (
     <div className="flex flex-col">
       {/* Tool Header */}
-      <ToolHeader title={title} description={description} />
+      <ToolHeader
+        title={title}
+        description={description}
+        category={category}
+        categoryLabel={categoryLabel}
+      />
 
       {/* Main Content */}
       <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 w-full space-y-16">

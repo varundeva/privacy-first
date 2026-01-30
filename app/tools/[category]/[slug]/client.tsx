@@ -2,7 +2,6 @@
 
 import { ToolShell } from '@/components/tools/ToolShell';
 import { RelatedTools } from '@/components/tools/RelatedTools';
-import { getCategoryLabel } from '@/lib/tools-config';
 
 // Import all image converters
 import {
@@ -64,6 +63,7 @@ interface ToolPageClientProps {
   useCases?: string[];
   faq?: { question: string; answer: string }[];
   category: string;
+  categoryLabel: string;
 }
 
 export function ToolPageClient({
@@ -76,84 +76,94 @@ export function ToolPageClient({
   useCases,
   faq,
   category,
+  categoryLabel,
 }: ToolPageClientProps) {
-  const categoryLabel = getCategoryLabel(category as any);
 
   // Render logic for special tools (+ internal linking)
   const renderSpecialTool = () => {
+    const commonProps = {
+      title,
+      description,
+      features,
+      useCases,
+      faq,
+      category,
+      categoryLabel,
+    };
+
     switch (toolId) {
       case 'word-counter':
-        return <WordCounter title={title} description={description} acceptedFormats={acceptedFormats} maxFileSize={maxFileSize} features={features} useCases={useCases} faq={faq} />;
+        return <WordCounter {...commonProps} acceptedFormats={acceptedFormats} maxFileSize={maxFileSize} />;
       case 'case-converter':
-        return <CaseConverter title={title} description={description} acceptedFormats={acceptedFormats} maxFileSize={maxFileSize} features={features} useCases={useCases} faq={faq} />;
+        return <CaseConverter {...commonProps} acceptedFormats={acceptedFormats} maxFileSize={maxFileSize} />;
       case 'base64-to-image':
-        return <Base64ToImage title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+        return <Base64ToImage {...commonProps} />;
       case 'text-diff':
-        return <TextDiff title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+        return <TextDiff {...commonProps} />;
       case 'find-replace':
-        return <FindAndReplace title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+        return <FindAndReplace {...commonProps} />;
       case 'lorem-ipsum':
-        return <LoremIpsumGenerator title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+        return <LoremIpsumGenerator {...commonProps} />;
       case 'text-to-slug':
-        return <TextToSlug title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+        return <TextToSlug {...commonProps} />;
       case 'remove-duplicate-lines':
-        return <RemoveDuplicateLines title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+        return <RemoveDuplicateLines {...commonProps} />;
       case 'unix-timestamp':
-        return <UnixTimestampConverter title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+        return <UnixTimestampConverter {...commonProps} />;
       case 'time-difference':
-        return <TimeDifferenceCalculator title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+        return <TimeDifferenceCalculator {...commonProps} />;
       case 'time-zone-converter':
-        return <TimeZoneConverter title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+        return <TimeZoneConverter {...commonProps} />;
       case 'date-format-converter':
-        return <DateFormatConverter title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+        return <DateFormatConverter {...commonProps} />;
       case 'week-number-calculator':
-        return <WeekNumberCalculator title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+        return <WeekNumberCalculator {...commonProps} />;
       case 'age-calculator':
-        return <AgeCalculator title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+        return <AgeCalculator {...commonProps} />;
       case 'business-days-calculator':
-        return <BusinessDaysCalculator title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+        return <BusinessDaysCalculator {...commonProps} />;
       case 'json-formatter':
-        return <JsonFormatter title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+        return <JsonFormatter {...commonProps} />;
       case 'json-to-csv':
-        return <JsonToCsv title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+        return <JsonToCsv {...commonProps} />;
       case 'csv-to-json':
-        return <CsvToJson title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+        return <CsvToJson {...commonProps} />;
       case 'json-to-typescript':
-        return <JsonToTypescript title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+        return <JsonToTypescript {...commonProps} />;
       case 'json-to-yaml':
-        return <JsonToYaml title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+        return <JsonToYaml {...commonProps} />;
       case 'yaml-to-json':
-        return <YamlToJson title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+        return <YamlToJson {...commonProps} />;
       case 'md5-generator':
-        return <Md5Generator title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+        return <Md5Generator {...commonProps} />;
       case 'sha-generator':
-        return <ShaGenerator title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+        return <ShaGenerator {...commonProps} />;
       case 'bcrypt-generator':
-        return <BcryptGenerator title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+        return <BcryptGenerator {...commonProps} />;
       case 'aes-encryption':
-        return <AesEncryption title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+        return <AesEncryption {...commonProps} />;
       case 'base64-encoder':
-        return <Base64Encoder title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+        return <Base64Encoder {...commonProps} />;
       case 'sql-formatter':
-        return <SqlFormatter title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+        return <SqlFormatter {...commonProps} />;
       case 'html-formatter':
-        return <HtmlFormatter title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+        return <HtmlFormatter {...commonProps} />;
       case 'css-formatter':
-        return <CssFormatter title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+        return <CssFormatter {...commonProps} />;
       case 'url-encoder':
-        return <UrlEncoder title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+        return <UrlEncoder {...commonProps} />;
       case 'url-parser':
-        return <UrlParser title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+        return <UrlParser {...commonProps} />;
       case 'user-agent-parser':
-        return <UserAgentParser title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+        return <UserAgentParser {...commonProps} />;
       case 'html-entity-converter':
-        return <HtmlEntityConverter title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+        return <HtmlEntityConverter {...commonProps} />;
       case 'color-converter':
-        return <ColorConverter title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+        return <ColorConverter {...commonProps} />;
       case 'css-unit-converter':
-        return <CssUnitConverter title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+        return <CssUnitConverter {...commonProps} />;
       case 'jwt-debugger':
-        return <JwtDebugger title={title} description={description} features={features} useCases={useCases} faq={faq} />;
+        return <JwtDebugger {...commonProps} />;
       default:
         return null;
     }
@@ -174,6 +184,8 @@ export function ToolPageClient({
         features={features}
         useCases={useCases}
         faq={faq}
+        category={category}
+        categoryLabel={categoryLabel}
       >
         {({ file, onReset }) => {
           switch (toolId) {

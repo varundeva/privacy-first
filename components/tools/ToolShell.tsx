@@ -61,7 +61,7 @@ export function ToolShell({
       />
 
       {/* Main Content */}
-      <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 w-full space-y-16">
+      <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8 w-full space-y-16">
         {/* Tool Interface */}
         <div className="min-h-[400px]">
           {!selectedFile ? (

@@ -17,6 +17,41 @@ const nextConfig = {
       },
     },
   },
+  // Headers for caching static assets (images, fonts, etc.)
+  async headers() {
+    return [
+      {
+        // Apply caching to static images
+        source: '/:all*(svg|jpg|jpeg|png|gif|ico|webp|avif)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        // Apply caching to static fonts
+        source: '/:all*(woff|woff2|ttf|otf|eot)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        // Apply caching to JS/CSS
+        source: '/_next/static/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+    ];
+  },
   // Webpack configuration for Web Workers and WebAssembly
   webpack: (config, { isServer }) => {
     if (!isServer) {

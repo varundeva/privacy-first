@@ -1,5 +1,5 @@
 import React from "react"
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Header } from '@/components/layout'
@@ -17,6 +17,13 @@ const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
 });
 
+
+export const viewport: Viewport = {
+  themeColor: '#ffffff',
+  width: 'device-width',
+  initialScale: 1,
+}
+
 export const metadata: Metadata = {
   title: {
     default: 'Privacy-First Toolbox | Free Online Tools',
@@ -26,7 +33,7 @@ export const metadata: Metadata = {
   keywords: ['privacy', 'tools', 'converter', 'image', 'pdf', 'text', 'online tools', 'browser-based', 'no upload'],
   authors: [{ name: 'Privacy-First Toolbox' }],
   creator: 'Privacy-First Toolbox',
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://example.com')),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://privacyfirst.tools')),
   icons: {
     icon: [
       { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
@@ -53,7 +60,6 @@ export const metadata: Metadata = {
     'msapplication-TileColor': '#ffffff',
     'msapplication-TileImage': '/ms-icon-144x144.png',
   },
-  themeColor: '#ffffff',
   openGraph: {
     title: 'Privacy-First Toolbox | Free Online Tools',
     description: 'Free, privacy-first tools that run entirely in your browser. Your data never leaves your device.',

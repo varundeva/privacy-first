@@ -4,7 +4,7 @@ import { getToolBySlug, toolsConfig } from '@/lib/tools-config';
 import { ToolPageClient } from './client';
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ||
-  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://example.com');
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://privacyfirst.tools');
 
 interface PageProps {
   params: Promise<{

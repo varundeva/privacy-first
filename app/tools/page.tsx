@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { ToolsClient } from './tools-client';
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ||
-  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://example.com');
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://privacyfirst.tools');
 
 // SEO Metadata for Tools Page
 export const metadata: Metadata = {

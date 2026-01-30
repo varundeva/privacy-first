@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next'
 import { toolsConfig } from '@/lib/tools-config'
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ||
-    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://example.com')
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://privacyfirst.tools')
 
 export default function sitemap(): MetadataRoute.Sitemap {
     // Base routes

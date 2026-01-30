@@ -4,12 +4,12 @@ import { HomeClient } from './home-client';
 import Loading from './loading';
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ||
-  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://example.com');
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://privacyfirst.tools');
 
 // SEO Metadata for Homepage
 export const metadata: Metadata = {
   title: 'Privacy-First Toolbox | Free Online Tools That Never Upload Your Files',
-  description: 'Free online tools that process files entirely in your browser. Convert images, edit PDFs, and more. Your data never leaves your device. No registration required.',
+  description: 'Free online tools that process files in your browser. Convert images, edit PDFs & more. Your data never leaves your device.',
   keywords: [
     'online tools',
     'image converter',
@@ -27,6 +27,7 @@ export const metadata: Metadata = {
     title: 'Privacy-First Toolbox | Free Online Tools',
     description: 'Free online tools that process files entirely in your browser. Your data never leaves your device.',
     type: 'website',
+    url: BASE_URL,
     siteName: 'Privacy-First Toolbox',
     locale: 'en_US',
     images: [
@@ -59,7 +60,7 @@ export const metadata: Metadata = {
   },
 
   alternates: {
-    canonical: '/',
+    canonical: BASE_URL,
   },
 };
 

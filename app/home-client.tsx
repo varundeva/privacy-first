@@ -27,6 +27,7 @@ import {
   CheckCircle2,
   ArrowUpRight,
 } from 'lucide-react';
+import { ProductHuntBadge } from '@/components/ui/product-hunt-badge';
 
 // ============================================
 // Types
@@ -148,9 +149,27 @@ function HeroSection() {
       <div className="relative mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:py-28">
         <div className="text-center">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm backdrop-blur-sm mb-8">
+          <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm backdrop-blur-sm mb-6">
             <Shield className="h-4 w-4 text-green-400" />
             <span>100% Browser-Based • No Upload Required</span>
+          </div>
+
+          {/* Product Hunt Launch Badge - Premium Styling */}
+          <div className="mb-8 flex flex-col items-center gap-3">
+            <div className="relative group">
+              {/* Animated glow effect */}
+              <div className="absolute -inset-2 bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 rounded-xl blur-lg opacity-40 group-hover:opacity-60 transition-opacity duration-500 animate-pulse" />
+
+              {/* Badge container with glassmorphism */}
+              <div className="relative flex flex-col items-center gap-2 rounded-xl bg-white/10 backdrop-blur-md px-6 py-4 border border-white/20 shadow-2xl">
+                <div className="flex items-center gap-2 text-sm font-medium text-orange-300">
+                  <Sparkles className="h-4 w-4 animate-pulse" />
+                  <span>We&apos;re Live on Product Hunt!</span>
+                  <Sparkles className="h-4 w-4 animate-pulse" />
+                </div>
+                <ProductHuntBadge size="medium" />
+              </div>
+            </div>
           </div>
 
           {/* Main Heading - SEO Optimized */}

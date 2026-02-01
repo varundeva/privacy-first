@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { Shield, Heart, Github, ExternalLink } from 'lucide-react';
 import { toolsConfig } from '@/lib/tools-config';
+import { ProductHuntBadge } from '@/components/ui/product-hunt-badge';
 
 // Most viral/popular tools based on search volume
 const viralTools = [
@@ -104,6 +105,18 @@ export function Footer() {
               Open Source on GitHub
               <ExternalLink className="h-3 w-3" />
             </a>
+
+            {/* Product Hunt Badge */}
+            <div className="mt-6">
+              <p className="text-xs text-muted-foreground mb-2">Featured on</p>
+              <div className="relative group inline-block">
+                {/* Subtle glow on hover */}
+                <div className="absolute -inset-1 bg-gradient-to-r from-orange-500/20 to-red-500/20 rounded-lg blur opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="relative">
+                  <ProductHuntBadge size="small" />
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Popular Tools - Most Searched */}

@@ -9,6 +9,8 @@ A free, open-source collection of browser-based tools that process your files *e
 [![Issues](https://img.shields.io/github/issues/varundeva/privacy-first)](https://github.com/varundeva/privacy-first/issues)
 [![Pull Requests](https://img.shields.io/github/issues-pr/varundeva/privacy-first)](https://github.com/varundeva/privacy-first/pulls)
 
+<a href="https://www.producthunt.com/products/privacy-first-tools-free-and-private?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-privacy-first-tools-free-and-private" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1070935&theme=light&t=1769938186859" alt="Privacy First Tools - Free and Private - Free online tools for images, PDFs & more - 100% private | Product Hunt" width="250" height="54" /></a>
+
 ---
 
 ## 🌟 Vision

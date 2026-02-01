@@ -45,7 +45,27 @@ import {
 } from '@/components/tools/image';
 
 // Import PDF tools
-import { PdfToPngConverter, PdfToJpgConverter, PdfCompressor, PdfSplitter, PdfMerger, PdfOrganizer, PdfUnlocker, PdfRotator, PdfPageNumbers, PdfMetadataEditor } from '@/components/tools/pdf';
+import {
+  PdfToPngConverter,
+  PdfToJpgConverter,
+  PdfCompressor,
+  PdfSplitter,
+  PdfMerger,
+  PdfOrganizer,
+  PdfUnlocker,
+  PdfRotator,
+  PdfPageNumbers,
+  PdfMetadataEditor,
+  PdfWatermark,
+  PdfDeletePages,
+  PdfToText,
+  ImagesToPdfConverter,
+  PdfGrayscale,
+  PdfSign,
+  PdfHeaderFooter,
+  PdfFlatten,
+  PdfCrop,
+} from '@/components/tools/pdf';
 
 // Import Text tools
 import { WordCounter, CaseConverter, TextDiff, FindAndReplace, LoremIpsumGenerator, TextToSlug, RemoveDuplicateLines } from '@/components/tools/text';
@@ -98,6 +118,10 @@ export function ToolPageClient({
       // Image Tools
       case 'image-resizer':
         return <ImageResizer {...commonProps} acceptedFormats={acceptedFormats} maxFileSize={maxFileSize} />;
+
+      // Multi-file tools without ToolShell
+      case 'images-to-pdf':
+        return <ImagesToPdfConverter {...commonProps} acceptedFormats={acceptedFormats} maxFileSize={maxFileSize} />;
 
       // Text Tools
       case 'word-counter':
@@ -225,6 +249,14 @@ export function ToolPageClient({
             case 'pdf-rotate': return <PdfRotator file={file} onReset={onReset} />;
             case 'pdf-page-numbers': return <PdfPageNumbers file={file} onReset={onReset} />;
             case 'pdf-metadata': return <PdfMetadataEditor file={file} onReset={onReset} />;
+            case 'pdf-watermark': return <PdfWatermark file={file} onReset={onReset} />;
+            case 'pdf-delete-pages': return <PdfDeletePages file={file} onReset={onReset} />;
+            case 'pdf-to-text': return <PdfToText file={file} onReset={onReset} />;
+            case 'pdf-grayscale': return <PdfGrayscale file={file} onReset={onReset} />;
+            case 'pdf-sign': return <PdfSign file={file} onReset={onReset} />;
+            case 'pdf-header-footer': return <PdfHeaderFooter file={file} onReset={onReset} />;
+            case 'pdf-flatten': return <PdfFlatten file={file} onReset={onReset} />;
+            case 'pdf-crop': return <PdfCrop file={file} onReset={onReset} />;
             default:
               return (
                 <div className="rounded-lg border border-dashed p-8 text-center text-muted-foreground">

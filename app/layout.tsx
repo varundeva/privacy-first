@@ -87,6 +87,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geist.variable} ${geistMono.variable} font-sans antialiased`}>
+        <meta name="google-adsense-account" content={process.env.NEXT_PUBLIC_GOOGLE_ADSENSE_ACCOUNT_ID}></meta>
         {/* Google Analytics - Only in production with valid ID */}
         {process.env.NODE_ENV === 'production' && gaId && (
           <GoogleAnalytics id={gaId} isNextJs />

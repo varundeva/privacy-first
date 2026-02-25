@@ -72,7 +72,7 @@ import { WordCounter, CaseConverter, TextDiff, FindAndReplace, LoremIpsumGenerat
 
 // Import Date tools
 import { UnixTimestampConverter, TimeDifferenceCalculator, TimeZoneConverter, DateFormatConverter, WeekNumberCalculator, AgeCalculator, BusinessDaysCalculator } from '@/components/tools/date';
-import { JsonFormatter, JsonToCsv, CsvToJson, JsonToTypescript, JsonToYaml, YamlToJson } from '@/components/tools/json';
+import { JsonFormatter, JsonComparison, JsonToCsv, CsvToJson, JsonToTypescript, JsonToYaml, YamlToJson } from '@/components/tools/json';
 import { Md5Generator, ShaGenerator, BcryptGenerator, AesEncryption, Base64Encoder, JwtDebugger } from '@/components/tools/crypto';
 import { SqlFormatter, HtmlFormatter, CssFormatter, UrlEncoder, UrlParser, UserAgentParser, HtmlEntityConverter, ColorConverter, CssUnitConverter } from '@/components/tools/web';
 
@@ -156,6 +156,8 @@ export function ToolPageClient({
         return <BusinessDaysCalculator {...commonProps} />;
       case 'json-formatter':
         return <JsonFormatter {...commonProps} />;
+      case 'json-comparison':
+        return <JsonComparison {...commonProps} />;
       case 'json-to-csv':
         return <JsonToCsv {...commonProps} />;
       case 'csv-to-json':

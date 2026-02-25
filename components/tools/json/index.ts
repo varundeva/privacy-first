@@ -1,4 +1,5 @@
 export { JsonFormatter } from './JsonFormatter';
+export { JsonComparison } from './JsonComparison';
 export { JsonToCsv } from './JsonToCsv';
 export { CsvToJson } from './CsvToJson';
 export { JsonToTypescript } from './JsonToTypescript';

@@ -37,6 +37,7 @@ const pdfTools = [
 
 const developerTools = [
   { name: 'JSON Formatter', href: '/tools/json/json-formatter' },
+  { name: 'JSON Comparison', href: '/tools/json/json-comparison' },
   { name: 'JSON to CSV', href: '/tools/json/json-to-csv' },
   { name: 'JSON to TypeScript', href: '/tools/json/json-to-typescript' },
   { name: 'Image to Base64', href: '/tools/image/image-to-base64' },

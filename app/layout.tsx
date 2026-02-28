@@ -93,6 +93,12 @@ export default function RootLayout({
           <GoogleAnalytics id={gaId} isNextJs />
         )}
 
+        <script
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_GOOGLE_ADSENSE_ACCOUNT_ID}`}
+            crossOrigin="anonymous"
+          ></script>
+
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

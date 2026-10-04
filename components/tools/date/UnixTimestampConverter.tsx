@@ -310,19 +310,13 @@ export function UnixTimestampConverter({ title, description, features, useCases,
                 )}
             </main>
 
-            <footer className="border-t mt-auto py-8 bg-muted/10">
-                <div className="mx-auto max-w-5xl px-4 sm:px-6">
-                    <div className="flex flex-col items-center justify-center gap-4 text-center">
-                        <span className="text-2xl">⏰</span>
-                        <div>
-                            <h3 className="font-medium text-foreground">Precise Timing</h3>
-                            <p className="mt-1 text-sm text-muted-foreground max-w-md mx-auto">
-                                All conversions happen locally in your browser for zero latency and privacy.
-                            </p>
-                        </div>
-                    </div>
+            {/* Privacy Guarantee Banner */}
+            <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 w-full text-center border-t border-dashed mt-8">
+                <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-muted/50 text-sm text-muted-foreground">
+                    <span>🔒</span>
+                    <span>100% Client-Side: Timestamps convert locally in your browser for zero latency and privacy.</span>
                 </div>
-            </footer>
+            </div>
         </div>
     );
 }

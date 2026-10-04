@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ToolHeader } from '../ToolHeader';
@@ -15,7 +15,9 @@ import {
     Trash2,
     Settings2,
     Upload,
-    Code
+    Code,
+    Maximize2,
+    Minimize2,
 } from 'lucide-react';
 import {
     Accordion,
@@ -62,9 +64,21 @@ export function SqlFormatter({ title, description, features, useCases, faq }: Sq
     const [dialect, setDialect] = useState('sql');
     const [upperCase, setUpperCase] = useState(true);
     const [indentSize, setIndentSize] = useState('2');
+    const [isFullscreen, setIsFullscreen] = useState(false);
 
     const { theme } = useTheme();
     const fileInputRef = useRef<HTMLInputElement>(null);
+
+    // Listen for Escape key to exit fullscreen
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape' && isFullscreen) {
+                setIsFullscreen(false);
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [isFullscreen]);
 
     const handleFormat = () => {
         if (!input.trim()) {
@@ -145,135 +159,157 @@ export function SqlFormatter({ title, description, features, useCases, faq }: Sq
         <div className="min-h-screen bg-background flex flex-col">
             <ToolHeader title={title} description={description} />
 
-            <main className="flex-1 mx-auto max-w-7xl px-4 py-8 sm:px-6 w-full space-y-8">
-                {/* Options Toolbar */}
-                <div className="flex flex-wrap gap-6 p-4 border rounded-xl bg-card items-center shadow-sm">
-                    <div className="flex items-center gap-2">
-                        <div className="p-2 bg-indigo-500/10 text-indigo-500 rounded-lg">
-                            <Settings2 className="h-4 w-4" />
-                        </div>
-                        <span className="font-semibold text-sm">Formatting Options</span>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                        <Label htmlFor="dialect">Dialect</Label>
-                        <Select value={dialect} onValueChange={setDialect}>
-                            <SelectTrigger className="w-[160px] h-9">
-                                <SelectValue placeholder="Select Dialect" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                {DIALECTS.map(d => (
-                                    <SelectItem key={d.value} value={d.value}>{d.label}</SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                        <Label htmlFor="indent">Indent</Label>
-                        <Select value={indentSize} onValueChange={setIndentSize}>
-                            <SelectTrigger className="w-[100px] h-9">
-                                <SelectValue placeholder="Size" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="2">2 Spaces</SelectItem>
-                                <SelectItem value="4">4 Spaces</SelectItem>
-                                <SelectItem value="8">8 Spaces</SelectItem>
-                            </SelectContent>
-                        </Select>
-                    </div>
-
-                    <div className="flex items-center space-x-2">
-                        <Switch id="uppercase" checked={upperCase} onCheckedChange={setUpperCase} />
-                        <Label htmlFor="uppercase">Uppercase Keywords</Label>
-                    </div>
-                </div>
-
-                {/* Editors Layout */}
-                <div className="grid lg:grid-cols-2 gap-6 h-[600px]">
-                    {/* SQL Input */}
-                    <Card className="flex flex-col border-2 overflow-hidden h-full shadow-md">
-                        <div className="p-3 bg-muted/30 border-b flex items-center justify-between">
+            <main className="flex-1 mx-auto px-4 py-8 sm:px-6 w-full max-w-[96%] xl:max-w-[94%] 2xl:max-w-[1700px] space-y-8">
+                {/* Editor Workspace Container */}
+                <div className={isFullscreen ? 'fixed inset-0 z-50 bg-background flex flex-col p-4 sm:p-6 overflow-hidden space-y-4' : 'space-y-6'}>
+                    {/* Options Toolbar */}
+                    <div className="flex flex-wrap gap-4 sm:gap-6 p-3 sm:p-4 border rounded-xl bg-card items-center justify-between shadow-sm">
+                        <div className="flex flex-wrap items-center gap-4 sm:gap-6">
                             <div className="flex items-center gap-2">
-                                <Database className="h-4 w-4 text-indigo-500" />
-                                <span className="text-sm font-medium">Input SQL</span>
-                            </div>
-                            <Button onClick={() => fileInputRef.current?.click()} variant="ghost" size="icon" className="h-7 w-7">
-                                <Upload className="h-3.5 w-3.5" />
-                                <input type="file" ref={fileInputRef} className="hidden" accept=".sql,.txt" onChange={handleFileUpload} />
-                            </Button>
-                        </div>
-                        <div className="flex-1 relative">
-                            <Editor
-                                height="100%"
-                                language="sql"
-                                value={input}
-                                theme={editorTheme}
-                                onChange={(val) => setInput(val || '')}
-                                options={{
-                                    minimap: { enabled: false },
-                                    fontSize: 13,
-                                    lineNumbers: 'on',
-                                    automaticLayout: true,
-                                    padding: { top: 10, bottom: 10 }
-                                }}
-                            />
-                        </div>
-                    </Card>
-
-                    {/* SQL Output */}
-                    <Card className="flex flex-col border-2 overflow-hidden h-full shadow-md">
-                        <div className="p-3 bg-muted/30 border-b flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                                <Code className="h-4 w-4 text-emerald-500" />
-                                <span className="text-sm font-medium">Formatted SQL</span>
-                            </div>
-                            <div className="flex items-center gap-1">
-                                <Button onClick={handleCopy} variant="ghost" size="icon" className="h-7 w-7">
-                                    <Copy className="h-3.5 w-3.5" />
-                                </Button>
-                                <Button onClick={handleDownload} variant="ghost" size="icon" className="h-7 w-7">
-                                    <Download className="h-3.5 w-3.5" />
-                                </Button>
-                            </div>
-                        </div>
-                        <div className="flex-1 relative">
-                            <Editor
-                                height="100%"
-                                language="sql"
-                                value={output}
-                                theme={editorTheme}
-                                options={{
-                                    readOnly: true,
-                                    minimap: { enabled: false },
-                                    fontSize: 13,
-                                    lineNumbers: 'on',
-                                    automaticLayout: true,
-                                    padding: { top: 10, bottom: 10 }
-                                }}
-                            />
-                            {error && (
-                                <div className="absolute bottom-4 left-4 right-4 bg-red-100 dark:bg-red-900/90 text-red-700 dark:text-red-200 p-2 rounded text-xs font-mono border border-red-200 dark:border-red-800 shadow-sm z-10 transition-all animate-in slide-in-from-bottom-2">
-                                    {error}
+                                <div className="p-2 bg-indigo-500/10 text-indigo-500 rounded-lg">
+                                    <Settings2 className="h-4 w-4" />
                                 </div>
-                            )}
-                        </div>
-                    </Card>
-                </div>
+                                <span className="font-semibold text-sm">Formatting Options</span>
+                            </div>
 
-                {/* Actions */}
-                <div className="flex justify-center gap-4">
-                    <Button onClick={handleReset} variant="outline" size="lg" className="gap-2 px-8 text-destructive border-destructive/20 hover:bg-destructive/10">
-                        <Trash2 className="h-5 w-5" />
-                        Reset
-                    </Button>
-                    <Button onClick={handleMinify} variant="secondary" size="lg" className="gap-2 px-8">
-                        Minify
-                    </Button>
-                    <Button onClick={handleFormat} size="lg" className="gap-2 px-12 bg-indigo-600 hover:bg-indigo-700 shadow-lg shadow-indigo-500/20">
-                        <ArrowRightLeft className="h-5 w-5" />
-                        Format SQL
-                    </Button>
+                            <div className="flex items-center gap-2">
+                                <Label htmlFor="dialect" className="text-xs">Dialect</Label>
+                                <Select value={dialect} onValueChange={setDialect}>
+                                    <SelectTrigger className="w-[150px] h-9 text-xs">
+                                        <SelectValue placeholder="Select Dialect" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {DIALECTS.map(d => (
+                                            <SelectItem key={d.value} value={d.value}>{d.label}</SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+
+                            <div className="flex items-center gap-2">
+                                <Label htmlFor="indent" className="text-xs">Indent</Label>
+                                <Select value={indentSize} onValueChange={setIndentSize}>
+                                    <SelectTrigger className="w-[95px] h-9 text-xs">
+                                        <SelectValue placeholder="Size" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="2">2 Spaces</SelectItem>
+                                        <SelectItem value="4">4 Spaces</SelectItem>
+                                        <SelectItem value="8">8 Spaces</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+
+                            <div className="flex items-center space-x-2">
+                                <Switch id="uppercase" checked={upperCase} onCheckedChange={setUpperCase} />
+                                <Label htmlFor="uppercase" className="text-xs">Uppercase Keywords</Label>
+                            </div>
+                        </div>
+
+                        {/* Fullscreen Button */}
+                        <Button
+                            onClick={() => setIsFullscreen(!isFullscreen)}
+                            variant={isFullscreen ? 'default' : 'outline'}
+                            size="sm"
+                            className="gap-1.5 text-xs h-9 font-medium"
+                            title={isFullscreen ? 'Exit Fullscreen (Esc)' : 'Expand to Fullscreen workspace'}
+                        >
+                            {isFullscreen ? <Minimize2 className="h-3.5 w-3.5" /> : <Maximize2 className="h-3.5 w-3.5" />}
+                            <span>{isFullscreen ? 'Exit Fullscreen' : 'Fullscreen'}</span>
+                            {isFullscreen && (
+                                <kbd className="hidden sm:inline-block px-1 py-0.2 rounded bg-primary-foreground/20 text-[10px]">
+                                    ESC
+                                </kbd>
+                            )}
+                        </Button>
+                    </div>
+
+                    {/* Editors Layout */}
+                    <div className={`grid lg:grid-cols-2 gap-4 sm:gap-6 ${isFullscreen ? 'flex-1 min-h-0' : 'h-[600px]'}`}>
+                        {/* SQL Input */}
+                        <Card className="flex flex-col border-2 overflow-hidden h-full shadow-md">
+                            <div className="p-3 bg-muted/30 border-b flex items-center justify-between">
+                                <div className="flex items-center gap-2">
+                                    <Database className="h-4 w-4 text-indigo-500" />
+                                    <span className="text-sm font-medium">Input SQL</span>
+                                </div>
+                                <Button onClick={() => fileInputRef.current?.click()} variant="ghost" size="icon" className="h-7 w-7">
+                                    <Upload className="h-3.5 w-3.5" />
+                                    <input type="file" ref={fileInputRef} className="hidden" accept=".sql,.txt" onChange={handleFileUpload} />
+                                </Button>
+                            </div>
+                            <div className="flex-1 relative">
+                                <Editor
+                                    height="100%"
+                                    language="sql"
+                                    value={input}
+                                    theme={editorTheme}
+                                    onChange={(val) => setInput(val || '')}
+                                    options={{
+                                        minimap: { enabled: false },
+                                        fontSize: 13,
+                                        lineNumbers: 'on',
+                                        automaticLayout: true,
+                                        padding: { top: 10, bottom: 10 }
+                                    }}
+                                />
+                            </div>
+                        </Card>
+
+                        {/* SQL Output */}
+                        <Card className="flex flex-col border-2 overflow-hidden h-full shadow-md">
+                            <div className="p-3 bg-muted/30 border-b flex items-center justify-between">
+                                <div className="flex items-center gap-2">
+                                    <Code className="h-4 w-4 text-emerald-500" />
+                                    <span className="text-sm font-medium">Formatted SQL</span>
+                                </div>
+                                <div className="flex items-center gap-1">
+                                    <Button onClick={handleCopy} variant="ghost" size="icon" className="h-7 w-7" title="Copy output">
+                                        <Copy className="h-3.5 w-3.5" />
+                                    </Button>
+                                    <Button onClick={handleDownload} variant="ghost" size="icon" className="h-7 w-7" title="Download SQL">
+                                        <Download className="h-3.5 w-3.5" />
+                                    </Button>
+                                </div>
+                            </div>
+                            <div className="flex-1 relative">
+                                <Editor
+                                    height="100%"
+                                    language="sql"
+                                    value={output}
+                                    theme={editorTheme}
+                                    options={{
+                                        readOnly: true,
+                                        minimap: { enabled: false },
+                                        fontSize: 13,
+                                        lineNumbers: 'on',
+                                        automaticLayout: true,
+                                        padding: { top: 10, bottom: 10 }
+                                    }}
+                                />
+                                {error && (
+                                    <div className="absolute bottom-4 left-4 right-4 bg-red-100 dark:bg-red-900/90 text-red-700 dark:text-red-200 p-2 rounded text-xs font-mono border border-red-200 dark:border-red-800 shadow-sm z-10 transition-all animate-in slide-in-from-bottom-2">
+                                        {error}
+                                    </div>
+                                )}
+                            </div>
+                        </Card>
+                    </div>
+
+                    {/* Actions */}
+                    <div className="flex justify-center gap-4 py-1">
+                        <Button onClick={handleReset} variant="outline" size="sm" className="gap-2 px-6 h-9 text-xs text-destructive border-destructive/20 hover:bg-destructive/10">
+                            <Trash2 className="h-4 w-4" />
+                            <span>Reset</span>
+                        </Button>
+                        <Button onClick={handleMinify} variant="secondary" size="sm" className="gap-2 px-6 h-9 text-xs">
+                            <span>Minify</span>
+                        </Button>
+                        <Button onClick={handleFormat} size="sm" className="gap-2 px-8 h-9 text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 shadow-lg shadow-indigo-500/20">
+                            <ArrowRightLeft className="h-4 w-4" />
+                            <span>Format SQL</span>
+                        </Button>
+                    </div>
                 </div>
 
                 {/* Info Section */}

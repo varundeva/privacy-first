@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, ArrowRight, Shield, Zap, Sparkles } from 'lucide-react';
-import { competitorsData } from './[competitor]/page';
+import { competitorsData } from '@/lib/alternatives-data';
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://privacyfirst.tools';
 

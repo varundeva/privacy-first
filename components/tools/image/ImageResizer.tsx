@@ -614,21 +614,13 @@ export function ImageResizer({
                 )}
             </main>
 
-            {/* Privacy Footer */}
-            <footer className="border-t mt-auto py-8 bg-muted/10">
-                <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-                    <div className="flex flex-col items-center justify-center gap-4 text-center">
-                        <span className="text-2xl">🔒</span>
-                        <div>
-                            <strong className="font-medium text-foreground">100% Privacy Guarantee</strong>
-                            <p className="mt-1 text-sm text-muted-foreground max-w-md mx-auto">
-                                This image resizer processes your photos entirely in your browser using Web Workers.
-                                Your images are never uploaded to any server - complete privacy guaranteed.
-                            </p>
-                        </div>
-                    </div>
+            {/* Privacy Guarantee Banner */}
+            <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 w-full text-center border-t border-dashed mt-8">
+                <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-muted/50 text-sm text-muted-foreground">
+                    <span>🔒</span>
+                    <span>100% Client-Side: Your images never leave your device.</span>
                 </div>
-            </footer>
+            </div>
         </div>
     );
 }

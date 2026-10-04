@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ToolHeader } from '../ToolHeader';
@@ -16,6 +16,8 @@ import {
     Settings2,
     Upload,
     Code,
+    Shrink,
+    Maximize2,
     Minimize2,
     Palette
 } from 'lucide-react';
@@ -53,9 +55,21 @@ export function CssFormatter({ title, description, features, useCases, faq }: Cs
     const [indentSize, setIndentSize] = useState('2');
     const [preserveNewlines, setPreserveNewlines] = useState(true);
     const [newlineBetweenRules, setNewlineBetweenRules] = useState(true);
+    const [isFullscreen, setIsFullscreen] = useState(false);
 
     const { theme } = useTheme();
     const fileInputRef = useRef<HTMLInputElement>(null);
+
+    // Listen for Escape key to exit fullscreen
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape' && isFullscreen) {
+                setIsFullscreen(false);
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [isFullscreen]);
 
     const handleFormat = () => {
         if (!input.trim()) {
@@ -139,127 +153,149 @@ export function CssFormatter({ title, description, features, useCases, faq }: Cs
         <div className="min-h-screen bg-background flex flex-col">
             <ToolHeader title={title} description={description} />
 
-            <main className="flex-1 mx-auto max-w-7xl px-4 py-8 sm:px-6 w-full space-y-8">
-                {/* Options Toolbar */}
-                <div className="flex flex-wrap gap-6 p-4 border rounded-xl bg-card items-center shadow-sm">
-                    <div className="flex items-center gap-2">
-                        <div className="p-2 bg-blue-500/10 text-blue-500 rounded-lg">
-                            <Settings2 className="h-4 w-4" />
-                        </div>
-                        <span className="font-semibold text-sm">CSS Options</span>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                        <Label htmlFor="indent">Indent</Label>
-                        <Select value={indentSize} onValueChange={setIndentSize}>
-                            <SelectTrigger className="w-[120px] h-9">
-                                <SelectValue placeholder="Size" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="2">2 Spaces</SelectItem>
-                                <SelectItem value="4">4 Spaces</SelectItem>
-                                <SelectItem value="8">8 Spaces</SelectItem>
-                            </SelectContent>
-                        </Select>
-                    </div>
-
-                    <div className="flex items-center space-x-2">
-                        <Switch id="newlines" checked={preserveNewlines} onCheckedChange={setPreserveNewlines} />
-                        <Label htmlFor="newlines">Preserve Newlines</Label>
-                    </div>
-
-                    <div className="flex items-center space-x-2">
-                        <Switch id="rule-newlines" checked={newlineBetweenRules} onCheckedChange={setNewlineBetweenRules} />
-                        <Label htmlFor="rule-newlines">Newline Between Rules</Label>
-                    </div>
-                </div>
-
-                {/* Editors Layout */}
-                <div className="grid lg:grid-cols-2 gap-6 h-[600px]">
-                    {/* CSS Input */}
-                    <Card className="flex flex-col border-2 overflow-hidden h-full shadow-md">
-                        <div className="p-3 bg-muted/30 border-b flex items-center justify-between">
+            <main className="flex-1 mx-auto px-4 py-8 sm:px-6 w-full max-w-[96%] xl:max-w-[94%] 2xl:max-w-[1700px] space-y-8">
+                {/* Editor Workspace Container */}
+                <div className={isFullscreen ? 'fixed inset-0 z-50 bg-background flex flex-col p-4 sm:p-6 overflow-hidden space-y-4' : 'space-y-6'}>
+                    {/* Options Toolbar */}
+                    <div className="flex flex-wrap gap-4 sm:gap-6 p-3 sm:p-4 border rounded-xl bg-card items-center justify-between shadow-sm">
+                        <div className="flex flex-wrap items-center gap-4 sm:gap-6">
                             <div className="flex items-center gap-2">
-                                <Palette className="h-4 w-4 text-blue-500" />
-                                <span className="text-sm font-medium">Input CSS</span>
-                            </div>
-                            <Button onClick={() => fileInputRef.current?.click()} variant="ghost" size="icon" className="h-7 w-7">
-                                <Upload className="h-3.5 w-3.5" />
-                                <input type="file" ref={fileInputRef} className="hidden" accept=".css,.txt" onChange={handleFileUpload} />
-                            </Button>
-                        </div>
-                        <div className="flex-1 relative">
-                            <Editor
-                                height="100%"
-                                language="css"
-                                value={input}
-                                theme={editorTheme}
-                                onChange={(val) => setInput(val || '')}
-                                options={{
-                                    minimap: { enabled: false },
-                                    fontSize: 13,
-                                    lineNumbers: 'on',
-                                    automaticLayout: true,
-                                    padding: { top: 10, bottom: 10 }
-                                }}
-                            />
-                        </div>
-                    </Card>
-
-                    {/* CSS Output */}
-                    <Card className="flex flex-col border-2 overflow-hidden h-full shadow-md">
-                        <div className="p-3 bg-muted/30 border-b flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                                <Code className="h-4 w-4 text-emerald-500" />
-                                <span className="text-sm font-medium">Beautified CSS</span>
-                            </div>
-                            <div className="flex items-center gap-1">
-                                <Button onClick={handleCopy} variant="ghost" size="icon" className="h-7 w-7">
-                                    <Copy className="h-3.5 w-3.5" />
-                                </Button>
-                                <Button onClick={handleDownload} variant="ghost" size="icon" className="h-7 w-7">
-                                    <Download className="h-3.5 w-3.5" />
-                                </Button>
-                            </div>
-                        </div>
-                        <div className="flex-1 relative">
-                            <Editor
-                                height="100%"
-                                language="css"
-                                value={output}
-                                theme={editorTheme}
-                                options={{
-                                    readOnly: true,
-                                    minimap: { enabled: false },
-                                    fontSize: 13,
-                                    lineNumbers: 'on',
-                                    automaticLayout: true,
-                                    padding: { top: 10, bottom: 10 }
-                                }}
-                            />
-                            {error && (
-                                <div className="absolute bottom-4 left-4 right-4 bg-red-100 dark:bg-red-900/90 text-red-700 dark:text-red-200 p-2 rounded text-xs font-mono border border-red-200 dark:border-red-800 shadow-sm z-10 transition-all animate-in slide-in-from-bottom-2">
-                                    {error}
+                                <div className="p-2 bg-blue-500/10 text-blue-500 rounded-lg">
+                                    <Settings2 className="h-4 w-4" />
                                 </div>
-                            )}
-                        </div>
-                    </Card>
-                </div>
+                                <span className="font-semibold text-sm">CSS Options</span>
+                            </div>
 
-                {/* Actions */}
-                <div className="flex justify-center gap-4">
-                    <Button onClick={handleReset} variant="outline" size="lg" className="gap-2 px-8 text-destructive border-destructive/20 hover:bg-destructive/10">
-                        <Trash2 className="h-5 w-5" />
-                        Reset
-                    </Button>
-                    <Button onClick={handleMinify} variant="secondary" size="lg" className="gap-2 px-8">
-                        <Minimize2 className="h-4 w-4" />
-                        Minify
-                    </Button>
-                    <Button onClick={handleFormat} size="lg" className="gap-2 px-12 bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-500/20">
-                        <ArrowRightLeft className="h-5 w-5" />
-                        Beautify CSS
-                    </Button>
+                            <div className="flex items-center gap-2">
+                                <Label htmlFor="indent" className="text-xs">Indent</Label>
+                                <Select value={indentSize} onValueChange={setIndentSize}>
+                                    <SelectTrigger className="w-[120px] h-9 text-xs">
+                                        <SelectValue placeholder="Size" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="2">2 Spaces</SelectItem>
+                                        <SelectItem value="4">4 Spaces</SelectItem>
+                                        <SelectItem value="8">8 Spaces</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+
+                            <div className="flex items-center space-x-2">
+                                <Switch id="newlines" checked={preserveNewlines} onCheckedChange={setPreserveNewlines} />
+                                <Label htmlFor="newlines" className="text-xs">Preserve Newlines</Label>
+                            </div>
+
+                            <div className="flex items-center space-x-2">
+                                <Switch id="rule-newlines" checked={newlineBetweenRules} onCheckedChange={setNewlineBetweenRules} />
+                                <Label htmlFor="rule-newlines" className="text-xs">Newline Between Rules</Label>
+                            </div>
+                        </div>
+
+                        {/* Fullscreen Button */}
+                        <Button
+                            onClick={() => setIsFullscreen(!isFullscreen)}
+                            variant={isFullscreen ? 'default' : 'outline'}
+                            size="sm"
+                            className="gap-1.5 text-xs h-9 font-medium"
+                            title={isFullscreen ? 'Exit Fullscreen (Esc)' : 'Expand to Fullscreen workspace'}
+                        >
+                            {isFullscreen ? <Minimize2 className="h-3.5 w-3.5" /> : <Maximize2 className="h-3.5 w-3.5" />}
+                            <span>{isFullscreen ? 'Exit Fullscreen' : 'Fullscreen'}</span>
+                            {isFullscreen && (
+                                <kbd className="hidden sm:inline-block px-1 py-0.2 rounded bg-primary-foreground/20 text-[10px]">
+                                    ESC
+                                </kbd>
+                            )}
+                        </Button>
+                    </div>
+
+                    {/* Editors Layout */}
+                    <div className={`grid lg:grid-cols-2 gap-4 sm:gap-6 ${isFullscreen ? 'flex-1 min-h-0' : 'h-[600px]'}`}>
+                        {/* CSS Input */}
+                        <Card className="flex flex-col border-2 overflow-hidden h-full shadow-md">
+                            <div className="p-3 bg-muted/30 border-b flex items-center justify-between">
+                                <div className="flex items-center gap-2">
+                                    <Palette className="h-4 w-4 text-blue-500" />
+                                    <span className="text-sm font-medium">Input CSS</span>
+                                </div>
+                                <Button onClick={() => fileInputRef.current?.click()} variant="ghost" size="icon" className="h-7 w-7">
+                                    <Upload className="h-3.5 w-3.5" />
+                                    <input type="file" ref={fileInputRef} className="hidden" accept=".css,.txt" onChange={handleFileUpload} />
+                                </Button>
+                            </div>
+                            <div className="flex-1 relative">
+                                <Editor
+                                    height="100%"
+                                    language="css"
+                                    value={input}
+                                    theme={editorTheme}
+                                    onChange={(val) => setInput(val || '')}
+                                    options={{
+                                        minimap: { enabled: false },
+                                        fontSize: 13,
+                                        lineNumbers: 'on',
+                                        automaticLayout: true,
+                                        padding: { top: 10, bottom: 10 }
+                                    }}
+                                />
+                            </div>
+                        </Card>
+
+                        {/* CSS Output */}
+                        <Card className="flex flex-col border-2 overflow-hidden h-full shadow-md">
+                            <div className="p-3 bg-muted/30 border-b flex items-center justify-between">
+                                <div className="flex items-center gap-2">
+                                    <Code className="h-4 w-4 text-emerald-500" />
+                                    <span className="text-sm font-medium">Beautified CSS</span>
+                                </div>
+                                <div className="flex items-center gap-1">
+                                    <Button onClick={handleCopy} variant="ghost" size="icon" className="h-7 w-7" title="Copy output">
+                                        <Copy className="h-3.5 w-3.5" />
+                                    </Button>
+                                    <Button onClick={handleDownload} variant="ghost" size="icon" className="h-7 w-7" title="Download CSS">
+                                        <Download className="h-3.5 w-3.5" />
+                                    </Button>
+                                </div>
+                            </div>
+                            <div className="flex-1 relative">
+                                <Editor
+                                    height="100%"
+                                    language="css"
+                                    value={output}
+                                    theme={editorTheme}
+                                    options={{
+                                        readOnly: true,
+                                        minimap: { enabled: false },
+                                        fontSize: 13,
+                                        lineNumbers: 'on',
+                                        automaticLayout: true,
+                                        padding: { top: 10, bottom: 10 }
+                                    }}
+                                />
+                                {error && (
+                                    <div className="absolute bottom-4 left-4 right-4 bg-red-100 dark:bg-red-900/90 text-red-700 dark:text-red-200 p-2 rounded text-xs font-mono border border-red-200 dark:border-red-800 shadow-sm z-10 transition-all animate-in slide-in-from-bottom-2">
+                                        {error}
+                                    </div>
+                                )}
+                            </div>
+                        </Card>
+                    </div>
+
+                    {/* Actions */}
+                    <div className="flex justify-center gap-4 py-1">
+                        <Button onClick={handleReset} variant="outline" size="sm" className="gap-2 px-6 h-9 text-xs text-destructive border-destructive/20 hover:bg-destructive/10">
+                            <Trash2 className="h-4 w-4" />
+                            <span>Reset</span>
+                        </Button>
+                        <Button onClick={handleMinify} variant="secondary" size="sm" className="gap-2 px-6 h-9 text-xs">
+                            <Shrink className="h-3.5 w-3.5" />
+                            <span>Minify</span>
+                        </Button>
+                        <Button onClick={handleFormat} size="sm" className="gap-2 px-8 h-9 text-xs font-semibold bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-500/20">
+                            <ArrowRightLeft className="h-4 w-4" />
+                            <span>Beautify CSS</span>
+                        </Button>
+                    </div>
                 </div>
 
                 {/* Info Section */}

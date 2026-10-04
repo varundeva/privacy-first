@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ToolHeader } from '../ToolHeader';
@@ -8,8 +8,10 @@ import {
     Copy,
     Check,
     AlertCircle,
-    Minimize,
-    Maximize,
+    Shrink,
+    Wand2,
+    Maximize2,
+    Minimize2,
     Trash2,
     Lightbulb,
     HelpCircle,
@@ -44,8 +46,20 @@ export function JsonFormatter({ title, description, features, useCases, faq }: J
     const [indentation, setIndentation] = useState('2');
     const [error, setError] = useState<string | null>(null);
     const [status, setStatus] = useState<'idle' | 'valid' | 'invalid'>('idle');
+    const [isFullscreen, setIsFullscreen] = useState(false);
     const { theme } = useTheme();
     const fileInputRef = useRef<HTMLInputElement>(null);
+
+    // Listen for Escape key to exit fullscreen
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape' && isFullscreen) {
+                setIsFullscreen(false);
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [isFullscreen]);
 
     const handleFormat = () => {
         if (!input.trim()) {
@@ -143,96 +157,117 @@ export function JsonFormatter({ title, description, features, useCases, faq }: J
         <div className="min-h-screen bg-background flex flex-col">
             <ToolHeader title={title} description={description} />
 
-            <main className="flex-1 mx-auto max-w-6xl px-4 py-8 sm:px-6 w-full space-y-8">
-                {/* Toolbar */}
-                <div className="flex flex-wrap items-center justify-between gap-4">
-                    <div className="flex items-center gap-2">
-                        <Button
-                            onClick={() => fileInputRef.current?.click()}
-                            variant="secondary"
-                            className="gap-2"
-                        >
-                            <Upload className="h-4 w-4" />
-                            Load File
-                        </Button>
-                        <input
-                            type="file"
-                            ref={fileInputRef}
-                            className="hidden"
-                            accept=".json,.txt"
-                            onChange={handleFileUpload}
+            <main className="flex-1 mx-auto px-4 py-8 sm:px-6 w-full max-w-[96%] xl:max-w-[94%] 2xl:max-w-[1700px] space-y-8">
+                {/* Editor Workspace Container */}
+                <div className={isFullscreen ? 'fixed inset-0 z-50 bg-background flex flex-col p-4 sm:p-6 overflow-hidden space-y-4' : 'space-y-4'}>
+                    {/* Toolbar */}
+                    <div className="flex flex-wrap items-center justify-between gap-4 bg-muted/40 p-3 rounded-xl border border-border/60">
+                        <div className="flex items-center gap-2 flex-wrap">
+                            <Button
+                                onClick={() => fileInputRef.current?.click()}
+                                variant="secondary"
+                                size="sm"
+                                className="gap-2 h-9 text-xs"
+                            >
+                                <Upload className="h-3.5 w-3.5" />
+                                <span>Load File</span>
+                            </Button>
+                            <input
+                                type="file"
+                                ref={fileInputRef}
+                                className="hidden"
+                                accept=".json,.txt"
+                                onChange={handleFileUpload}
+                            />
+
+                            <Select value={indentation} onValueChange={setIndentation}>
+                                <SelectTrigger className="w-[130px] h-9 text-xs">
+                                    <SelectValue placeholder="Indentation" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="2">2 Spaces</SelectItem>
+                                    <SelectItem value="4">4 Spaces</SelectItem>
+                                    <SelectItem value="tab">Tab</SelectItem>
+                                </SelectContent>
+                            </Select>
+
+                            <Button onClick={handleFormat} variant="default" size="sm" className="gap-2 h-9 text-xs font-medium">
+                                <Wand2 className="h-3.5 w-3.5" />
+                                <span>Beautify</span>
+                            </Button>
+                            <Button onClick={handleMinify} variant="outline" size="sm" className="gap-2 h-9 text-xs">
+                                <Shrink className="h-3.5 w-3.5" />
+                                <span>Minify</span>
+                            </Button>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                            <div className={`px-2.5 py-1 rounded-md text-xs font-medium flex items-center gap-1.5 transition-colors ${status === 'valid' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' :
+                                status === 'invalid' ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' :
+                                    'bg-muted text-muted-foreground'
+                                }`}>
+                                {status === 'valid' && <Check className="h-3.5 w-3.5" />}
+                                {status === 'invalid' && <AlertCircle className="h-3.5 w-3.5" />}
+                                <span>{status === 'idle' ? 'Ready' : status === 'valid' ? 'Valid JSON' : 'Invalid JSON'}</span>
+                            </div>
+
+                            <Button onClick={handleCopy} variant="ghost" size="icon" className="h-8 w-8" title="Copy formatted JSON">
+                                <Copy className="h-4 w-4" />
+                            </Button>
+                            <Button onClick={handleClear} variant="ghost" size="icon" className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10" title="Clear input">
+                                <Trash2 className="h-4 w-4" />
+                            </Button>
+
+                            {/* Fullscreen Toggle */}
+                            <Button
+                                onClick={() => setIsFullscreen(!isFullscreen)}
+                                variant={isFullscreen ? 'default' : 'outline'}
+                                size="sm"
+                                className="gap-1.5 text-xs h-9 font-medium"
+                                title={isFullscreen ? 'Exit Fullscreen (Esc)' : 'Expand to Fullscreen workspace'}
+                            >
+                                {isFullscreen ? <Minimize2 className="h-3.5 w-3.5" /> : <Maximize2 className="h-3.5 w-3.5" />}
+                                <span>{isFullscreen ? 'Exit Fullscreen' : 'Fullscreen'}</span>
+                                {isFullscreen && (
+                                    <kbd className="hidden sm:inline-block px-1 py-0.2 rounded bg-primary-foreground/20 text-[10px]">
+                                        ESC
+                                    </kbd>
+                                )}
+                            </Button>
+                        </div>
+                    </div>
+
+                    {/* Editor Area */}
+                    <Card className={`relative flex-1 ${isFullscreen ? 'min-h-0' : 'min-h-[600px]'} flex flex-col border-2 overflow-hidden transition-colors ${status === 'invalid' ? 'border-red-200 dark:border-red-900' :
+                        status === 'valid' ? 'border-green-200 dark:border-green-900' : 'border-border'
+                        }`}>
+                        <Editor
+                            height={isFullscreen ? 'calc(100vh - 160px)' : '600px'}
+                            language="json"
+                            value={input}
+                            theme={editorTheme}
+                            onChange={handleEditorChange}
+                            onValidate={handleValidate}
+                            options={{
+                                minimap: { enabled: false },
+                                fontSize: 14,
+                                lineNumbers: 'on',
+                                folding: true,
+                                automaticLayout: true,
+                                formatOnPaste: true,
+                                formatOnType: true,
+                                scrollBeyondLastLine: false,
+                            }}
                         />
 
-                        <Select value={indentation} onValueChange={setIndentation}>
-                            <SelectTrigger className="w-[140px]">
-                                <SelectValue placeholder="Indentation" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="2">2 Spaces</SelectItem>
-                                <SelectItem value="4">4 Spaces</SelectItem>
-                                <SelectItem value="tab">Tab</SelectItem>
-                            </SelectContent>
-                        </Select>
-
-                        <Button onClick={handleFormat} variant="default" className="gap-2">
-                            <Maximize className="h-4 w-4" />
-                            Beautify
-                        </Button>
-                        <Button onClick={handleMinify} variant="outline" className="gap-2">
-                            <Minimize className="h-4 w-4" />
-                            Minify
-                        </Button>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                        <div className={`px-3 py-1.5 rounded-md text-sm font-medium flex items-center gap-2 transition-colors ${status === 'valid' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' :
-                            status === 'invalid' ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' :
-                                'bg-muted text-muted-foreground'
-                            }`}>
-                            {status === 'valid' && <Check className="h-4 w-4" />}
-                            {status === 'invalid' && <AlertCircle className="h-4 w-4" />}
-                            {status === 'idle' ? 'Ready' : status === 'valid' ? 'Valid JSON' : 'Invalid JSON'}
-                        </div>
-
-                        <Button onClick={handleCopy} variant="ghost" size="icon">
-                            <Copy className="h-4 w-4" />
-                        </Button>
-                        <Button onClick={handleClear} variant="ghost" size="icon" className="text-destructive hover:text-destructive hover:bg-destructive/10">
-                            <Trash2 className="h-4 w-4" />
-                        </Button>
-                    </div>
+                        {error && (
+                            <div className="absolute bottom-4 left-4 right-4 bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-200 p-3 rounded-lg text-sm font-mono border border-red-200 dark:border-red-800 flex items-start gap-2 shadow-lg animate-in slide-in-from-bottom-2 z-10">
+                                <AlertCircle className="h-5 w-5 flex-shrink-0 mt-0.5" />
+                                <span className="whitespace-pre-wrap">{error}</span>
+                            </div>
+                        )}
+                    </Card>
                 </div>
-
-                {/* Editor Area */}
-                <Card className={`relative flex-1 min-h-[600px] flex flex-col border-2 overflow-hidden transition-colors ${status === 'invalid' ? 'border-red-200 dark:border-red-900' :
-                    status === 'valid' ? 'border-green-200 dark:border-green-900' : 'border-border'
-                    }`}>
-                    <Editor
-                        height="600px"
-                        language="json"
-                        value={input}
-                        theme={editorTheme}
-                        onChange={handleEditorChange}
-                        onValidate={handleValidate}
-                        options={{
-                            minimap: { enabled: false },
-                            fontSize: 14,
-                            lineNumbers: 'on',
-                            folding: true,
-                            automaticLayout: true,
-                            formatOnPaste: true,
-                            formatOnType: true,
-                            scrollBeyondLastLine: false,
-                        }}
-                    />
-
-                    {error && (
-                        <div className="absolute bottom-4 left-4 right-4 bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-200 p-3 rounded-lg text-sm font-mono border border-red-200 dark:border-red-800 flex items-start gap-2 shadow-lg animate-in slide-in-from-bottom-2 z-10">
-                            <AlertCircle className="h-5 w-5 flex-shrink-0 mt-0.5" />
-                            <span className="whitespace-pre-wrap">{error}</span>
-                        </div>
-                    )}
-                </Card>
 
                 {/* Features & FAQ Section */}
                 {((features && features.length > 0) || (useCases && useCases.length > 0) || (faq && faq.length > 0)) && (

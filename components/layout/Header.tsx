@@ -31,7 +31,9 @@ import {
   Info,
   MessageSquare,
   Sparkles,
+  Search,
 } from 'lucide-react';
+import { GlobalSearchModal } from './GlobalSearchModal';
 
 const primaryNav = [
   { name: 'Home', href: '/', icon: Home },
@@ -76,6 +78,7 @@ const toolCategories = configCategories.map(category => {
 export function Header() {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -158,6 +161,31 @@ export function Header() {
 
           {/* Right Side Actions */}
           <div className="flex items-center gap-2">
+            {/* Quick Search Trigger (Desktop) */}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setSearchOpen(true)}
+              className="hidden sm:inline-flex items-center gap-2 h-9 px-3 rounded-lg border-muted-foreground/20 text-muted-foreground hover:text-foreground text-xs font-normal"
+            >
+              <Search className="h-3.5 w-3.5" />
+              <span>Search tools...</span>
+              <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-0.5 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
+                <span className="text-xs">⌘</span>K
+              </kbd>
+            </Button>
+
+            {/* Quick Search Trigger (Mobile) */}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setSearchOpen(true)}
+              className="sm:hidden min-h-[44px] min-w-[44px] text-muted-foreground"
+              aria-label="Search tools"
+            >
+              <Search className="h-5 w-5" />
+            </Button>
+
             {/* Theme Toggle */}
             <ThemeToggle />
 
@@ -172,7 +200,7 @@ export function Header() {
             {/* Mobile Menu */}
             <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="md:hidden h-9 w-9">
+                <Button variant="ghost" size="icon" className="md:hidden min-h-[44px] min-w-[44px]">
                   <Menu className="h-5 w-5" />
                   <span className="sr-only">Open menu</span>
                 </Button>
@@ -188,6 +216,19 @@ export function Header() {
                     <span className="text-lg font-bold">Privacy-First Toolbox</span>
                   </Link>
 
+                  {/* Search in Mobile Drawer */}
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      setSearchOpen(true);
+                    }}
+                    className="w-full justify-start gap-2.5 min-h-[44px] text-muted-foreground text-sm font-normal"
+                  >
+                    <Search className="h-4 w-4" />
+                    <span>Search 75+ tools...</span>
+                  </Button>
+
                   {/* Main Navigation */}
                   <div className="space-y-1">
                     <p className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
@@ -201,10 +242,10 @@ export function Header() {
                           href={item.href}
                           onClick={() => setMobileMenuOpen(false)}
                         >
-                          <div className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-colors ${isActive ? 'bg-muted' : 'hover:bg-muted'
+                          <div className={`flex items-center gap-3 rounded-lg px-3 py-2.5 min-h-[44px] transition-colors ${isActive ? 'bg-muted' : 'hover:bg-muted'
                             }`}>
                             <item.icon className="h-5 w-5" />
-                            <span className="font-medium">{item.name}</span>
+                            <span className="font-medium text-sm">{item.name}</span>
                           </div>
                         </Link>
                       );
@@ -222,13 +263,13 @@ export function Header() {
                         href={category.href}
                         onClick={() => setMobileMenuOpen(false)}
                       >
-                        <div className="flex items-center justify-between rounded-lg px-3 py-2 hover:bg-muted transition-colors">
+                        <div className="flex items-center justify-between rounded-lg px-3 py-2.5 min-h-[44px] hover:bg-muted transition-colors">
                           <span className="flex items-center gap-3">
                             <category.icon className="h-5 w-5 text-muted-foreground" />
-                            <span>{category.name}</span>
+                            <span className="text-sm">{category.name}</span>
                           </span>
                           {category.count > 0 && (
-                            <span className="text-xs bg-muted px-2 py-0.5 rounded-full">
+                            <span className="text-xs bg-muted px-2 py-0.5 rounded-full font-mono">
                               {category.count}
                             </span>
                           )}
@@ -250,10 +291,10 @@ export function Header() {
                           href={item.href}
                           onClick={() => setMobileMenuOpen(false)}
                         >
-                          <div className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-colors ${isActive ? 'bg-muted' : 'hover:bg-muted'
+                          <div className={`flex items-center gap-3 rounded-lg px-3 py-2.5 min-h-[44px] transition-colors ${isActive ? 'bg-muted' : 'hover:bg-muted'
                             }`}>
                             <item.icon className="h-5 w-5" />
-                            <span className="font-medium">{item.name}</span>
+                            <span className="font-medium text-sm">{item.name}</span>
                           </div>
                         </Link>
                       );
@@ -276,6 +317,7 @@ export function Header() {
           </div>
         </div>
       </div>
+      <GlobalSearchModal open={searchOpen} onOpenChange={setSearchOpen} />
     </header>
   );
 }

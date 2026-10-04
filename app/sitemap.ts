@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next'
 import { toolsConfig, toolCategories } from '@/lib/tools-config'
-import { competitorsData } from '@/app/alternatives/[competitor]/page'
+import { competitorsData } from '@/lib/alternatives-data'
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://privacyfirst.tools'
 const LAST_MODIFIED = new Date('2026-03-01T00:00:00.000Z')

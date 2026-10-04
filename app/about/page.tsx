@@ -13,6 +13,7 @@ import {
     Github
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { toolsConfig } from '@/lib/tools-config';
 
 export const metadata: Metadata = {
     title: 'About Us',
@@ -51,9 +52,9 @@ const values = [
 ];
 
 const stats = [
+    { value: `${toolsConfig.length}+`, label: 'Private Tools' },
     { value: '100%', label: 'Browser-based' },
     { value: '0', label: 'Files stored' },
-    { value: '∞', label: 'Usage limit' },
     { value: 'Free', label: 'Forever' },
 ];
 

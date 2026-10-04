@@ -3,25 +3,27 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
 import { ToolHeader } from '../ToolHeader';
 import {
     Copy,
     Check,
     AlertCircle,
-    FileSpreadsheet,
+    FileJson,
     ArrowRightLeft,
     Download,
     Lightbulb,
     HelpCircle,
-    FileType,
     Trash2,
-    FileJson,
     Settings2,
     Upload,
-    Grid3X3,
-    FileText,
+    FileCode2,
     Maximize2,
     Minimize2,
+    Wand2,
+    Sparkles
 } from 'lucide-react';
 import {
     Accordion,
@@ -29,14 +31,11 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from '@/components/ui/accordion';
-import { Label } from '@/components/ui/label';
-import { Switch } from '@/components/ui/switch';
-import Editor, { OnValidate } from '@monaco-editor/react';
+import Editor from '@monaco-editor/react';
 import { useTheme } from 'next-themes';
-import Papa from 'papaparse';
-import { CsvGridView } from './CsvGridView';
+import { XMLParser, XMLValidator } from 'fast-xml-parser';
 
-interface CsvToJsonProps {
+interface XmlToJsonProps {
     title: string;
     description: string;
     features?: string[];
@@ -44,17 +43,41 @@ interface CsvToJsonProps {
     faq?: { question: string; answer: string }[];
 }
 
-export function CsvToJson({ title, description, features, useCases, faq }: CsvToJsonProps) {
+const SAMPLE_XML = `<?xml version="1.0" encoding="UTF-8"?>
+<catalog>
+  <book id="bk101">
+    <author>Gambardella, Matthew</author>
+    <title>XML Developer's Guide</title>
+    <genre>Computer</genre>
+    <price>44.95</price>
+    <publish_date>2000-10-01</publish_date>
+  </book>
+  <book id="bk102">
+    <author>Ralls, Kim</author>
+    <title>Midnight Rain</title>
+    <genre>Fantasy</genre>
+    <price>5.95</price>
+    <publish_date>2000-12-16</publish_date>
+  </book>
+</catalog>`;
+
+export function XmlToJson({ title, description, features, useCases, faq }: XmlToJsonProps) {
     const [input, setInput] = useState('');
     const [output, setOutput] = useState('');
+    const [ignoreAttributes, setIgnoreAttributes] = useState(false);
+    const [parseNodeValue, setParseNodeValue] = useState(true);
+
+    const handleLoadSample = () => {
+        setInput(SAMPLE_XML);
+    };
     const [error, setError] = useState<string | null>(null);
     const [status, setStatus] = useState<'idle' | 'valid' | 'invalid'>('idle');
-    const [viewMode, setViewMode] = useState<'text' | 'grid'>('text');
+    const [copied, setCopied] = useState(false);
     const [isFullscreen, setIsFullscreen] = useState(false);
     const { theme } = useTheme();
     const fileInputRef = useRef<HTMLInputElement>(null);
 
-    // Listen for Escape key to exit fullscreen
+    // Escape listener
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === 'Escape' && isFullscreen) {
@@ -65,74 +88,52 @@ export function CsvToJson({ title, description, features, useCases, faq }: CsvTo
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [isFullscreen]);
 
-    // Options
-    const [useHeader, setUseHeader] = useState(true);
-    const [dynamicTyping, setDynamicTyping] = useState(true);
-    const [unflattenKeys, setUnflattenKeys] = useState(true);
-
-    const unflatten = (data: any[]) => {
-        return data.map(row => {
-            const result: any = {};
-            for (const key in row) {
-                if (Object.prototype.hasOwnProperty.call(row, key)) {
-                    const parts = key.split('.');
-                    let current = result;
-                    for (let i = 0; i < parts.length - 1; i++) {
-                        const part = parts[i];
-                        if (!current[part]) current[part] = {};
-                        current = current[part];
-                    }
-                    const last = parts[parts.length - 1];
-                    let val = row[key];
-
-                    if (typeof val === 'string') {
-                        const v = val.trim();
-                        if ((v.startsWith('[') && v.endsWith(']')) || (v.startsWith('{') && v.endsWith('}'))) {
-                            try {
-                                val = JSON.parse(v);
-                            } catch (e) {
-                                // keep as string if parse fails
-                            }
-                        }
-                    }
-                    current[last] = val;
-                }
-            }
-            return result;
-        });
-    };
-
-    const handleConvert = () => {
+    const handleConvert = useCallback(() => {
         if (!input.trim()) {
             setError(null);
             setStatus('idle');
+            setOutput('');
             return;
         }
 
-        Papa.parse(input, {
-            header: useHeader,
-            skipEmptyLines: 'greedy',
-            dynamicTyping: dynamicTyping,
-            complete: (results) => {
-                if (results.errors && results.errors.length > 0) {
-                    setError(`Error on row ${results.errors[0].row}: ${results.errors[0].message}`);
-                    setStatus('invalid');
-                } else {
-                    let data = results.data;
-                    if (unflattenKeys && useHeader) {
-                        data = unflatten(data);
-                    }
+        const validation = XMLValidator.validate(input);
+        if (validation !== true) {
+            setError(validation.err?.msg || 'Invalid XML syntax');
+            setStatus('invalid');
+            return;
+        }
 
-                    setOutput(JSON.stringify(data, null, 2));
-                    setError(null);
-                    setStatus('valid');
-                }
-            },
-            error: (err: Error) => {
-                setError(err.message);
-                setStatus('invalid');
-            }
-        });
+        try {
+            const parser = new XMLParser({
+                ignoreAttributes: ignoreAttributes,
+                attributeNamePrefix: '@_',
+                parseTagValue: parseNodeValue,
+                parseAttributeValue: true,
+                trimValues: true,
+            });
+
+            const parsedObj = parser.parse(input);
+            setOutput(JSON.stringify(parsedObj, null, 2));
+            setError(null);
+            setStatus('valid');
+        } catch (err: any) {
+            setError(err.message || 'Failed to parse XML');
+            setStatus('invalid');
+        }
+    }, [input, ignoreAttributes, parseNodeValue]);
+
+    useEffect(() => {
+        handleConvert();
+    }, [handleConvert]);
+
+    const handleCopy = async () => {
+        try {
+            await navigator.clipboard.writeText(output);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+        } catch (err) {
+            console.error('Failed to copy', err);
+        }
     };
 
     const handleDownload = () => {
@@ -141,19 +142,23 @@ export function CsvToJson({ title, description, features, useCases, faq }: CsvTo
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'converted.json';
+        a.download = 'data.json';
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
     };
 
-    const handleCopy = async () => {
-        try {
-            await navigator.clipboard.writeText(output);
-        } catch (err) {
-            console.error('Failed to copy', err);
-        }
+    const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            const content = event.target?.result as string;
+            setInput(content);
+        };
+        reader.readAsText(file);
     };
 
     const handleReset = () => {
@@ -161,32 +166,6 @@ export function CsvToJson({ title, description, features, useCases, faq }: CsvTo
         setOutput('');
         setError(null);
         setStatus('idle');
-        if (fileInputRef.current) fileInputRef.current.value = '';
-    };
-
-    const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const text = e.target?.result as string;
-            if (text) {
-                setInput(text);
-                if (status === 'invalid') {
-                    setStatus('idle');
-                    setError(null);
-                }
-            }
-        };
-        reader.readAsText(file);
-    };
-
-    const handleEditorChange = (value: string | undefined) => {
-        setInput(value || '');
-        if (status === 'invalid' && !value) {
-            setStatus('idle');
-            setError(null);
-        }
     };
 
     const editorTheme = theme === 'dark' ? 'vs-dark' : 'light';
@@ -204,32 +183,50 @@ export function CsvToJson({ title, description, features, useCases, faq }: CsvTo
                             <div className="p-2 bg-primary/10 text-primary rounded-lg">
                                 <Settings2 className="h-4 w-4" />
                             </div>
-                            <span className="font-semibold text-sm">Conversion Options</span>
+                            <span className="font-semibold text-sm">Options</span>
                         </div>
 
                         <div className="flex items-center space-x-2">
-                            <Switch id="header-mode" checked={useHeader} onCheckedChange={setUseHeader} />
-                            <Label htmlFor="header-mode" className="text-xs font-medium cursor-pointer">First row is header</Label>
+                            <Switch
+                                id="ignore-attrs"
+                                checked={ignoreAttributes}
+                                onCheckedChange={setIgnoreAttributes}
+                            />
+                            <Label htmlFor="ignore-attrs" className="text-xs font-medium cursor-pointer">
+                                Ignore Attributes
+                            </Label>
                         </div>
 
                         <div className="flex items-center space-x-2">
-                            <Switch id="dynamic-mode" checked={dynamicTyping} onCheckedChange={setDynamicTyping} />
-                            <Label htmlFor="dynamic-mode" className="text-xs font-medium cursor-pointer">Auto-detect types</Label>
-                        </div>
-
-                        <div className="flex items-center space-x-2">
-                            <Switch id="unflatten-mode" checked={unflattenKeys} onCheckedChange={setUnflattenKeys} disabled={!useHeader} />
-                            <Label htmlFor="unflatten-mode" className={`text-xs font-medium cursor-pointer ${!useHeader ? 'text-muted-foreground' : ''}`}>Expand dot keys (unflatten)</Label>
+                            <Switch
+                                id="parse-values"
+                                checked={parseNodeValue}
+                                onCheckedChange={setParseNodeValue}
+                            />
+                            <Label htmlFor="parse-values" className="text-xs font-medium cursor-pointer">
+                                Auto-parse Numbers/Booleans
+                            </Label>
                         </div>
 
                         <div className="flex items-center gap-2 ml-auto">
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={handleLoadSample}
+                                className="gap-1.5 h-8 text-xs font-medium text-muted-foreground hover:text-foreground"
+                                title="Load sample XML"
+                            >
+                                <Sparkles className="h-3.5 w-3.5 text-amber-500" />
+                                <span>Load Sample</span>
+                            </Button>
+
                             <Button
                                 onClick={handleConvert}
                                 size="sm"
                                 className="gap-1.5 h-8 text-xs font-medium"
                             >
                                 <ArrowRightLeft className="h-3.5 w-3.5" />
-                                Convert
+                                Convert to JSON
                             </Button>
 
                             <Button
@@ -248,44 +245,25 @@ export function CsvToJson({ title, description, features, useCases, faq }: CsvTo
 
                     {/* Editors Layout */}
                     <div className={`grid lg:grid-cols-2 gap-4 sm:gap-6 ${isFullscreen ? 'flex-1 min-h-0' : 'h-[600px]'}`}>
-                        {/* CSV Input */}
-                        <Card className={`flex flex-col border-2 overflow-hidden h-full shadow-xs ${status === 'invalid' ? 'border-red-200 dark:border-red-900' : 'border-border'
-                            }`}>
+                        {/* XML Input */}
+                        <Card className={`flex flex-col border-2 overflow-hidden h-full shadow-xs ${status === 'invalid' ? 'border-red-200 dark:border-red-900' : 'border-border'}`}>
                             <div className="p-3 bg-muted/30 border-b flex items-center justify-between">
-                                <div className="flex items-center gap-4">
-                                    <div className="flex items-center gap-2">
-                                        <FileSpreadsheet className="h-4 w-4 text-emerald-600" />
-                                        <span className="text-sm font-medium">CSV Input</span>
-                                    </div>
-
-                                    {/* View Toggle */}
-                                    <div className="flex items-center bg-background border rounded-md p-0.5 h-7">
-                                        <button
-                                            onClick={() => setViewMode('text')}
-                                            className={`px-2 flex items-center gap-1.5 text-xs font-medium rounded-sm h-full transition-all ${viewMode === 'text' ? 'bg-muted text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'
-                                                }`}
-                                        >
-                                            <FileText className="h-3 w-3" />
-                                            Text
-                                        </button>
-                                        <button
-                                            onClick={() => setViewMode('grid')}
-                                            className={`px-2 flex items-center gap-1.5 text-xs font-medium rounded-sm h-full transition-all ${viewMode === 'grid' ? 'bg-muted text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'
-                                                }`}
-                                        >
-                                            <Grid3X3 className="h-3 w-3" />
-                                            Grid
-                                        </button>
-                                    </div>
-                                </div>
-
                                 <div className="flex items-center gap-2">
+                                    <FileCode2 className="h-4 w-4 text-orange-500" />
+                                    <span className="text-sm font-medium">XML Input</span>
+                                </div>
+                                <div className="flex items-center gap-1.5">
+                                    <span className={`text-xs px-2 py-0.5 rounded font-mono ${status === 'valid' ? 'bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300' :
+                                            status === 'invalid' ? 'bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-300' : ''
+                                        }`}>
+                                        {status === 'valid' ? 'Valid' : status === 'invalid' ? 'Error' : ''}
+                                    </span>
                                     <Button
                                         onClick={() => fileInputRef.current?.click()}
                                         variant="ghost"
                                         size="icon"
                                         className="h-7 w-7 text-muted-foreground hover:text-foreground"
-                                        title="Upload CSV"
+                                        title="Upload XML"
                                     >
                                         <Upload className="h-3.5 w-3.5" />
                                     </Button>
@@ -293,36 +271,40 @@ export function CsvToJson({ title, description, features, useCases, faq }: CsvTo
                                         type="file"
                                         ref={fileInputRef}
                                         className="hidden"
-                                        accept=".csv,.txt"
+                                        accept=".xml,.txt"
                                         onChange={handleFileUpload}
                                     />
+                                    <Button
+                                        onClick={handleReset}
+                                        variant="ghost"
+                                        size="icon"
+                                        className="h-7 w-7 text-muted-foreground hover:text-destructive"
+                                        title="Reset"
+                                    >
+                                        <Trash2 className="h-3.5 w-3.5" />
+                                    </Button>
                                 </div>
                             </div>
-                            <div className="flex-1 relative overflow-hidden">
-                                {viewMode === 'text' ? (
-                                    <>
-                                        <Editor
-                                            height="100%"
-                                            language="csv"
-                                            value={input}
-                                            theme={editorTheme}
-                                            onChange={handleEditorChange}
-                                            options={{
-                                                minimap: { enabled: false },
-                                                fontSize: 13,
-                                                lineNumbers: 'on',
-                                                automaticLayout: true,
-                                                scrollBeyondLastLine: false,
-                                            }}
-                                        />
-                                        {error && (
-                                            <div className="absolute bottom-4 left-4 right-4 bg-red-100 dark:bg-red-900/90 text-red-700 dark:text-red-200 p-2 rounded text-xs font-mono border border-red-200 dark:border-red-800 shadow-sm z-10 transition-all animate-in slide-in-from-bottom-2">
-                                                {error}
-                                            </div>
-                                        )}
-                                    </>
-                                ) : (
-                                    <CsvGridView data={input} />
+                            <div className="flex-1 relative">
+                                <Editor
+                                    height="100%"
+                                    language="xml"
+                                    value={input}
+                                    theme={editorTheme}
+                                    onChange={(v) => setInput(v || '')}
+                                    options={{
+                                        minimap: { enabled: false },
+                                        fontSize: 13,
+                                        lineNumbers: 'on',
+                                        folding: true,
+                                        automaticLayout: true,
+                                        scrollBeyondLastLine: false,
+                                    }}
+                                />
+                                {error && (
+                                    <div className="absolute bottom-4 left-4 right-4 bg-red-100 dark:bg-red-900/90 text-red-700 dark:text-red-200 p-2 rounded text-xs font-mono border border-red-200 dark:border-red-800 shadow-sm z-10 transition-all animate-in slide-in-from-bottom-2">
+                                        {error}
+                                    </div>
                                 )}
                             </div>
                         </Card>
@@ -335,10 +317,25 @@ export function CsvToJson({ title, description, features, useCases, faq }: CsvTo
                                     <span className="text-sm font-medium">JSON Output</span>
                                 </div>
                                 <div className="flex items-center gap-1">
-                                    <Button onClick={handleCopy} variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground hover:text-foreground" title="Copy JSON">
-                                        <Copy className="h-3.5 w-3.5" />
+                                    <Button
+                                        onClick={handleCopy}
+                                        variant="ghost"
+                                        size="sm"
+                                        className="h-7 text-xs gap-1 text-muted-foreground hover:text-foreground"
+                                        title="Copy JSON"
+                                        disabled={!output}
+                                    >
+                                        {copied ? <Check className="h-3 w-3 text-emerald-500" /> : <Copy className="h-3 w-3" />}
+                                        <span className="hidden sm:inline">{copied ? 'Copied' : 'Copy'}</span>
                                     </Button>
-                                    <Button onClick={handleDownload} variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground hover:text-foreground" title="Download JSON">
+                                    <Button
+                                        onClick={handleDownload}
+                                        variant="ghost"
+                                        size="icon"
+                                        className="h-7 w-7 text-muted-foreground hover:text-foreground"
+                                        title="Download JSON"
+                                        disabled={!output}
+                                    >
                                         <Download className="h-3.5 w-3.5" />
                                     </Button>
                                 </div>
@@ -363,7 +360,7 @@ export function CsvToJson({ title, description, features, useCases, faq }: CsvTo
                         </Card>
                     </div>
 
-                    {/* Actions below editors in normal mode */}
+                    {/* Actions in normal mode */}
                     {!isFullscreen && (
                         <div className="flex justify-center gap-4">
                             <Button onClick={handleReset} variant="outline" size="lg" className="gap-2 px-8 text-destructive border-destructive/20 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/50">
@@ -408,7 +405,7 @@ export function CsvToJson({ title, description, features, useCases, faq }: CsvTo
                             {useCases && useCases.length > 0 && (
                                 <div className="space-y-4">
                                     <div className="flex items-center gap-2">
-                                        <div className="p-2 rounded-lg bg-orange-500/10 text-orange-500">
+                                        <div className="p-2 rounded-lg bg-primary/10 text-primary">
                                             <Lightbulb className="h-5 w-5" />
                                         </div>
                                         <h2 className="text-xl font-semibold">Common Use Cases</h2>
@@ -417,7 +414,7 @@ export function CsvToJson({ title, description, features, useCases, faq }: CsvTo
                                         <ul className="space-y-3">
                                             {useCases.map((useCase, index) => (
                                                 <li key={index} className="flex items-start gap-3 text-muted-foreground">
-                                                    <div className="mt-1.5 h-1.5 w-1.5 rounded-full bg-orange-500 flex-shrink-0" />
+                                                    <div className="mt-1.5 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                                                     <span>{useCase}</span>
                                                 </li>
                                             ))}
@@ -429,23 +426,27 @@ export function CsvToJson({ title, description, features, useCases, faq }: CsvTo
 
                         {/* FAQ */}
                         {faq && faq.length > 0 && (
-                            <div className="space-y-6 max-w-3xl mx-auto w-full">
-                                <div className="flex items-center gap-2 justify-center pb-2">
-                                    <div className="p-2 rounded-lg bg-blue-500/10 text-blue-500">
+                            <div className="space-y-4">
+                                <div className="flex items-center gap-2">
+                                    <div className="p-2 rounded-lg bg-primary/10 text-primary">
                                         <HelpCircle className="h-5 w-5" />
                                     </div>
-                                    <h2 className="text-2xl font-semibold text-center">Frequently Asked Questions</h2>
+                                    <h2 className="text-xl font-semibold">Frequently Asked Questions</h2>
                                 </div>
-                                <Accordion type="single" collapsible className="w-full">
-                                    {faq.map((item, index) => (
-                                        <AccordionItem key={index} value={`item-${index}`}>
-                                            <AccordionTrigger className="text-left font-medium">{item.question}</AccordionTrigger>
-                                            <AccordionContent className="text-muted-foreground">
-                                                {item.answer}
-                                            </AccordionContent>
-                                        </AccordionItem>
-                                    ))}
-                                </Accordion>
+                                <Card className="p-6">
+                                    <Accordion type="single" collapsible className="w-full">
+                                        {faq.map((item, index) => (
+                                            <AccordionItem key={index} value={`item-${index}`}>
+                                                <AccordionTrigger className="text-left font-medium">
+                                                    {item.question}
+                                                </AccordionTrigger>
+                                                <AccordionContent className="text-muted-foreground leading-relaxed">
+                                                    {item.answer}
+                                                </AccordionContent>
+                                            </AccordionItem>
+                                        ))}
+                                    </Accordion>
+                                </Card>
                             </div>
                         )}
                     </div>

@@ -43,7 +43,7 @@ Every day, millions of people upload sensitive documents to online converters wi
 
 ## 🛠️ Available Tool Categories
 
-Privacy-First Toolbox offers **60+ tools** across 7 categories:
+Privacy-First Toolbox offers **85+ tools** across 7 categories:
 
 | Category | Description | Examples |
 |----------|-------------|----------|

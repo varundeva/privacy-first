@@ -74,7 +74,7 @@ const availableOutputFormats = Array.from(new Set(
 )).sort();
 
 const stats = [
-  { value: '75+', label: 'Free Tools', icon: Sparkles },
+  { value: `${toolsConfig.length}+`, label: 'Free Tools', icon: Sparkles },
   { value: '100%', label: 'Private', icon: Lock },
   { value: '0', label: 'Uploads', icon: Shield },
   { value: 'Instant', label: 'Processing', icon: Clock },
@@ -263,6 +263,7 @@ function FilterSection({
             >
               <Sparkles className="h-4 w-4" />
               All Tools
+              <Badge variant="secondary" className="ml-1 text-xs">{toolsConfig.length}</Badge>
             </Button>
             {toolCategories.map((category) => {
               const Icon = getCategoryIcon(category.id);

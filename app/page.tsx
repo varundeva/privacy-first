@@ -1,5 +1,6 @@
 import { Suspense } from 'react';
 import type { Metadata } from 'next';
+import { toolsConfig } from '@/lib/tools-config';
 import { HomeClient } from './home-client';
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://privacyfirst.tools';
@@ -14,23 +15,23 @@ function Loading() {
 
 // SEO Metadata for Homepage
 export const metadata: Metadata = {
-  title: 'Free Online Converter Tools - No Upload, 100% Private | Privacy-First',
-  description: 'Free online converter: images, PDF, JSON & more. No upload—100% private, browser-only processing. Edit, compress, format instantly, data stays on your device.',
+  title: `Free Online Converter Tools (${toolsConfig.length}+) - No Upload, 100% Private | Privacy-First`,
+  description: `Free online converter: ${toolsConfig.length}+ private tools for images, PDF, JSON & more. No upload—100% private, browser-only processing. Edit, compress, format instantly, data stays on your device.`,
   keywords: [
     'free online converter', 'image converter', 'pdf compressor online', 'json formatter', 'jpg to png', 'png to jpg',
     'webp converter', 'privacy tools', 'no upload tools', 'browser tools', 'pdf to jpg', 'word counter online'
   ].join(', '),
 
   openGraph: {
-    title: 'Free Online Converter Tools - No Upload, 100% Private | Privacy-First',
-    description: 'Free online converter: images, PDF, JSON & more. No upload—100% private, browser-only processing. Edit, compress, format instantly, data stays on your device.',
+    title: `Free Online Converter Tools (${toolsConfig.length}+) - No Upload, 100% Private | Privacy-First`,
+    description: `Free online converter: ${toolsConfig.length}+ private tools for images, PDF, JSON & more. No upload—100% private, browser-only processing. Edit, compress, format instantly, data stays on your device.`,
     type: 'website',
     url: BASE_URL,
     siteName: 'Privacy-First Toolbox',
     locale: 'en_US',
     images: [
       {
-        url: `${BASE_URL}/api/og?home=true&title=${encodeURIComponent('Privacy-First Toolbox')}&description=${encodeURIComponent('Free online tools that never upload your files. 100% browser-based.')}`,
+        url: `${BASE_URL}/api/og?home=true&title=${encodeURIComponent(`Privacy-First Toolbox (${toolsConfig.length}+ Tools)`)}&description=${encodeURIComponent('Free online tools that never upload your files. 100% browser-based.')}`,
         width: 1200,
         height: 630,
         alt: 'Privacy-First Toolbox',
@@ -40,9 +41,9 @@ export const metadata: Metadata = {
 
   twitter: {
     card: 'summary_large_image',
-    title: 'Free Online Converter Tools - No Upload, 100% Private | Privacy-First',
-    description: 'Free online converter: images, PDF, JSON & more. No upload—100% private, browser-only processing. Edit, compress, format instantly, data stays on your device.',
-    images: [`${BASE_URL}/api/og?home=true&title=${encodeURIComponent('Privacy-First Toolbox')}&description=${encodeURIComponent('Free online tools that never upload your files. 100% browser-based.')}`],
+    title: `Free Online Converter Tools (${toolsConfig.length}+) - No Upload, 100% Private | Privacy-First`,
+    description: `Free online converter: ${toolsConfig.length}+ private tools for images, PDF, JSON & more. No upload—100% private, browser-only processing. Edit, compress, format instantly, data stays on your device.`,
+    images: [`${BASE_URL}/api/og?home=true&title=${encodeURIComponent(`Privacy-First Toolbox (${toolsConfig.length}+ Tools)`)}&description=${encodeURIComponent('Free online tools that never upload your files. 100% browser-based.')}`],
   },
 
   robots: {
@@ -68,7 +69,7 @@ function generateStructuredData() {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     name: 'Free Online Converter Tools - No Upload, 100% Private | Privacy-First',
-    description: 'Free online converter: images, PDF, JSON & more. No upload—100% private, browser-only processing. Edit, compress, format instantly, data stays on your device.',
+    description: `Free online converter: ${toolsConfig.length}+ private tools for images, PDF, JSON & more. No upload—100% private, browser-only processing. Edit, compress, format instantly, data stays on your device.`,
     url: BASE_URL,
     potentialAction: {
       '@type': 'SearchAction',

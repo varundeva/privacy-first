@@ -72,7 +72,26 @@ import { WordCounter, CaseConverter, TextDiff, FindAndReplace, LoremIpsumGenerat
 
 // Import Date tools
 import { UnixTimestampConverter, TimeDifferenceCalculator, TimeZoneConverter, DateFormatConverter, WeekNumberCalculator, AgeCalculator, BusinessDaysCalculator } from '@/components/tools/date';
-import { JsonFormatter, JsonComparison, JsonToCsv, CsvToJson, JsonToTypescript, JsonToYaml, YamlToJson } from '@/components/tools/json';
+
+import {
+  JsonFormatter,
+  JsonComparison,
+  JsonToCsv,
+  CsvToJson,
+  JsonToTypescript,
+  JsonToYaml,
+  YamlToJson,
+  JsonPathTester,
+  JsonToXml,
+  XmlToJson,
+  JsonToSql,
+  JsonValidator,
+  JsonToSchema,
+  JsonViewer,
+  JsonMinifier,
+  JsonUnescape,
+  JsonSorter,
+} from '@/components/tools/json';
 import { Md5Generator, ShaGenerator, BcryptGenerator, AesEncryption, Base64Encoder, JwtDebugger } from '@/components/tools/crypto';
 import { SqlFormatter, HtmlFormatter, CssFormatter, UrlEncoder, UrlParser, UserAgentParser, HtmlEntityConverter, ColorConverter, CssUnitConverter } from '@/components/tools/web';
 
@@ -168,6 +187,26 @@ export function ToolPageClient({
         return <JsonToYaml {...commonProps} />;
       case 'yaml-to-json':
         return <YamlToJson {...commonProps} />;
+      case 'jsonpath-tester':
+        return <JsonPathTester {...commonProps} />;
+      case 'json-to-xml':
+        return <JsonToXml {...commonProps} />;
+      case 'xml-to-json':
+        return <XmlToJson {...commonProps} />;
+      case 'json-to-sql':
+        return <JsonToSql {...commonProps} />;
+      case 'json-validator':
+        return <JsonValidator {...commonProps} />;
+      case 'json-to-schema':
+        return <JsonToSchema {...commonProps} />;
+      case 'json-viewer':
+        return <JsonViewer {...commonProps} />;
+      case 'json-minifier':
+        return <JsonMinifier {...commonProps} />;
+      case 'json-unescape':
+        return <JsonUnescape {...commonProps} />;
+      case 'json-sorter':
+        return <JsonSorter {...commonProps} />;
       case 'md5-generator':
         return <Md5Generator {...commonProps} />;
       case 'sha-generator':

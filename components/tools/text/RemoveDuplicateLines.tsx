@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -16,6 +16,8 @@ import {
     HelpCircle,
     ArrowRight,
     Trash2,
+    Maximize2,
+    Minimize2,
 } from 'lucide-react';
 import {
     Accordion,
@@ -36,6 +38,18 @@ export function RemoveDuplicateLines({ title, description, features, useCases, f
     const [inputText, setInputText] = useState('');
     const [caseSensitive, setCaseSensitive] = useState(false);
     const [trimWhitespace, setTrimWhitespace] = useState(true);
+    const [isFullscreen, setIsFullscreen] = useState(false);
+
+    // Listen for Escape key to exit fullscreen
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape' && isFullscreen) {
+                setIsFullscreen(false);
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [isFullscreen]);
 
     const result = useMemo(() => {
         if (!inputText) return { text: '', stats: { original: 0, unique: 0, removed: 0 } };
@@ -45,29 +59,11 @@ export function RemoveDuplicateLines({ title, description, features, useCases, f
         const resultLines: string[] = [];
 
         lines.forEach(line => {
-            // Process line for comparison key
             let key = line;
             if (trimWhitespace) key = key.trim();
             if (!caseSensitive) key = key.toLowerCase();
 
-            // We keep the original line presentation of the FIRST occurrence
-            // So if we haven't seen this key, we add the original line (maybe trimmed if option on?)
-            // Usually, "Remove Duplicates" implies preserving the first instance's formatting
-            // But if "Trim Whitespace" is on, users usually expect the output to be trimmed too?
-            // Let's assume: comparison uses processed key. Output uses:
-            // - If trimWhitespace is true: The trimmed version of the line
-            // - Else: The original version of the line
-
-            // To be consistent:
-            // If trim is ON, we store the trimmed version.
-            // If trim is OFF, we store original.
-
             const contentToAdd = trimWhitespace ? line.trim() : line;
-
-            // Re-calculate key based on what we are effectively comparing
-            // If we are trimming, the key is already trimmed.
-            // If not trimming, key includes spaces.
-            // Case sensitivity affects KEY only, not content.
 
             if (!uniqueLines.has(key)) {
                 uniqueLines.add(key);
@@ -103,87 +99,108 @@ export function RemoveDuplicateLines({ title, description, features, useCases, f
         <div className="min-h-screen bg-background flex flex-col">
             <ToolHeader title={title} description={description} />
 
-            <main className="flex-1 mx-auto max-w-5xl px-4 py-8 sm:px-6 w-full space-y-8">
-                {/* Stats & Options */}
-                <Card className="p-6">
-                    <div className="flex flex-col md:flex-row gap-6 justify-between items-start md:items-center">
-                        <div className="flex gap-4 text-sm">
-                            <div className="p-3 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-center min-w-[100px]">
-                                <p className="font-bold text-blue-600 text-lg">{result.stats.original}</p>
-                                <p className="text-muted-foreground">Total Lines</p>
+            <main className="flex-1 mx-auto px-4 py-8 sm:px-6 w-full max-w-[96%] xl:max-w-[94%] 2xl:max-w-[1700px] space-y-8">
+                {/* Workspace Container */}
+                <div className={isFullscreen ? 'fixed inset-0 z-50 bg-background flex flex-col p-4 sm:p-6 overflow-hidden space-y-4' : 'space-y-6'}>
+                    {/* Stats & Options */}
+                    <Card className="p-4 sm:p-6 shadow-sm">
+                        <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
+                            <div className="flex flex-wrap gap-3 text-sm">
+                                <div className="px-3 py-2 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-center min-w-[90px]">
+                                    <p className="font-bold text-blue-600 text-lg leading-tight">{result.stats.original}</p>
+                                    <p className="text-[11px] text-muted-foreground uppercase font-medium">Total Lines</p>
+                                </div>
+                                <div className="px-3 py-2 rounded-lg bg-green-50 dark:bg-green-900/20 text-center min-w-[90px]">
+                                    <p className="font-bold text-green-600 text-lg leading-tight">{result.stats.unique}</p>
+                                    <p className="text-[11px] text-muted-foreground uppercase font-medium">Unique</p>
+                                </div>
+                                <div className="px-3 py-2 rounded-lg bg-red-50 dark:bg-red-900/20 text-center min-w-[90px]">
+                                    <p className="font-bold text-red-600 text-lg leading-tight">{result.stats.removed}</p>
+                                    <p className="text-[11px] text-muted-foreground uppercase font-medium">Removed</p>
+                                </div>
                             </div>
-                            <div className="p-3 rounded-lg bg-green-50 dark:bg-green-900/20 text-center min-w-[100px]">
-                                <p className="font-bold text-green-600 text-lg">{result.stats.unique}</p>
-                                <p className="text-muted-foreground">Unique</p>
-                            </div>
-                            <div className="p-3 rounded-lg bg-red-50 dark:bg-red-900/20 text-center min-w-[100px]">
-                                <p className="font-bold text-red-600 text-lg">{result.stats.removed}</p>
-                                <p className="text-muted-foreground">Removed</p>
-                            </div>
-                        </div>
 
-                        <div className="space-y-2">
-                            <div className="flex items-center space-x-2">
-                                <Switch
-                                    id="case-sensitive"
-                                    checked={caseSensitive}
-                                    onCheckedChange={setCaseSensitive}
-                                />
-                                <Label htmlFor="case-sensitive">Case Sensitive Comparison</Label>
-                            </div>
-                            <div className="flex items-center space-x-2">
-                                <Switch
-                                    id="trim-whitespace"
-                                    checked={trimWhitespace}
-                                    onCheckedChange={setTrimWhitespace}
-                                />
-                                <Label htmlFor="trim-whitespace">Trim Whitespace</Label>
+                            <div className="flex flex-wrap items-center gap-4 sm:gap-6">
+                                <div className="flex items-center space-x-2">
+                                    <Switch
+                                        id="case-sensitive"
+                                        checked={caseSensitive}
+                                        onCheckedChange={setCaseSensitive}
+                                    />
+                                    <Label htmlFor="case-sensitive" className="text-xs font-medium cursor-pointer">Case Sensitive</Label>
+                                </div>
+                                <div className="flex items-center space-x-2">
+                                    <Switch
+                                        id="trim-whitespace"
+                                        checked={trimWhitespace}
+                                        onCheckedChange={setTrimWhitespace}
+                                    />
+                                    <Label htmlFor="trim-whitespace" className="text-xs font-medium cursor-pointer">Trim Whitespace</Label>
+                                </div>
+
+                                <Button
+                                    variant={isFullscreen ? "default" : "outline"}
+                                    size="sm"
+                                    onClick={() => setIsFullscreen(!isFullscreen)}
+                                    className="gap-1.5 h-8 text-xs font-medium ml-auto"
+                                    title={isFullscreen ? "Exit Fullscreen (Esc)" : "Expand Fullscreen"}
+                                >
+                                    {isFullscreen ? <Minimize2 className="h-3.5 w-3.5" /> : <Maximize2 className="h-3.5 w-3.5" />}
+                                    <span className="hidden sm:inline">{isFullscreen ? "Exit Fullscreen" : "Fullscreen"}</span>
+                                    {isFullscreen && <kbd className="hidden sm:inline-block px-1 py-0.2 bg-primary-foreground/20 rounded text-[10px] ml-1">ESC</kbd>}
+                                </Button>
                             </div>
                         </div>
+                    </Card>
+
+                    {/* Input/Output Dual Panes */}
+                    <div className={`grid gap-4 sm:gap-6 md:grid-cols-2 ${isFullscreen ? 'flex-1 min-h-0' : ''}`}>
+                        {/* Input */}
+                        <Card className={`p-4 flex flex-col ${isFullscreen ? 'h-full min-h-0' : 'h-[500px]'}`}>
+                            <div className="flex justify-between items-center mb-3">
+                                <Label className="text-xs font-semibold">Source Text ({result.stats.original} lines)</Label>
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className="h-7 text-xs text-muted-foreground hover:text-destructive"
+                                    onClick={() => setInputText('')}
+                                    disabled={!inputText}
+                                >
+                                    <Trash2 className="h-3 w-3 mr-1.5" />
+                                    Clear
+                                </Button>
+                            </div>
+                            <Textarea
+                                placeholder="Paste text with duplicate lines here (emails, IDs, logs)..."
+                                className="flex-1 font-mono text-sm resize-none whitespace-pre focus:outline-none"
+                                value={inputText}
+                                onChange={(e) => setInputText(e.target.value)}
+                            />
+                        </Card>
+
+                        {/* Output */}
+                        <Card className={`p-4 flex flex-col border-primary/20 bg-primary/5 ${isFullscreen ? 'h-full min-h-0' : 'h-[500px]'}`}>
+                            <div className="flex justify-between items-center mb-3">
+                                <Label className="text-xs font-semibold">Unique Output ({result.stats.unique} lines)</Label>
+                                <Button
+                                    variant="default"
+                                    size="sm"
+                                    className="gap-1.5 h-7 text-xs bg-purple-600 hover:bg-purple-700"
+                                    onClick={handleCopy}
+                                    disabled={!result.text}
+                                >
+                                    <Copy className="h-3 w-3" />
+                                    Copy Result
+                                </Button>
+                            </div>
+                            <Textarea
+                                readOnly
+                                placeholder="Deduplicated result will appear here..."
+                                className="flex-1 font-mono text-sm resize-none bg-background/50 whitespace-pre focus:outline-none"
+                                value={result.text}
+                            />
+                        </Card>
                     </div>
-                </Card>
-
-                {/* Input/Output */}
-                <div className="grid gap-6 md:grid-cols-2">
-                    {/* Input */}
-                    <Card className="p-4 flex flex-col h-[500px]">
-                        <div className="flex justify-between items-center mb-4">
-                            <Label>Source Text</Label>
-                            <Button variant="ghost" size="sm" onClick={() => setInputText('')} disabled={!inputText}>
-                                <Trash2 className="h-3 w-3 mr-2" />
-                                Clear
-                            </Button>
-                        </div>
-                        <Textarea
-                            placeholder="Paste text with duplicate lines here..."
-                            className="flex-1 font-mono text-sm resize-none whitespace-pre"
-                            value={inputText}
-                            onChange={(e) => setInputText(e.target.value)}
-                        />
-                    </Card>
-
-                    {/* Output */}
-                    <Card className="p-4 flex flex-col h-[500px] border-primary/20 bg-primary/5">
-                        <div className="flex justify-between items-center mb-4">
-                            <Label>Unique Lines</Label>
-                            <Button
-                                variant="default"
-                                size="sm"
-                                className="gap-2 bg-purple-600 hover:bg-purple-700"
-                                onClick={handleCopy}
-                                disabled={!result.text}
-                            >
-                                <Copy className="h-3 w-3" />
-                                Copy Result
-                            </Button>
-                        </div>
-                        <Textarea
-                            readOnly
-                            placeholder="Result will appear here..."
-                            className="flex-1 font-mono text-sm resize-none bg-background/50 whitespace-pre"
-                            value={result.text}
-                        />
-                    </Card>
                 </div>
 
                 {/* Features & FAQ Section */}

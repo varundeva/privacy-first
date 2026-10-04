@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ToolHeader } from '../ToolHeader';
@@ -19,7 +19,9 @@ import {
     Trash2,
     Upload,
     Grid3X3,
-    FileText
+    FileText,
+    Maximize2,
+    Minimize2,
 } from 'lucide-react';
 import {
     Select,
@@ -52,8 +54,20 @@ export function JsonToCsv({ title, description, features, useCases, faq }: JsonT
     const [error, setError] = useState<string | null>(null);
     const [status, setStatus] = useState<'idle' | 'valid' | 'invalid'>('idle');
     const [viewMode, setViewMode] = useState<'text' | 'grid'>('text');
+    const [isFullscreen, setIsFullscreen] = useState(false);
     const { theme } = useTheme();
     const fileInputRef = useRef<HTMLInputElement>(null);
+
+    // Listen for Escape key to exit fullscreen
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape' && isFullscreen) {
+                setIsFullscreen(false);
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [isFullscreen]);
 
     const flattenObject = (obj: any, prefix = '', res: any = {}) => {
         for (const key in obj) {
@@ -211,137 +225,175 @@ export function JsonToCsv({ title, description, features, useCases, faq }: JsonT
         <div className="min-h-screen bg-background flex flex-col">
             <ToolHeader title={title} description={description} />
 
-            <main className="flex-1 mx-auto max-w-7xl px-4 py-8 sm:px-6 w-full space-y-8">
-                {/* Editors Layout */}
-                <div className="grid lg:grid-cols-2 gap-6 h-[600px]">
-                    {/* JSON Input */}
-                    <Card className={`flex flex-col border-2 overflow-hidden h-full ${status === 'invalid' ? 'border-red-200 dark:border-red-900' : 'border-border'
-                        }`}>
-                        <div className="p-3 bg-muted/30 border-b flex items-center justify-between">
-                            <div className="flex items-center gap-2">
+            <main className="flex-1 mx-auto px-4 py-8 sm:px-6 w-full max-w-[96%] xl:max-w-[94%] 2xl:max-w-[1700px] space-y-8">
+                {/* Workspace Container */}
+                <div className={isFullscreen ? 'fixed inset-0 z-50 bg-background flex flex-col p-4 sm:p-6 overflow-hidden space-y-4' : 'space-y-6'}>
+                    {/* Top Toolbar */}
+                    <div className="flex flex-wrap gap-4 sm:gap-6 p-4 border rounded-xl bg-card items-center shadow-xs">
+                        <div className="flex items-center gap-2">
+                            <div className="p-2 bg-primary/10 text-primary rounded-lg">
                                 <FileSpreadsheet className="h-4 w-4" />
-                                <span className="text-sm font-medium">JSON Input</span>
                             </div>
-                            <div className="flex items-center gap-2">
-                                <span className={`text-xs px-2 py-0.5 rounded ${status === 'valid' ? 'bg-green-100 text-green-700' :
-                                        status === 'invalid' ? 'bg-red-100 text-red-700' : ''
-                                    }`}>
-                                    {status === 'valid' ? 'Valid' : status === 'invalid' ? 'Error' : ''}
-                                </span>
-                                <Button
-                                    onClick={() => fileInputRef.current?.click()}
-                                    variant="ghost"
-                                    size="icon"
-                                    className="h-7 w-7"
-                                    title="Upload File"
-                                >
-                                    <Upload className="h-3.5 w-3.5" />
-                                </Button>
-                                <input
-                                    type="file"
-                                    ref={fileInputRef}
-                                    className="hidden"
-                                    accept=".json,.txt"
-                                    onChange={handleFileUpload}
-                                />
-                            </div>
+                            <span className="font-semibold text-sm">JSON to CSV Converter</span>
                         </div>
-                        <div className="flex-1 relative">
-                            <Editor
-                                height="100%"
-                                language="json"
-                                value={input}
-                                theme={editorTheme}
-                                onChange={handleEditorChange}
-                                onValidate={handleValidate}
-                                options={{
-                                    minimap: { enabled: false },
-                                    fontSize: 13,
-                                    lineNumbers: 'on',
-                                    folding: true,
-                                    automaticLayout: true,
-                                    scrollBeyondLastLine: false,
-                                }}
-                            />
-                            {error && (
-                                <div className="absolute bottom-4 left-4 right-4 bg-red-100 dark:bg-red-900/90 text-red-700 dark:text-red-200 p-2 rounded text-xs font-mono border border-red-200 dark:border-red-800 shadow-sm z-10">
-                                    {error}
-                                </div>
-                            )}
-                        </div>
-                    </Card>
 
-                    {/* CSV Output */}
-                    <Card className="flex flex-col border-2 border-border overflow-hidden h-full">
-                        <div className="p-3 bg-muted/30 border-b flex items-center justify-between">
-                            <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-2 ml-auto">
+                            <Button
+                                onClick={handleConvert}
+                                size="sm"
+                                className="gap-1.5 h-8 text-xs font-medium"
+                            >
+                                <ArrowRightLeft className="h-3.5 w-3.5" />
+                                Convert to CSV
+                            </Button>
+
+                            <Button
+                                variant={isFullscreen ? "default" : "outline"}
+                                size="sm"
+                                onClick={() => setIsFullscreen(!isFullscreen)}
+                                className="gap-1.5 h-8 text-xs font-medium"
+                                title={isFullscreen ? "Exit Fullscreen (Esc)" : "Expand Fullscreen"}
+                            >
+                                {isFullscreen ? <Minimize2 className="h-3.5 w-3.5" /> : <Maximize2 className="h-3.5 w-3.5" />}
+                                <span className="hidden sm:inline">{isFullscreen ? "Exit Fullscreen" : "Fullscreen"}</span>
+                                {isFullscreen && <kbd className="hidden sm:inline-block px-1 py-0.2 bg-primary-foreground/20 rounded text-[10px] ml-1">ESC</kbd>}
+                            </Button>
+                        </div>
+                    </div>
+
+                    {/* Editors Layout */}
+                    <div className={`grid lg:grid-cols-2 gap-4 sm:gap-6 ${isFullscreen ? 'flex-1 min-h-0' : 'h-[600px]'}`}>
+                        {/* JSON Input */}
+                        <Card className={`flex flex-col border-2 overflow-hidden h-full shadow-xs ${status === 'invalid' ? 'border-red-200 dark:border-red-900' : 'border-border'
+                            }`}>
+                            <div className="p-3 bg-muted/30 border-b flex items-center justify-between">
                                 <div className="flex items-center gap-2">
-                                    <FileType className="h-4 w-4" />
-                                    <span className="text-sm font-medium">CSV Output</span>
+                                    <FileSpreadsheet className="h-4 w-4 text-primary" />
+                                    <span className="text-sm font-medium">JSON Input</span>
                                 </div>
-                                {/* View Toggle */}
-                                <div className="flex items-center bg-background border rounded-md p-0.5 h-7">
-                                    <button
-                                        onClick={() => setViewMode('text')}
-                                        className={`px-2 flex items-center gap-1.5 text-xs font-medium rounded-sm h-full transition-all ${viewMode === 'text' ? 'bg-muted text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'
-                                            }`}
+                                <div className="flex items-center gap-2">
+                                    <span className={`text-xs px-2 py-0.5 rounded font-mono ${status === 'valid' ? 'bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300' :
+                                            status === 'invalid' ? 'bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-300' : ''
+                                        }`}>
+                                        {status === 'valid' ? 'Valid' : status === 'invalid' ? 'Error' : ''}
+                                    </span>
+                                    <Button
+                                        onClick={() => fileInputRef.current?.click()}
+                                        variant="ghost"
+                                        size="icon"
+                                        className="h-7 w-7 text-muted-foreground hover:text-foreground"
+                                        title="Upload File"
                                     >
-                                        <FileText className="h-3 w-3" />
-                                        Text
-                                    </button>
-                                    <button
-                                        onClick={() => setViewMode('grid')}
-                                        className={`px-2 flex items-center gap-1.5 text-xs font-medium rounded-sm h-full transition-all ${viewMode === 'grid' ? 'bg-muted text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'
-                                            }`}
-                                    >
-                                        <Grid3X3 className="h-3 w-3" />
-                                        Grid
-                                    </button>
+                                        <Upload className="h-3.5 w-3.5" />
+                                    </Button>
+                                    <input
+                                        type="file"
+                                        ref={fileInputRef}
+                                        className="hidden"
+                                        accept=".json,.txt"
+                                        onChange={handleFileUpload}
+                                    />
                                 </div>
                             </div>
-
-                            <div className="flex items-center gap-1">
-                                <Button onClick={handleCopy} variant="ghost" size="icon" className="h-7 w-7" title="Copy CSV">
-                                    <Copy className="h-3.5 w-3.5" />
-                                </Button>
-                                <Button onClick={handleDownload} variant="ghost" size="icon" className="h-7 w-7" title="Download CSV">
-                                    <Download className="h-3.5 w-3.5" />
-                                </Button>
-                            </div>
-                        </div>
-                        <div className="flex-1 relative overflow-hidden">
-                            {viewMode === 'text' ? (
+                            <div className="flex-1 relative">
                                 <Editor
                                     height="100%"
-                                    language="csv"
-                                    value={output}
+                                    language="json"
+                                    value={input}
                                     theme={editorTheme}
+                                    onChange={handleEditorChange}
+                                    onValidate={handleValidate}
                                     options={{
-                                        readOnly: true,
                                         minimap: { enabled: false },
                                         fontSize: 13,
                                         lineNumbers: 'on',
+                                        folding: true,
                                         automaticLayout: true,
                                         scrollBeyondLastLine: false,
                                     }}
                                 />
-                            ) : (
-                                <CsvGridView data={output} />
-                            )}
-                        </div>
-                    </Card>
-                </div>
+                                {error && (
+                                    <div className="absolute bottom-4 left-4 right-4 bg-red-100 dark:bg-red-900/90 text-red-700 dark:text-red-200 p-2 rounded text-xs font-mono border border-red-200 dark:border-red-800 shadow-sm z-10 transition-all animate-in slide-in-from-bottom-2">
+                                        {error}
+                                    </div>
+                                )}
+                            </div>
+                        </Card>
 
-                {/* Actions */}
-                <div className="flex justify-center gap-4">
-                    <Button onClick={handleReset} variant="outline" size="lg" className="gap-2 px-8 text-destructive border-destructive/20 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/50">
-                        <Trash2 className="h-5 w-5" />
-                        Reset
-                    </Button>
-                    <Button onClick={handleConvert} size="lg" className="gap-2 px-8">
-                        <ArrowRightLeft className="h-5 w-5" />
-                        Convert to CSV
-                    </Button>
+                        {/* CSV Output */}
+                        <Card className="flex flex-col border-2 border-border overflow-hidden h-full shadow-xs">
+                            <div className="p-3 bg-muted/30 border-b flex items-center justify-between">
+                                <div className="flex items-center gap-4">
+                                    <div className="flex items-center gap-2">
+                                        <FileType className="h-4 w-4 text-emerald-600" />
+                                        <span className="text-sm font-medium">CSV Output</span>
+                                    </div>
+                                    {/* View Toggle */}
+                                    <div className="flex items-center bg-background border rounded-md p-0.5 h-7">
+                                        <button
+                                            onClick={() => setViewMode('text')}
+                                            className={`px-2 flex items-center gap-1.5 text-xs font-medium rounded-sm h-full transition-all ${viewMode === 'text' ? 'bg-muted text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'
+                                                }`}
+                                        >
+                                            <FileText className="h-3 w-3" />
+                                            Text
+                                        </button>
+                                        <button
+                                            onClick={() => setViewMode('grid')}
+                                            className={`px-2 flex items-center gap-1.5 text-xs font-medium rounded-sm h-full transition-all ${viewMode === 'grid' ? 'bg-muted text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'
+                                                }`}
+                                        >
+                                            <Grid3X3 className="h-3 w-3" />
+                                            Grid
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center gap-1">
+                                    <Button onClick={handleCopy} variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground hover:text-foreground" title="Copy CSV">
+                                        <Copy className="h-3.5 w-3.5" />
+                                    </Button>
+                                    <Button onClick={handleDownload} variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground hover:text-foreground" title="Download CSV">
+                                        <Download className="h-3.5 w-3.5" />
+                                    </Button>
+                                </div>
+                            </div>
+                            <div className="flex-1 relative overflow-hidden">
+                                {viewMode === 'text' ? (
+                                    <Editor
+                                        height="100%"
+                                        language="csv"
+                                        value={output}
+                                        theme={editorTheme}
+                                        options={{
+                                            readOnly: true,
+                                            minimap: { enabled: false },
+                                            fontSize: 13,
+                                            lineNumbers: 'on',
+                                            automaticLayout: true,
+                                            scrollBeyondLastLine: false,
+                                        }}
+                                    />
+                                ) : (
+                                    <CsvGridView data={output} />
+                                )}
+                            </div>
+                        </Card>
+                    </div>
+
+                    {/* Actions below editors in normal mode */}
+                    {!isFullscreen && (
+                        <div className="flex justify-center gap-4">
+                            <Button onClick={handleReset} variant="outline" size="lg" className="gap-2 px-8 text-destructive border-destructive/20 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/50">
+                                <Trash2 className="h-5 w-5" />
+                                Reset
+                            </Button>
+                            <Button onClick={handleConvert} size="lg" className="gap-2 px-8">
+                                <ArrowRightLeft className="h-5 w-5" />
+                                Convert to CSV
+                            </Button>
+                        </div>
+                    )}
                 </div>
 
                 {/* Features & FAQ Section */}

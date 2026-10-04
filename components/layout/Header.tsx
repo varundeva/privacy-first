@@ -105,10 +105,15 @@ export function Header() {
                   <Button
                     variant={isActive ? 'secondary' : 'ghost'}
                     size="sm"
-                    className="gap-2"
+                    className="gap-1.5"
                   >
                     <item.icon className="h-4 w-4" />
                     {item.name}
+                    {item.name === 'All Tools' && (
+                      <span className="text-[11px] font-mono px-1.5 py-0.2 rounded-full bg-muted text-muted-foreground">
+                        {toolsConfig.length}
+                      </span>
+                    )}
                   </Button>
                 </Link>
               );
@@ -169,7 +174,7 @@ export function Header() {
               className="hidden sm:inline-flex items-center gap-2 h-9 px-3 rounded-lg border-muted-foreground/20 text-muted-foreground hover:text-foreground text-xs font-normal"
             >
               <Search className="h-3.5 w-3.5" />
-              <span>Search tools...</span>
+              <span>Search {toolsConfig.length}+ tools...</span>
               <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-0.5 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
                 <span className="text-xs">⌘</span>K
               </kbd>
@@ -226,7 +231,7 @@ export function Header() {
                     className="w-full justify-start gap-2.5 min-h-[44px] text-muted-foreground text-sm font-normal"
                   >
                     <Search className="h-4 w-4" />
-                    <span>Search 75+ tools...</span>
+                    <span>Search {toolsConfig.length}+ tools...</span>
                   </Button>
 
                   {/* Main Navigation */}
@@ -242,10 +247,17 @@ export function Header() {
                           href={item.href}
                           onClick={() => setMobileMenuOpen(false)}
                         >
-                          <div className={`flex items-center gap-3 rounded-lg px-3 py-2.5 min-h-[44px] transition-colors ${isActive ? 'bg-muted' : 'hover:bg-muted'
+                          <div className={`flex items-center justify-between rounded-lg px-3 py-2.5 min-h-[44px] transition-colors ${isActive ? 'bg-muted' : 'hover:bg-muted'
                             }`}>
-                            <item.icon className="h-5 w-5" />
-                            <span className="font-medium text-sm">{item.name}</span>
+                            <div className="flex items-center gap-3">
+                              <item.icon className="h-5 w-5" />
+                              <span className="font-medium text-sm">{item.name}</span>
+                            </div>
+                            {item.name === 'All Tools' && (
+                              <span className="text-xs text-muted-foreground font-mono bg-muted px-2 py-0.5 rounded-full">
+                                {toolsConfig.length}
+                              </span>
+                            )}
                           </div>
                         </Link>
                       );

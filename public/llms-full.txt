@@ -409,6 +409,76 @@
 - Supported Formats: .yaml, .yml, .txt
 - Privacy: 100% Client-Side, No File Upload, Works Offline
 
+## JSONPath Tester
+- URL: https://privacyfirst.tools/tools/json/jsonpath-tester
+- Category: json
+- Description: Test and evaluate JSONPath expressions online
+- Supported Formats: .json, .txt
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## JSON to XML
+- URL: https://privacyfirst.tools/tools/json/json-to-xml
+- Category: json
+- Description: Convert JSON to XML format online
+- Supported Formats: .json, .txt
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## XML to JSON
+- URL: https://privacyfirst.tools/tools/json/xml-to-json
+- Category: json
+- Description: Convert XML to JSON format online
+- Supported Formats: .xml, .txt
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## JSON to SQL
+- URL: https://privacyfirst.tools/tools/json/json-to-sql
+- Category: json
+- Description: Convert JSON to SQL INSERT and CREATE TABLE statements
+- Supported Formats: .json, .txt
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## JSON Validator & Fixer
+- URL: https://privacyfirst.tools/tools/json/json-validator
+- Category: json
+- Description: Validate JSON syntax and auto-fix formatting errors
+- Supported Formats: .json, .txt
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## JSON to JSON Schema
+- URL: https://privacyfirst.tools/tools/json/json-to-schema
+- Category: json
+- Description: Generate JSON Schema from sample JSON
+- Supported Formats: .json, .txt
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## JSON Viewer
+- URL: https://privacyfirst.tools/tools/json/json-viewer
+- Category: json
+- Description: Interactive JSON Tree Visualizer & Explorer with search and node folding
+- Supported Formats: .json, .txt
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## JSON Minifier
+- URL: https://privacyfirst.tools/tools/json/json-minifier
+- Category: json
+- Description: Compress and minify JSON payloads with live byte savings calculation
+- Supported Formats: .json, .txt
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## JSON Unescape & Stringify
+- URL: https://privacyfirst.tools/tools/json/json-unescape
+- Category: json
+- Description: Unescape stringified JSON or escape JSON into JavaScript, Python, cURL, Java, and SQL
+- Supported Formats: .json, .txt
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## JSON Sorter
+- URL: https://privacyfirst.tools/tools/json/json-sorter
+- Category: json
+- Description: Sort and alphabetize JSON keys recursively for clean Git diffs
+- Supported Formats: .json, .txt
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
 ## MD5 Generator
 - URL: https://privacyfirst.tools/tools/crypto/md5-generator
 - Category: crypto

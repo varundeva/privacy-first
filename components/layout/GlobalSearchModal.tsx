@@ -50,9 +50,9 @@ export function GlobalSearchModal({ open, onOpenChange }: GlobalSearchModalProps
       open={open}
       onOpenChange={onOpenChange}
       title="Search Tools & Converters"
-      description="Quickly find any private browser-based tool or competitor comparison"
+      description={`Quickly find any of our ${toolsConfig.length} private browser-based tools or competitor comparisons`}
     >
-      <CommandInput placeholder="Type a tool name, format (png, pdf, json), or action..." />
+      <CommandInput placeholder={`Search ${toolsConfig.length} private tools (e.g., png, pdf, json, diff)...`} />
       <CommandList className="max-h-[70vh] sm:max-h-[450px]">
         <CommandEmpty>
           <div className="py-6 text-center space-y-2">

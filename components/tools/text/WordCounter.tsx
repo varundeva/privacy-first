@@ -17,7 +17,9 @@ import {
   Check,
   ArrowLeft,
   Lightbulb,
-  HelpCircle
+  HelpCircle,
+  Maximize2,
+  Minimize2,
 } from 'lucide-react';
 import { formatFileSize } from '@/lib/workers/types';
 import {
@@ -64,6 +66,18 @@ export function WordCounter({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  // Listen for Escape key to exit fullscreen
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isFullscreen) {
+        setIsFullscreen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isFullscreen]);
 
   const [stats, setStats] = useState<TextStats>({
     words: 0,
@@ -179,7 +193,7 @@ export function WordCounter({
       />
 
       {/* Main Content */}
-      <main className="flex-1 mx-auto max-w-4xl px-4 py-8 sm:px-6 w-full space-y-16">
+      <main className="flex-1 mx-auto px-4 py-8 sm:px-6 w-full max-w-[96%] xl:max-w-[94%] 2xl:max-w-[1700px] space-y-12">
         {/* Tool Interface */}
         <div className="min-h-[400px]">
           {!file ? (
@@ -256,32 +270,70 @@ export function WordCounter({
                 />
               </div>
 
-              {/* File Content / Text Editor */}
-              <Card className="flex flex-col overflow-hidden">
-                <div className="p-4 border-b bg-muted/30 flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium text-sm">
-                      {file.name === 'New Document.txt' ? 'Text Editor' : `File Content: ${file.name}`}
-                    </span>
+              {/* File Content / Text Editor Workspace */}
+              <div className={isFullscreen ? 'fixed inset-0 z-50 bg-background flex flex-col p-4 sm:p-6 overflow-hidden space-y-3' : 'space-y-6'}>
+                <Card className={`flex flex-col overflow-hidden border shadow-sm ${isFullscreen ? 'flex-1 min-h-0' : ''}`}>
+                  <div className="p-3 sm:p-4 border-b bg-muted/30 flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="font-semibold text-sm">
+                        {file.name === 'New Document.txt' ? 'Text Editor' : `File Content: ${file.name}`}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Button variant="ghost" size="sm" className="h-8 gap-1.5 text-xs" onClick={handleCopy}>
+                        {copied ? <Check className="h-3.5 w-3.5 text-green-500" /> : <Copy className="h-3.5 w-3.5" />}
+                        <span>{copied ? 'Copied' : 'Copy Text'}</span>
+                      </Button>
+                      <Button
+                        onClick={() => setIsFullscreen(!isFullscreen)}
+                        variant={isFullscreen ? 'default' : 'outline'}
+                        size="sm"
+                        className="h-8 gap-1.5 text-xs font-medium"
+                        title={isFullscreen ? 'Exit Fullscreen (Esc)' : 'Expand to Fullscreen distraction-free mode'}
+                      >
+                        {isFullscreen ? <Minimize2 className="h-3.5 w-3.5" /> : <Maximize2 className="h-3.5 w-3.5" />}
+                        <span>{isFullscreen ? 'Exit Fullscreen' : 'Fullscreen'}</span>
+                        {isFullscreen && (
+                          <kbd className="hidden sm:inline-block px-1 py-0.2 rounded bg-primary-foreground/20 text-[10px]">
+                            ESC
+                          </kbd>
+                        )}
+                      </Button>
+                    </div>
                   </div>
-                  <Button variant="ghost" size="sm" className="h-8 gap-2" onClick={handleCopy}>
-                    {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
-                    {copied ? 'Copied' : 'Copy Text'}
-                  </Button>
-                </div>
-                <div className="p-0">
-                  <textarea
-                    className="w-full min-h-[400px] p-4 bg-background font-mono text-sm resize-y focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary/20"
-                    value={text}
-                    onChange={(e) => {
-                      const newText = e.target.value;
-                      setText(newText);
-                      calculateStats(newText);
-                    }}
-                    placeholder="Start typing or paste your text here..."
-                  />
-                </div>
-              </Card>
+                  <div className={`p-0 ${isFullscreen ? 'flex-1 min-h-0 flex flex-col' : ''}`}>
+                    <textarea
+                      className={`w-full p-4 bg-background font-mono text-sm focus:outline-none focus:ring-1 focus:ring-primary/20 ${
+                        isFullscreen
+                          ? 'flex-1 min-h-0 resize-none text-base leading-relaxed'
+                          : 'min-h-[450px] resize-y'
+                      }`}
+                      value={text}
+                      onChange={(e) => {
+                        const newText = e.target.value;
+                        setText(newText);
+                        calculateStats(newText);
+                      }}
+                      placeholder="Start typing or paste your text here..."
+                    />
+                  </div>
+                </Card>
+
+                {/* Live Zen Stats Bar in Fullscreen Mode */}
+                {isFullscreen && (
+                  <div className="flex flex-wrap items-center justify-between gap-3 text-xs border bg-muted/40 px-4 py-2.5 rounded-lg shadow-xs">
+                    <div className="flex items-center gap-4 sm:gap-6 font-medium">
+                      <span><strong className="font-bold text-foreground text-sm">{stats.words.toLocaleString()}</strong> words</span>
+                      <span><strong className="font-bold text-foreground text-sm">{stats.characters.toLocaleString()}</strong> chars ({stats.charactersNoSpaces.toLocaleString()} no spaces)</span>
+                      <span><strong className="font-bold text-foreground text-sm">{stats.sentences.toLocaleString()}</strong> sentences</span>
+                      <span><strong className="font-bold text-foreground text-sm">{stats.paragraphs.toLocaleString()}</strong> paragraphs</span>
+                    </div>
+                    <div className="flex items-center gap-3 text-muted-foreground font-mono">
+                      <span>⏱️ {stats.readingTime} read time</span>
+                    </div>
+                  </div>
+                )}
+              </div>
 
               <div className="flex justify-center pt-4">
                 <Button variant="outline" onClick={handleReset} className="gap-2">

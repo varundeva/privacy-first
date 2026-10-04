@@ -7,8 +7,8 @@ const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://privacyfirst.tools'
 
 // SEO Metadata for Tools Page
 export const metadata: Metadata = {
-  title: 'All Free Online Tools | 75+ Private Image, PDF, Code & Text Utilities',
-  description: 'Browse our complete catalog of 75+ free browser-based online tools. Convert and process images, PDFs, text, JSON, and cryptographic hashes 100% locally in your browser.',
+  title: `All Free Online Tools | ${toolsConfig.length}+ Private Image, PDF, Code & Text Utilities`,
+  description: `Browse our complete catalog of ${toolsConfig.length}+ free browser-based online tools. Convert and process images, PDFs, text, JSON, and cryptographic hashes 100% locally in your browser.`,
   keywords: [
     'free online tools',
     'image converter',
@@ -22,13 +22,13 @@ export const metadata: Metadata = {
   ].join(', '),
 
   openGraph: {
-    title: 'All Free Online Tools | Privacy-First Toolbox',
-    description: 'Browse our complete catalog of 75+ free browser-based tools that process files entirely in your browser.',
+    title: `All Free Online Tools (${toolsConfig.length}+) | Privacy-First Toolbox`,
+    description: `Browse our complete catalog of ${toolsConfig.length}+ free browser-based tools that process files entirely in your browser.`,
     type: 'website',
     siteName: 'Privacy-First Toolbox',
     images: [
       {
-        url: `${BASE_URL}/api/og?title=${encodeURIComponent('All 75+ Free Online Tools')}&description=${encodeURIComponent('Browse our complete collection of free browser-based tools with zero server uploads.')}&category=web`,
+        url: `${BASE_URL}/api/og?title=${encodeURIComponent(`All ${toolsConfig.length}+ Free Online Tools`)}&description=${encodeURIComponent('Browse our complete collection of free browser-based tools with zero server uploads.')}&category=web`,
         width: 1200,
         height: 630,
         alt: 'All Tools Collection',
@@ -38,9 +38,9 @@ export const metadata: Metadata = {
 
   twitter: {
     card: 'summary_large_image',
-    title: 'All Free Online Tools | Privacy-First Toolbox',
-    description: 'Browse our complete catalog of 75+ free browser-based tools.',
-    images: [`${BASE_URL}/api/og?title=${encodeURIComponent('All 75+ Free Online Tools')}&description=${encodeURIComponent('Browse our complete collection of free browser-based tools with zero server uploads.')}&category=web`],
+    title: `All Free Online Tools (${toolsConfig.length}+) | Privacy-First Toolbox`,
+    description: `Browse our complete catalog of ${toolsConfig.length}+ free browser-based tools.`,
+    images: [`${BASE_URL}/api/og?title=${encodeURIComponent(`All ${toolsConfig.length}+ Free Online Tools`)}&description=${encodeURIComponent('Browse our complete collection of free browser-based tools with zero server uploads.')}&category=web`],
   },
 
   alternates: {

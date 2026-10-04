@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ToolHeader } from '../ToolHeader';
@@ -16,7 +16,9 @@ import {
     Trash2,
     Settings2,
     Upload,
-    FileCode
+    FileCode,
+    Maximize2,
+    Minimize2,
 } from 'lucide-react';
 import {
     Accordion,
@@ -41,8 +43,20 @@ export function JsonToYaml({ title, description, features, useCases, faq }: Json
     const [output, setOutput] = useState('');
     const [error, setError] = useState<string | null>(null);
     const [status, setStatus] = useState<'idle' | 'valid' | 'invalid'>('idle');
+    const [isFullscreen, setIsFullscreen] = useState(false);
     const { theme } = useTheme();
     const fileInputRef = useRef<HTMLInputElement>(null);
+
+    // Listen for Escape key to exit fullscreen
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape' && isFullscreen) {
+                setIsFullscreen(false);
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [isFullscreen]);
 
     const handleConvert = () => {
         if (!input.trim()) {
@@ -144,112 +158,150 @@ export function JsonToYaml({ title, description, features, useCases, faq }: Json
         <div className="min-h-screen bg-background flex flex-col">
             <ToolHeader title={title} description={description} />
 
-            <main className="flex-1 mx-auto max-w-7xl px-4 py-8 sm:px-6 w-full space-y-8">
-                {/* Editors Layout */}
-                <div className="grid lg:grid-cols-2 gap-6 h-[600px]">
-                    {/* JSON Input */}
-                    <Card className={`flex flex-col border-2 overflow-hidden h-full ${status === 'invalid' ? 'border-red-200 dark:border-red-900' : 'border-border'
-                        }`}>
-                        <div className="p-3 bg-muted/30 border-b flex items-center justify-between">
-                            <div className="flex items-center gap-2">
+            <main className="flex-1 mx-auto px-4 py-8 sm:px-6 w-full max-w-[96%] xl:max-w-[94%] 2xl:max-w-[1700px] space-y-8">
+                {/* Workspace Container */}
+                <div className={isFullscreen ? 'fixed inset-0 z-50 bg-background flex flex-col p-4 sm:p-6 overflow-hidden space-y-4' : 'space-y-6'}>
+                    {/* Top Toolbar */}
+                    <div className="flex flex-wrap gap-4 sm:gap-6 p-4 border rounded-xl bg-card items-center shadow-xs">
+                        <div className="flex items-center gap-2">
+                            <div className="p-2 bg-primary/10 text-primary rounded-lg">
                                 <FileJson className="h-4 w-4" />
-                                <span className="text-sm font-medium">JSON Input</span>
                             </div>
-                            <div className="flex items-center gap-2">
-                                <span className={`text-xs px-2 py-0.5 rounded ${status === 'valid' ? 'bg-green-100 text-green-700' :
-                                        status === 'invalid' ? 'bg-red-100 text-red-700' : ''
-                                    }`}>
-                                    {status === 'valid' ? 'Valid' : status === 'invalid' ? 'Error' : ''}
-                                </span>
-                                <Button
-                                    onClick={() => fileInputRef.current?.click()}
-                                    variant="ghost"
-                                    size="icon"
-                                    className="h-7 w-7"
-                                    title="Upload JSON"
-                                >
-                                    <Upload className="h-3.5 w-3.5" />
-                                </Button>
-                                <input
-                                    type="file"
-                                    ref={fileInputRef}
-                                    className="hidden"
-                                    accept=".json,.txt"
-                                    onChange={handleFileUpload}
+                            <span className="font-semibold text-sm">JSON to YAML Converter</span>
+                        </div>
+
+                        <div className="flex items-center gap-2 ml-auto">
+                            <Button
+                                onClick={handleConvert}
+                                size="sm"
+                                className="gap-1.5 h-8 text-xs font-medium"
+                            >
+                                <ArrowRightLeft className="h-3.5 w-3.5" />
+                                Convert to YAML
+                            </Button>
+
+                            <Button
+                                variant={isFullscreen ? "default" : "outline"}
+                                size="sm"
+                                onClick={() => setIsFullscreen(!isFullscreen)}
+                                className="gap-1.5 h-8 text-xs font-medium"
+                                title={isFullscreen ? "Exit Fullscreen (Esc)" : "Expand Fullscreen"}
+                            >
+                                {isFullscreen ? <Minimize2 className="h-3.5 w-3.5" /> : <Maximize2 className="h-3.5 w-3.5" />}
+                                <span className="hidden sm:inline">{isFullscreen ? "Exit Fullscreen" : "Fullscreen"}</span>
+                                {isFullscreen && <kbd className="hidden sm:inline-block px-1 py-0.2 bg-primary-foreground/20 rounded text-[10px] ml-1">ESC</kbd>}
+                            </Button>
+                        </div>
+                    </div>
+
+                    {/* Editors Layout */}
+                    <div className={`grid lg:grid-cols-2 gap-4 sm:gap-6 ${isFullscreen ? 'flex-1 min-h-0' : 'h-[600px]'}`}>
+                        {/* JSON Input */}
+                        <Card className={`flex flex-col border-2 overflow-hidden h-full shadow-xs ${status === 'invalid' ? 'border-red-200 dark:border-red-900' : 'border-border'
+                            }`}>
+                            <div className="p-3 bg-muted/30 border-b flex items-center justify-between">
+                                <div className="flex items-center gap-2">
+                                    <FileJson className="h-4 w-4 text-primary" />
+                                    <span className="text-sm font-medium">JSON Input</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <span className={`text-xs px-2 py-0.5 rounded font-mono ${status === 'valid' ? 'bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300' :
+                                            status === 'invalid' ? 'bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-300' : ''
+                                        }`}>
+                                        {status === 'valid' ? 'Valid' : status === 'invalid' ? 'Error' : ''}
+                                    </span>
+                                    <Button
+                                        onClick={() => fileInputRef.current?.click()}
+                                        variant="ghost"
+                                        size="icon"
+                                        className="h-7 w-7 text-muted-foreground hover:text-foreground"
+                                        title="Upload JSON"
+                                    >
+                                        <Upload className="h-3.5 w-3.5" />
+                                    </Button>
+                                    <input
+                                        type="file"
+                                        ref={fileInputRef}
+                                        className="hidden"
+                                        accept=".json,.txt"
+                                        onChange={handleFileUpload}
+                                    />
+                                </div>
+                            </div>
+                            <div className="flex-1 relative">
+                                <Editor
+                                    height="100%"
+                                    language="json"
+                                    value={input}
+                                    theme={editorTheme}
+                                    onChange={handleEditorChange}
+                                    onValidate={handleValidate}
+                                    options={{
+                                        minimap: { enabled: false },
+                                        fontSize: 13,
+                                        lineNumbers: 'on',
+                                        folding: true,
+                                        automaticLayout: true,
+                                        scrollBeyondLastLine: false,
+                                    }}
+                                />
+                                {error && (
+                                    <div className="absolute bottom-4 left-4 right-4 bg-red-100 dark:bg-red-900/90 text-red-700 dark:text-red-200 p-2 rounded text-xs font-mono border border-red-200 dark:border-red-800 shadow-sm z-10 transition-all animate-in slide-in-from-bottom-2">
+                                        {error}
+                                    </div>
+                                )}
+                            </div>
+                        </Card>
+
+                        {/* YAML Output */}
+                        <Card className="flex flex-col border-2 border-border overflow-hidden h-full shadow-xs">
+                            <div className="p-3 bg-muted/30 border-b flex items-center justify-between">
+                                <div className="flex items-center gap-2">
+                                    <FileCode className="h-4 w-4 text-amber-500" />
+                                    <span className="text-sm font-medium">YAML Output</span>
+                                </div>
+                                <div className="flex items-center gap-1">
+                                    <Button onClick={handleCopy} variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground hover:text-foreground" title="Copy YAML">
+                                        <Copy className="h-3.5 w-3.5" />
+                                    </Button>
+                                    <Button onClick={handleDownload} variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground hover:text-foreground" title="Download YAML">
+                                        <Download className="h-3.5 w-3.5" />
+                                    </Button>
+                                </div>
+                            </div>
+                            <div className="flex-1">
+                                <Editor
+                                    height="100%"
+                                    language="yaml"
+                                    value={output}
+                                    theme={editorTheme}
+                                    options={{
+                                        readOnly: true,
+                                        minimap: { enabled: false },
+                                        fontSize: 13,
+                                        lineNumbers: 'on',
+                                        folding: true,
+                                        automaticLayout: true,
+                                        scrollBeyondLastLine: false,
+                                    }}
                                 />
                             </div>
-                        </div>
-                        <div className="flex-1 relative">
-                            <Editor
-                                height="100%"
-                                language="json"
-                                value={input}
-                                theme={editorTheme}
-                                onChange={handleEditorChange}
-                                onValidate={handleValidate}
-                                options={{
-                                    minimap: { enabled: false },
-                                    fontSize: 13,
-                                    lineNumbers: 'on',
-                                    folding: true,
-                                    automaticLayout: true,
-                                    scrollBeyondLastLine: false,
-                                }}
-                            />
-                            {error && (
-                                <div className="absolute bottom-4 left-4 right-4 bg-red-100 dark:bg-red-900/90 text-red-700 dark:text-red-200 p-2 rounded text-xs font-mono border border-red-200 dark:border-red-800 shadow-sm z-10 transition-all animate-in slide-in-from-bottom-2">
-                                    {error}
-                                </div>
-                            )}
-                        </div>
-                    </Card>
+                        </Card>
+                    </div>
 
-                    {/* YAML Output */}
-                    <Card className="flex flex-col border-2 border-border overflow-hidden h-full">
-                        <div className="p-3 bg-muted/30 border-b flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                                <FileCode className="h-4 w-4" />
-                                <span className="text-sm font-medium">YAML Output</span>
-                            </div>
-                            <div className="flex items-center gap-1">
-                                <Button onClick={handleCopy} variant="ghost" size="icon" className="h-7 w-7" title="Copy YAML">
-                                    <Copy className="h-3.5 w-3.5" />
-                                </Button>
-                                <Button onClick={handleDownload} variant="ghost" size="icon" className="h-7 w-7" title="Download YAML">
-                                    <Download className="h-3.5 w-3.5" />
-                                </Button>
-                            </div>
+                    {/* Actions below editors in normal mode */}
+                    {!isFullscreen && (
+                        <div className="flex justify-center gap-4">
+                            <Button onClick={handleReset} variant="outline" size="lg" className="gap-2 px-8 text-destructive border-destructive/20 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/50">
+                                <Trash2 className="h-5 w-5" />
+                                Reset
+                            </Button>
+                            <Button onClick={handleConvert} size="lg" className="gap-2 px-8">
+                                <ArrowRightLeft className="h-5 w-5" />
+                                Convert to YAML
+                            </Button>
                         </div>
-                        <div className="flex-1">
-                            <Editor
-                                height="100%"
-                                language="yaml"
-                                value={output}
-                                theme={editorTheme}
-                                options={{
-                                    readOnly: true,
-                                    minimap: { enabled: false },
-                                    fontSize: 13,
-                                    lineNumbers: 'on',
-                                    folding: true,
-                                    automaticLayout: true,
-                                    scrollBeyondLastLine: false,
-                                }}
-                            />
-                        </div>
-                    </Card>
-                </div>
-
-                {/* Actions */}
-                <div className="flex justify-center gap-4">
-                    <Button onClick={handleReset} variant="outline" size="lg" className="gap-2 px-8 text-destructive border-destructive/20 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/50">
-                        <Trash2 className="h-5 w-5" />
-                        Reset
-                    </Button>
-                    <Button onClick={handleConvert} size="lg" className="gap-2 px-8">
-                        <ArrowRightLeft className="h-5 w-5" />
-                        Convert to YAML
-                    </Button>
+                    )}
                 </div>
 
                 {/* Features & FAQ Section */}

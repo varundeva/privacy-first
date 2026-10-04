@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -18,6 +18,8 @@ import {
     HelpCircle,
     ArrowRight,
     Settings,
+    Maximize2,
+    Minimize2,
 } from 'lucide-react';
 import {
     Accordion,
@@ -42,6 +44,18 @@ export function FindAndReplace({ title, description, features, useCases, faq }: 
     const [useRegex, setUseRegex] = useState(false);
     const [wholeWord, setWholeWord] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [isFullscreen, setIsFullscreen] = useState(false);
+
+    // Listen for Escape key to exit fullscreen
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape' && isFullscreen) {
+                setIsFullscreen(false);
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [isFullscreen]);
 
     // Calculate replacements and result
     const result = useMemo(() => {
@@ -107,123 +121,146 @@ export function FindAndReplace({ title, description, features, useCases, faq }: 
         <div className="min-h-screen bg-background flex flex-col">
             <ToolHeader title={title} description={description} />
 
-            <main className="flex-1 mx-auto max-w-5xl px-4 py-8 sm:px-6 w-full space-y-8">
-                {/* Search & Replace Controls */}
-                <Card className="p-6 space-y-6">
-                    <div className="grid gap-6 md:grid-cols-2">
-                        {/* Find Input */}
-                        <div className="space-y-2">
-                            <Label className="flex items-center gap-2">
-                                <Search className="h-4 w-4" />
-                                Find
-                            </Label>
-                            <Input
-                                placeholder={useRegex ? "Enter regex pattern..." : "Enter text to find..."}
-                                value={findText}
-                                onChange={(e) => setFindText(e.target.value)}
-                                className={error ? "border-destructive" : ""}
-                            />
-                            {error && <p className="text-xs text-destructive">{error}</p>}
-                        </div>
-
-                        {/* Replace Input */}
-                        <div className="space-y-2">
-                            <Label className="flex items-center gap-2">
-                                <Replace className="h-4 w-4" />
-                                Replace with
-                            </Label>
-                            <Input
-                                placeholder="Enter replacement text..."
-                                value={replaceText}
-                                onChange={(e) => setReplaceText(e.target.value)}
-                            />
-                        </div>
-                    </div>
-
-                    {/* Options */}
-                    <div className="flex flex-wrap gap-6 p-4 bg-muted/50 rounded-lg">
-                        <div className="flex items-center space-x-2">
-                            <Switch
-                                id="match-case"
-                                checked={matchCase}
-                                onCheckedChange={setMatchCase}
-                            />
-                            <Label htmlFor="match-case">Match Case</Label>
-                        </div>
-
-                        <div className="flex items-center space-x-2">
-                            <Switch
-                                id="use-regex"
-                                checked={useRegex}
-                                onCheckedChange={(checked) => {
-                                    setUseRegex(checked);
-                                    if (checked) setWholeWord(false); // Disable whole word in regex mode
-                                }}
-                            />
-                            <Label htmlFor="use-regex">Regular Expression</Label>
-                        </div>
-
-                        <div className="flex items-center space-x-2">
-                            <Switch
-                                id="whole-word"
-                                checked={wholeWord}
-                                onCheckedChange={setWholeWord}
-                                disabled={useRegex}
-                            />
-                            <Label htmlFor="whole-word" className={useRegex ? "text-muted-foreground" : ""}>
-                                Whole Word Only
-                            </Label>
-                        </div>
-                    </div>
-                </Card>
-
-                {/* Text Areas */}
-                <div className="grid gap-6 md:grid-cols-2">
-                    {/* Input */}
-                    <Card className="p-4 flex flex-col h-[500px]">
-                        <div className="flex justify-between items-center mb-4">
-                            <Label>Source Text</Label>
-                            <Button variant="ghost" size="sm" onClick={() => setInputText('')} disabled={!inputText}>
-                                Clear
-                            </Button>
-                        </div>
-                        <Textarea
-                            placeholder="Paste your source text here..."
-                            className="flex-1 font-mono text-sm resize-none"
-                            value={inputText}
-                            onChange={(e) => setInputText(e.target.value)}
-                        />
-                    </Card>
-
-                    {/* Output */}
-                    <Card className="p-4 flex flex-col h-[500px] border-primary/20 bg-primary/5">
-                        <div className="flex justify-between items-center mb-4">
-                            <div className="flex items-center gap-3">
-                                <Label>Result</Label>
-                                {result.count > 0 && (
-                                    <span className="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 font-medium">
-                                        {result.count} replacements
-                                    </span>
-                                )}
+            <main className="flex-1 mx-auto px-4 py-8 sm:px-6 w-full max-w-[96%] xl:max-w-[94%] 2xl:max-w-[1700px] space-y-8">
+                {/* Workspace Container */}
+                <div className={isFullscreen ? 'fixed inset-0 z-50 bg-background flex flex-col p-4 sm:p-6 overflow-hidden space-y-4' : 'space-y-6'}>
+                    {/* Search & Replace Controls */}
+                    <Card className="p-4 sm:p-6 space-y-4 shadow-sm">
+                        <div className="grid gap-4 sm:gap-6 md:grid-cols-2">
+                            {/* Find Input */}
+                            <div className="space-y-2">
+                                <Label className="flex items-center gap-2 text-xs font-semibold">
+                                    <Search className="h-4 w-4 text-primary" />
+                                    Find
+                                </Label>
+                                <Input
+                                    placeholder={useRegex ? "Enter regex pattern..." : "Enter text to find..."}
+                                    value={findText}
+                                    onChange={(e) => setFindText(e.target.value)}
+                                    className={error ? "border-destructive h-9 text-xs" : "h-9 text-xs"}
+                                />
+                                {error && <p className="text-xs text-destructive">{error}</p>}
                             </div>
+
+                            {/* Replace Input */}
+                            <div className="space-y-2">
+                                <Label className="flex items-center gap-2 text-xs font-semibold">
+                                    <Replace className="h-4 w-4 text-emerald-500" />
+                                    Replace with
+                                </Label>
+                                <Input
+                                    placeholder="Enter replacement text..."
+                                    value={replaceText}
+                                    onChange={(e) => setReplaceText(e.target.value)}
+                                    className="h-9 text-xs"
+                                />
+                            </div>
+                        </div>
+
+                        {/* Options */}
+                        <div className="flex flex-wrap gap-4 sm:gap-6 p-3 bg-muted/50 rounded-lg items-center justify-between">
+                            <div className="flex flex-wrap items-center gap-4 sm:gap-6">
+                                <div className="flex items-center space-x-2">
+                                    <Switch
+                                        id="match-case"
+                                        checked={matchCase}
+                                        onCheckedChange={setMatchCase}
+                                    />
+                                    <Label htmlFor="match-case" className="text-xs">Match Case</Label>
+                                </div>
+
+                                <div className="flex items-center space-x-2">
+                                    <Switch
+                                        id="use-regex"
+                                        checked={useRegex}
+                                        onCheckedChange={(checked) => {
+                                            setUseRegex(checked);
+                                            if (checked) setWholeWord(false);
+                                        }}
+                                    />
+                                    <Label htmlFor="use-regex" className="text-xs">Regular Expression</Label>
+                                </div>
+
+                                <div className="flex items-center space-x-2">
+                                    <Switch
+                                        id="whole-word"
+                                        checked={wholeWord}
+                                        onCheckedChange={setWholeWord}
+                                        disabled={useRegex}
+                                    />
+                                    <Label htmlFor="whole-word" className={`text-xs ${useRegex ? "text-muted-foreground" : ""}`}>
+                                        Whole Word Only
+                                    </Label>
+                                </div>
+                            </div>
+
+                            {/* Fullscreen Button */}
                             <Button
-                                variant="outline"
+                                onClick={() => setIsFullscreen(!isFullscreen)}
+                                variant={isFullscreen ? 'default' : 'outline'}
                                 size="sm"
-                                className="gap-2"
-                                onClick={() => handleCopy(result.text)}
-                                disabled={!result.text || result.text === inputText}
+                                className="gap-1.5 text-xs h-8 font-medium"
+                                title={isFullscreen ? 'Exit Fullscreen (Esc)' : 'Expand to Fullscreen workspace'}
                             >
-                                <Copy className="h-3 w-3" />
-                                Copy Result
+                                {isFullscreen ? <Minimize2 className="h-3.5 w-3.5" /> : <Maximize2 className="h-3.5 w-3.5" />}
+                                <span>{isFullscreen ? 'Exit Fullscreen' : 'Fullscreen'}</span>
+                                {isFullscreen && (
+                                    <kbd className="hidden sm:inline-block px-1 py-0.2 rounded bg-primary-foreground/20 text-[10px]">
+                                        ESC
+                                    </kbd>
+                                )}
                             </Button>
                         </div>
-                        <Textarea
-                            readOnly
-                            placeholder="Result will appear here..."
-                            className="flex-1 font-mono text-sm resize-none bg-background/50"
-                            value={result.text}
-                        />
                     </Card>
+
+                    {/* Text Areas */}
+                    <div className={`grid gap-4 sm:gap-6 md:grid-cols-2 ${isFullscreen ? 'flex-1 min-h-0' : ''}`}>
+                        {/* Input */}
+                        <Card className={`p-4 flex flex-col ${isFullscreen ? 'flex-1 min-h-0' : 'h-[500px]'}`}>
+                            <div className="flex justify-between items-center mb-3">
+                                <Label className="text-xs font-semibold">Source Text</Label>
+                                <Button variant="ghost" size="sm" className="h-7 text-xs" onClick={() => setInputText('')} disabled={!inputText}>
+                                    Clear
+                                </Button>
+                            </div>
+                            <Textarea
+                                placeholder="Paste your source text here..."
+                                className="flex-1 font-mono text-sm resize-none focus:outline-none"
+                                value={inputText}
+                                onChange={(e) => setInputText(e.target.value)}
+                            />
+                        </Card>
+
+                        {/* Output */}
+                        <Card className={`p-4 flex flex-col border-primary/20 bg-primary/5 ${isFullscreen ? 'flex-1 min-h-0' : 'h-[500px]'}`}>
+                            <div className="flex justify-between items-center mb-3">
+                                <div className="flex items-center gap-3">
+                                    <Label className="text-xs font-semibold">Result</Label>
+                                    {result.count > 0 && (
+                                        <span className="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 font-medium">
+                                            {result.count} replacements
+                                        </span>
+                                    )}
+                                </div>
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    className="gap-1.5 h-7 text-xs"
+                                    onClick={() => handleCopy(result.text)}
+                                    disabled={!result.text || result.text === inputText}
+                                >
+                                    <Copy className="h-3 w-3" />
+                                    Copy Result
+                                </Button>
+                            </div>
+                            <Textarea
+                                readOnly
+                                placeholder="Result will appear here..."
+                                className="flex-1 font-mono text-sm resize-none bg-background/50 focus:outline-none"
+                                value={result.text}
+                            />
+                        </Card>
+                    </div>
                 </div>
 
                 {/* Reset Action */}

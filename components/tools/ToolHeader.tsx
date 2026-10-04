@@ -35,7 +35,7 @@ export function ToolHeader({
             <>
               <span className="text-muted-foreground">/</span>
               <Link
-                href={`/tools?category=${category}`}
+                href={`/tools/${category}`}
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
                 {categoryLabel}
@@ -72,10 +72,10 @@ export function ToolHeader({
             </Badge>
           </div>
 
-          {/* SEO-friendly secondary text */}
-          <p className="text-sm text-muted-foreground">
-            Free online {title.toLowerCase()} tool. Process your files securely in your browser - your data never leaves your device.
-          </p>
+          {/* AI SEO Extractable Definition Block */}
+          <div className="rounded-lg border bg-muted/40 p-4 text-sm text-muted-foreground leading-relaxed">
+            <span className="font-semibold text-foreground">{title}</span> by Privacy-First Toolbox is a 100% free, client-side browser utility. It processes your files locally on your computer or smartphone using HTML5 and Web Workers—zero bytes of your files or data are ever uploaded to any external server.
+          </div>
         </div>
       </div>
     </header>

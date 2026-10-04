@@ -126,6 +126,43 @@ export function ToolShell({
               )}
             </div>
 
+            {/* Step-by-Step How-To Instructions (Matches JSON-LD HowTo Schema) */}
+            <div className="space-y-6 max-w-3xl mx-auto w-full pt-4">
+              <div className="text-center space-y-1">
+                <h2 className="text-2xl font-bold tracking-tight">How to Use {title}</h2>
+                <p className="text-sm text-muted-foreground">Three simple steps to process your files securely in browser.</p>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-3">
+                <Card className="p-5 space-y-2 text-center border">
+                  <div className="mx-auto flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary font-bold text-sm">
+                    1
+                  </div>
+                  <h3 className="font-semibold text-sm">Select Your File</h3>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Drag and drop or browse your local file into the secure tool workspace.
+                  </p>
+                </Card>
+                <Card className="p-5 space-y-2 text-center border">
+                  <div className="mx-auto flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary font-bold text-sm">
+                    2
+                  </div>
+                  <h3 className="font-semibold text-sm">Configure Options</h3>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Set quality, output format, or formatting options for your task.
+                  </p>
+                </Card>
+                <Card className="p-5 space-y-2 text-center border">
+                  <div className="mx-auto flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary font-bold text-sm">
+                    3
+                  </div>
+                  <h3 className="font-semibold text-sm">Instant Download</h3>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Save your processed output immediately with zero server upload.
+                  </p>
+                </Card>
+              </div>
+            </div>
+
             {/* FAQ Section */}
             {faq && faq.length > 0 && (
               <div className="space-y-6 max-w-3xl mx-auto w-full">

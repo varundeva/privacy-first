@@ -2,8 +2,7 @@ import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { ToolsClient } from './tools-client';
 
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ||
-  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://privacyfirst.tools');
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://privacyfirst.tools';
 
 // SEO Metadata for Tools Page
 export const metadata: Metadata = {

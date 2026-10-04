@@ -3,8 +3,7 @@ import type { Metadata } from 'next';
 import { getToolBySlug, toolsConfig } from '@/lib/tools-config';
 import { ToolPageClient } from './client';
 
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ||
-  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://privacyfirst.tools');
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://privacyfirst.tools';
 
 interface PageProps {
   params: Promise<{
@@ -115,6 +114,72 @@ function generateFAQStructuredData(tool: NonNullable<ReturnType<typeof getToolBy
   };
 }
 
+// Generate Breadcrumb structured data
+function generateBreadcrumbSchema(tool: NonNullable<ReturnType<typeof getToolBySlug>>) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: BASE_URL,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'All Tools',
+        item: `${BASE_URL}/tools`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: tool.categoryLabel,
+        item: `${BASE_URL}/tools/${tool.category}`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 4,
+        name: tool.name,
+        item: `${BASE_URL}/tools/${tool.category}/${tool.slug}`,
+      },
+    ],
+  };
+}
+
+// Generate HowTo structured data for converter / action tools
+function generateHowToSchema(tool: NonNullable<ReturnType<typeof getToolBySlug>>) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: `How to use ${tool.name}`,
+    description: `Step-by-step instructions for ${tool.name.toLowerCase()} securely on your device with no server upload.`,
+    step: [
+      {
+        '@type': 'HowToStep',
+        position: 1,
+        name: 'Select or input your file',
+        text: tool.acceptedFormats.length > 0
+          ? `Choose your ${tool.acceptedFormats.join(', ')} file to load directly into the browser.`
+          : `Paste or enter your input into the tool interface.`,
+      },
+      {
+        '@type': 'HowToStep',
+        position: 2,
+        name: 'Adjust preferences',
+        text: 'Configure your desired conversion, format, or compression settings.',
+      },
+      {
+        '@type': 'HowToStep',
+        position: 3,
+        name: 'Download your result',
+        text: 'Processing completes in your browser via Web Workers. Download your file instantly with complete data privacy.',
+      },
+    ],
+  };
+}
+
 export default async function ToolPage(props: PageProps) {
   const params = await props.params;
   const tool = getToolBySlug(params.slug);
@@ -130,6 +195,8 @@ export default async function ToolPage(props: PageProps) {
 
   const structuredData = generateStructuredData(tool);
   const faqStructuredData = generateFAQStructuredData(tool);
+  const breadcrumbSchema = generateBreadcrumbSchema(tool);
+  const howToSchema = generateHowToSchema(tool);
 
   return (
     <>
@@ -141,6 +208,14 @@ export default async function ToolPage(props: PageProps) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqStructuredData) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
       />
 
       <ToolPageClient

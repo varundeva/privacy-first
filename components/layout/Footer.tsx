@@ -226,12 +226,25 @@ export function Footer() {
             <Link href="/tools?from=bmp" className="px-3 py-1 text-xs rounded-full bg-muted hover:bg-muted/80 transition-colors">Convert BMP</Link>
             <Link href="/tools?to=png" className="px-3 py-1 text-xs rounded-full bg-muted hover:bg-muted/80 transition-colors">To PNG</Link>
             <Link href="/tools?to=jpg" className="px-3 py-1 text-xs rounded-full bg-muted hover:bg-muted/80 transition-colors">To JPG</Link>
-            <Link href="/tools?to=webp" className="px-3 py-1 text-xs rounded-full bg-muted hover:bg-muted/80 transition-colors">To WebP</Link>
-            <Link href="/tools?category=pdf" className="px-3 py-1 text-xs rounded-full bg-muted hover:bg-muted/80 transition-colors">PDF Tools</Link>
-            <Link href="/tools?category=text" className="px-3 py-1 text-xs rounded-full bg-muted hover:bg-muted/80 transition-colors">Text Tools</Link>
-            <Link href="/tools?category=json" className="px-3 py-1 text-xs rounded-full bg-muted hover:bg-muted/80 transition-colors">JSON Tools</Link>
-            <Link href="/tools?category=date" className="px-3 py-1 text-xs rounded-full bg-muted hover:bg-muted/80 transition-colors">Date Tools</Link>
-            <Link href="/tools?category=crypto" className="px-3 py-1 text-xs rounded-full bg-muted hover:bg-muted/80 transition-colors">Crypto Tools</Link>
+            <Link href="/tools/image" className="px-3 py-1 text-xs rounded-full bg-muted hover:bg-muted/80 transition-colors">Image Tools</Link>
+            <Link href="/tools/pdf" className="px-3 py-1 text-xs rounded-full bg-muted hover:bg-muted/80 transition-colors">PDF Tools</Link>
+            <Link href="/tools/text" className="px-3 py-1 text-xs rounded-full bg-muted hover:bg-muted/80 transition-colors">Text Tools</Link>
+            <Link href="/tools/json" className="px-3 py-1 text-xs rounded-full bg-muted hover:bg-muted/80 transition-colors">JSON Tools</Link>
+            <Link href="/tools/date" className="px-3 py-1 text-xs rounded-full bg-muted hover:bg-muted/80 transition-colors">Date Tools</Link>
+            <Link href="/tools/crypto" className="px-3 py-1 text-xs rounded-full bg-muted hover:bg-muted/80 transition-colors">Crypto Tools</Link>
+            <Link href="/tools/web" className="px-3 py-1 text-xs rounded-full bg-muted hover:bg-muted/80 transition-colors">Web Tools</Link>
+          </div>
+        </div>
+
+        {/* Competitor Alternatives Section */}
+        <div className="mt-8 pt-6 border-t border-border/40">
+          <h3 className="text-sm font-semibold text-center mb-4">Private Cloud Alternatives</h3>
+          <div className="flex flex-wrap justify-center gap-2">
+            <Link href="/alternatives" className="px-3 py-1 text-xs rounded-full bg-primary/10 text-primary font-medium hover:bg-primary/20 transition-colors">All Comparisons</Link>
+            <Link href="/alternatives/ilovepdf" className="px-3 py-1 text-xs rounded-full bg-muted hover:bg-muted/80 transition-colors">iLovePDF Alternative</Link>
+            <Link href="/alternatives/smallpdf" className="px-3 py-1 text-xs rounded-full bg-muted hover:bg-muted/80 transition-colors">Smallpdf Alternative</Link>
+            <Link href="/alternatives/cloudconvert" className="px-3 py-1 text-xs rounded-full bg-muted hover:bg-muted/80 transition-colors">CloudConvert Alternative</Link>
+            <Link href="/alternatives/tinypng" className="px-3 py-1 text-xs rounded-full bg-muted hover:bg-muted/80 transition-colors">TinyPNG Alternative</Link>
           </div>
         </div>
 

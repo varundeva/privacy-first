@@ -32,8 +32,7 @@ export const metadata: Metadata = {
   description: 'Free, privacy-first tools that run entirely in your browser. Convert images, manipulate PDFs, and more. Your data never leaves your device.',
   keywords: ['privacy', 'tools', 'converter', 'image', 'pdf', 'text', 'online tools', 'browser-based', 'no upload'],
   authors: [{ name: 'Privacy-First Toolbox' }],
-  creator: 'Privacy-First Toolbox',
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://privacyfirst.tools')),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://privacyfirst.tools'),
   icons: {
     icon: [
       { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },

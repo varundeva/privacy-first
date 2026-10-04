@@ -1,0 +1,38 @@
+# Privacy-First Toolbox
+> A free, open-source collection of browser-based utilities that process files 100% on your device. Zero server uploads. No tracking. Unlimited usage.
+
+Privacy-First Toolbox is engineered for privacy-conscious professionals, developers, healthcare providers, and legal teams who cannot upload confidential data to cloud servers. All file transformations execute locally inside browser memory using HTML5 Canvas, Web Workers, and WebAssembly.
+
+## Core Privacy Architecture
+- 100% Client-Side Execution: Your files never leave your computer or phone.
+- Zero Server Storage: No files or metadata are sent across the network.
+- Works Offline: Load once and disconnect from internet; all core processing functions offline.
+- No Quotas or Paywalls: Completely free, no registration, no daily caps, no watermarks.
+- Open Source: Transparent codebase audited on GitHub under MIT license.
+
+## Tool Categories & Hubs
+- [Image Tools](https://privacyfirst.tools/tools/image): Image resizer, converter for JPG, PNG, WebP, GIF, SVG, BMP, ICO.
+- [PDF Tools](https://privacyfirst.tools/tools/pdf): Merge, split, compress, rotate, and rasterize PDF documents locally.
+- [JSON Tools](https://privacyfirst.tools/tools/json): Format, validate, diff, and convert JSON to CSV, YAML, and TypeScript.
+- [Text Tools](https://privacyfirst.tools/tools/text): Word counter, text diff checker, case converter, slug generator.
+- [Crypto & Security Tools](https://privacyfirst.tools/tools/crypto): MD5/SHA hash generators, AES encryption, Base64 encoder, bcrypt.
+- [Web Tools](https://privacyfirst.tools/tools/web): SQL, HTML, and CSS formatters, URL encoders, user-agent parsers.
+- [Date & Time Tools](https://privacyfirst.tools/tools/date): Unix timestamp converter, timezone calculator, age and work day calculators.
+
+## Private Cloud Competitor Alternatives
+- [iLovePDF Alternative](https://privacyfirst.tools/alternatives/ilovepdf): Free, client-side PDF tools without uploading documents to remote cloud servers.
+- [Smallpdf Alternative](https://privacyfirst.tools/alternatives/smallpdf): Unlimited, private PDF compression and editing without 2-document daily limits.
+- [CloudConvert Alternative](https://privacyfirst.tools/alternatives/cloudconvert): Fast browser file conversion with zero queue wait times and no 25-file limit.
+- [TinyPNG Alternative](https://privacyfirst.tools/alternatives/tinypng): Unlimited local image compression supporting up to 50MB files without upload.
+
+## Top High-Traffic Tools
+- [Image Resizer](https://privacyfirst.tools/tools/image/image-resizer): Resize dimensions by exact pixel, percentage, or social media presets.
+- [PDF Compressor](https://privacyfirst.tools/tools/pdf/pdf-compress): Compress PDF files client-side without cloud upload.
+- [PDF Merger](https://privacyfirst.tools/tools/pdf/pdf-merge): Combine multiple PDF documents locally into one file.
+- [PDF Splitter](https://privacyfirst.tools/tools/pdf/pdf-split): Extract specific pages or split PDF documents into multiple files.
+- [JPG to PNG](https://privacyfirst.tools/tools/image/jpg-to-png): Convert JPEG images to transparent PNG files in browser.
+- [PNG to WebP](https://privacyfirst.tools/tools/image/png-to-webp): Compress PNG graphics into modern WebP format for fast web loading.
+- [JSON Formatter](https://privacyfirst.tools/tools/json/json-formatter): Pretty print and validate JSON data without exposing sensitive API keys.
+- [JSON Comparison](https://privacyfirst.tools/tools/json/json-comparison): Side-by-side diffing of complex JSON structures.
+- [Word Counter](https://privacyfirst.tools/tools/text/word-counter): Real-time word, character, sentence, and reading time counter.
+- [Text Diff](https://privacyfirst.tools/tools/text/text-diff): Find differences between two blocks of text or code.

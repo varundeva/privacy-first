@@ -1,10 +1,16 @@
 import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { HomeClient } from './home-client';
-import Loading from './loading';
 
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ||
-  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://privacyfirst.tools');
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://privacyfirst.tools';
+
+function Loading() {
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-primary"></div>
+    </div>
+  );
+}
 
 // SEO Metadata for Homepage
 export const metadata: Metadata = {

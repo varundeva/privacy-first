@@ -1,0 +1,504 @@
+# Privacy-First Toolbox - Full Tools Directory
+> Complete list of free, private, client-side online tools.
+> Canonical URL: https://privacyfirst.tools
+
+## Image Resizer
+- URL: https://privacyfirst.tools/tools/image/image-resizer
+- Category: image
+- Description: Resize images online free. Change photo dimensions by pixels, percentage, or social media presets. No upload required.
+- Supported Formats: .jpg, .jpeg, .png, .webp, .gif, .bmp
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## JPG to PNG
+- URL: https://privacyfirst.tools/tools/image/jpg-to-png
+- Category: image
+- Description: Convert JPG images to PNG format with transparency support
+- Supported Formats: .jpg, .jpeg
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## JPG to WebP
+- URL: https://privacyfirst.tools/tools/image/jpg-to-webp
+- Category: image
+- Description: Convert JPG to WebP for smaller file sizes and faster websites
+- Supported Formats: .jpg, .jpeg
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## PNG to JPG
+- URL: https://privacyfirst.tools/tools/image/png-to-jpg
+- Category: image
+- Description: Convert PNG images to JPG format for smaller file sizes
+- Supported Formats: .png
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## PNG to WebP
+- URL: https://privacyfirst.tools/tools/image/png-to-webp
+- Category: image
+- Description: Convert PNG to WebP for optimized web images with transparency
+- Supported Formats: .png
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## WebP to PNG
+- URL: https://privacyfirst.tools/tools/image/webp-to-png
+- Category: image
+- Description: Convert WebP images to universally compatible PNG format
+- Supported Formats: .webp
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## WebP to JPG
+- URL: https://privacyfirst.tools/tools/image/webp-to-jpg
+- Category: image
+- Description: Convert WebP images to widely supported JPG format
+- Supported Formats: .webp
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## BMP to PNG
+- URL: https://privacyfirst.tools/tools/image/bmp-to-png
+- Category: image
+- Description: Convert BMP bitmap images to compressed PNG format
+- Supported Formats: .bmp
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## GIF to PNG
+- URL: https://privacyfirst.tools/tools/image/gif-to-png
+- Category: image
+- Description: Convert GIF images to PNG with better color depth
+- Supported Formats: .gif
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## GIF to JPG
+- URL: https://privacyfirst.tools/tools/image/gif-to-jpg
+- Category: image
+- Description: Convert GIF images to JPG format for universal compatibility
+- Supported Formats: .gif
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## GIF to WebP
+- URL: https://privacyfirst.tools/tools/image/gif-to-webp
+- Category: image
+- Description: Convert GIF images to modern WebP format
+- Supported Formats: .gif
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## BMP to JPG
+- URL: https://privacyfirst.tools/tools/image/bmp-to-jpg
+- Category: image
+- Description: Convert BMP bitmap images to compressed JPG format
+- Supported Formats: .bmp
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## BMP to WebP
+- URL: https://privacyfirst.tools/tools/image/bmp-to-webp
+- Category: image
+- Description: Convert BMP bitmap images to modern WebP format
+- Supported Formats: .bmp
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## SVG to PNG
+- URL: https://privacyfirst.tools/tools/image/svg-to-png
+- Category: image
+- Description: Convert SVG vector graphics to PNG bitmap images
+- Supported Formats: .svg
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## SVG to JPG
+- URL: https://privacyfirst.tools/tools/image/svg-to-jpg
+- Category: image
+- Description: Convert SVG vector graphics to JPG for universal sharing
+- Supported Formats: .svg
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## SVG to WebP
+- URL: https://privacyfirst.tools/tools/image/svg-to-webp
+- Category: image
+- Description: Convert SVG vector graphics to modern WebP format
+- Supported Formats: .svg
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## ICO to PNG
+- URL: https://privacyfirst.tools/tools/image/ico-to-png
+- Category: image
+- Description: Convert Windows ICO icon files to PNG format
+- Supported Formats: .ico
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## Image Metadata Viewer
+- URL: https://privacyfirst.tools/tools/image/image-metadata
+- Category: image
+- Description: View detailed metadata and properties of your images
+- Supported Formats: .jpg, .jpeg, .png, .gif, .webp, .bmp, .svg, .ico
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## Image to Base64
+- URL: https://privacyfirst.tools/tools/image/image-to-base64
+- Category: image
+- Description: Convert images to Base64 encoded strings
+- Supported Formats: .jpg, .jpeg, .png, .gif, .webp, .bmp, .svg, .ico
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## Base64 to Image
+- URL: https://privacyfirst.tools/tools/image/base64-to-image
+- Category: image
+- Description: Convert Base64 strings back to image files
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## PDF to PNG
+- URL: https://privacyfirst.tools/tools/pdf/pdf-to-png
+- Category: pdf
+- Description: Convert PDF document pages to high-quality PNG images
+- Supported Formats: .pdf
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## PDF to JPG
+- URL: https://privacyfirst.tools/tools/pdf/pdf-to-jpg
+- Category: pdf
+- Description: Convert PDF document pages to compressed JPG images
+- Supported Formats: .pdf
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## PDF Compressor
+- URL: https://privacyfirst.tools/tools/pdf/pdf-compress
+- Category: pdf
+- Description: Compress PDF files to reduce file size with customizable quality presets
+- Supported Formats: .pdf
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## Split PDF
+- URL: https://privacyfirst.tools/tools/pdf/pdf-split
+- Category: pdf
+- Description: Split PDF files and extract pages
+- Supported Formats: .pdf
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## Merge PDF
+- URL: https://privacyfirst.tools/tools/pdf/pdf-merge
+- Category: pdf
+- Description: Combine multiple PDF files into one document
+- Supported Formats: .pdf
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## Organize PDF
+- URL: https://privacyfirst.tools/tools/pdf/pdf-organize
+- Category: pdf
+- Description: Rearrange, rotate, and delete PDF pages with drag-and-drop
+- Supported Formats: .pdf
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## Unlock PDF
+- URL: https://privacyfirst.tools/tools/pdf/pdf-unlock
+- Category: pdf
+- Description: Remove password protection from PDF files
+- Supported Formats: .pdf
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## Rotate PDF
+- URL: https://privacyfirst.tools/tools/pdf/pdf-rotate
+- Category: pdf
+- Description: Rotate PDF pages by 90°, 180°, or 270°
+- Supported Formats: .pdf
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## Add Page Numbers
+- URL: https://privacyfirst.tools/tools/pdf/pdf-page-numbers
+- Category: pdf
+- Description: Add page numbers to your PDF documents
+- Supported Formats: .pdf
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## Edit PDF Metadata
+- URL: https://privacyfirst.tools/tools/pdf/pdf-metadata
+- Category: pdf
+- Description: View and edit PDF document metadata
+- Supported Formats: .pdf
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## Add PDF Watermark
+- URL: https://privacyfirst.tools/tools/pdf/pdf-watermark
+- Category: pdf
+- Description: Add text or image watermarks to PDF documents
+- Supported Formats: .pdf
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## Delete PDF Pages
+- URL: https://privacyfirst.tools/tools/pdf/pdf-delete-pages
+- Category: pdf
+- Description: Remove unwanted pages from PDF documents
+- Supported Formats: .pdf
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## PDF to Text
+- URL: https://privacyfirst.tools/tools/pdf/pdf-to-text
+- Category: pdf
+- Description: Extract text content from PDF files
+- Supported Formats: .pdf
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## Images to PDF
+- URL: https://privacyfirst.tools/tools/pdf/images-to-pdf
+- Category: pdf
+- Description: Combine multiple images into a single PDF document
+- Supported Formats: .jpg, .jpeg, .png, .webp, .gif, .bmp
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## PDF to Grayscale
+- URL: https://privacyfirst.tools/tools/pdf/pdf-grayscale
+- Category: pdf
+- Description: Convert colored PDF documents to black and white
+- Supported Formats: .pdf
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## Sign PDF
+- URL: https://privacyfirst.tools/tools/pdf/pdf-sign
+- Category: pdf
+- Description: Add signature images to PDF documents
+- Supported Formats: .pdf
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## PDF Header & Footer
+- URL: https://privacyfirst.tools/tools/pdf/pdf-header-footer
+- Category: pdf
+- Description: Add headers and footers to PDF documents
+- Supported Formats: .pdf
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## Flatten PDF
+- URL: https://privacyfirst.tools/tools/pdf/pdf-flatten
+- Category: pdf
+- Description: Flatten PDF form fields and convert to static content
+- Supported Formats: .pdf
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## Crop PDF
+- URL: https://privacyfirst.tools/tools/pdf/pdf-crop
+- Category: pdf
+- Description: Trim margins and borders from PDF pages
+- Supported Formats: .pdf
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## Word Counter
+- URL: https://privacyfirst.tools/tools/text/word-counter
+- Category: text
+- Description: Count words, characters, sentences, and paragraphs in your text files
+- Supported Formats: .txt, .md, .json, .xml, .csv
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## Case Converter
+- URL: https://privacyfirst.tools/tools/text/case-converter
+- Category: text
+- Description: Convert text between different letter cases (UPPER, lower, Title, Camel, etc.)
+- Supported Formats: .txt
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## Text Diff/Compare
+- URL: https://privacyfirst.tools/tools/text/text-diff
+- Category: text
+- Description: Compare two texts side-by-side and highlight differences
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## Find & Replace
+- URL: https://privacyfirst.tools/tools/text/find-replace
+- Category: text
+- Description: Bulk find and replace text with Regex support
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## Lorem Ipsum Generator
+- URL: https://privacyfirst.tools/tools/text/lorem-ipsum
+- Category: text
+- Description: Generate placeholder text for designs and mockups
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## Text to Slug
+- URL: https://privacyfirst.tools/tools/text/text-to-slug
+- Category: text
+- Description: Convert text to SEO-friendly URL slugs
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## Remove Duplicate Lines
+- URL: https://privacyfirst.tools/tools/text/remove-duplicate-lines
+- Category: text
+- Description: Remove duplicate lines from text lists
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## Unix Timestamp Converter
+- URL: https://privacyfirst.tools/tools/date/unix-timestamp
+- Category: date
+- Description: Convert Unix Timestamps to Human-Readable Dates
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## Time Difference Calculator
+- URL: https://privacyfirst.tools/tools/date/time-difference
+- Category: date
+- Description: Calculate duration between two dates
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## Time Zone Converter
+- URL: https://privacyfirst.tools/tools/date/time-zone-converter
+- Category: date
+- Description: Convert time across multiple time zones
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## Date Format Converter
+- URL: https://privacyfirst.tools/tools/date/date-format-converter
+- Category: date
+- Description: Parse and format dates into standard strings
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## Week Number Calculator
+- URL: https://privacyfirst.tools/tools/date/week-number-calculator
+- Category: date
+- Description: Find ISO week number for any date
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## Age Calculator
+- URL: https://privacyfirst.tools/tools/date/age-calculator
+- Category: date
+- Description: Calculate exact age & next birthday
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## Business Days Calculator
+- URL: https://privacyfirst.tools/tools/date/business-days-calculator
+- Category: date
+- Description: Calculate working days between dates
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## JSON Formatter
+- URL: https://privacyfirst.tools/tools/json/json-formatter
+- Category: json
+- Description: Beautify, minify, and validate JSON
+- Supported Formats: .json, .txt
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## JSON Comparison
+- URL: https://privacyfirst.tools/tools/json/json-comparison
+- Category: json
+- Description: Compare two JSON objects and highlight differences
+- Supported Formats: .json, .txt
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## JSON to CSV
+- URL: https://privacyfirst.tools/tools/json/json-to-csv
+- Category: json
+- Description: Convert JSON array to CSV
+- Supported Formats: .json, .txt
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## CSV to JSON
+- URL: https://privacyfirst.tools/tools/json/csv-to-json
+- Category: json
+- Description: Convert CSV to JSON array
+- Supported Formats: .csv, .txt
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## JSON to TypeScript
+- URL: https://privacyfirst.tools/tools/json/json-to-typescript
+- Category: json
+- Description: Convert JSON to TypeScript Interfaces
+- Supported Formats: .json, .txt
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## JSON to YAML
+- URL: https://privacyfirst.tools/tools/json/json-to-yaml
+- Category: json
+- Description: Convert JSON to YAML format
+- Supported Formats: .json, .txt
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## YAML to JSON
+- URL: https://privacyfirst.tools/tools/json/yaml-to-json
+- Category: json
+- Description: Convert YAML to JSON format
+- Supported Formats: .yaml, .yml, .txt
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## MD5 Generator
+- URL: https://privacyfirst.tools/tools/crypto/md5-generator
+- Category: crypto
+- Description: Generate MD5 hash from text
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## SHA Generator
+- URL: https://privacyfirst.tools/tools/crypto/sha-generator
+- Category: crypto
+- Description: Generate SHA-1, SHA-256, SHA-512 hashes
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## Bcrypt Generator
+- URL: https://privacyfirst.tools/tools/crypto/bcrypt-generator
+- Category: crypto
+- Description: Generate and verify Bcrypt paasswords
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## AES Encryption
+- URL: https://privacyfirst.tools/tools/crypto/aes-encryption
+- Category: crypto
+- Description: Encrypt and Decrypt text with AES
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## Base64 Encoder/Decoder
+- URL: https://privacyfirst.tools/tools/crypto/base64-encoder
+- Category: crypto
+- Description: Encode and Decode Base64 strings
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## JWT Debugger
+- URL: https://privacyfirst.tools/tools/crypto/jwt-debugger
+- Category: crypto
+- Description: Decode, Verify and Debug JWTs
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## SQL Formatter
+- URL: https://privacyfirst.tools/tools/web/sql-formatter
+- Category: web
+- Description: Format and beautify SQL queries
+- Supported Formats: .sql, .txt
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## HTML Formatter
+- URL: https://privacyfirst.tools/tools/web/html-formatter
+- Category: web
+- Description: Beautify and format HTML code
+- Supported Formats: .html, .htm, .txt
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## CSS Formatter
+- URL: https://privacyfirst.tools/tools/web/css-formatter
+- Category: web
+- Description: Beautify and format CSS styles
+- Supported Formats: .css, .txt
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## URL Encoder/Decoder
+- URL: https://privacyfirst.tools/tools/web/url-encoder
+- Category: web
+- Description: Encode and decode URLs and components
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## URL Parser
+- URL: https://privacyfirst.tools/tools/web/url-parser
+- Category: web
+- Description: Parse URLs into their base components
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## User Agent Parser
+- URL: https://privacyfirst.tools/tools/web/user-agent-parser
+- Category: web
+- Description: Parse User Agent strings for browser and device info
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## HTML Entity Converter
+- URL: https://privacyfirst.tools/tools/web/html-entity-converter
+- Category: web
+- Description: Encode and decode HTML entities
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## Color Converter
+- URL: https://privacyfirst.tools/tools/web/color-converter
+- Category: web
+- Description: Convert between HEX, RGB, HSL, and CMYK formats
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+
+## CSS Unit Converter
+- URL: https://privacyfirst.tools/tools/web/css-unit-converter
+- Category: web
+- Description: Convert between PX, REM, EM, and viewport units
+- Privacy: 100% Client-Side, No File Upload, Works Offline
+

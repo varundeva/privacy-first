@@ -30,11 +30,13 @@ import {
   LucideIcon,
   Info,
   MessageSquare,
+  Sparkles,
 } from 'lucide-react';
 
 const primaryNav = [
   { name: 'Home', href: '/', icon: Home },
   { name: 'All Tools', href: '/tools', icon: Wrench },
+  { name: 'Alternatives', href: '/alternatives', icon: Sparkles },
 ];
 
 const secondaryNav = [
@@ -65,7 +67,7 @@ const toolCategories = configCategories.map(category => {
 
   return {
     name: category.label,
-    href: `/tools?category=${category.id}`,
+    href: `/tools/${category.id}`,
     icon: IconComponent,
     count,
   };

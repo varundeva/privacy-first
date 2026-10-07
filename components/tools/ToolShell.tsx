@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useCallback } from 'react';
+import posthog from 'posthog-js';
 import { ToolHeader } from './ToolHeader';
 import { FileUploader } from './FileUploader';
 import { Check, Lightbulb, HelpCircle } from 'lucide-react';
@@ -44,7 +45,16 @@ export function ToolShell({
 
   const handleFileSelect = useCallback((file: File) => {
     setSelectedFile(file);
-  }, []);
+    if (process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN && process.env.NEXT_PUBLIC_POSTHOG_HOST) {
+      posthog.capture('tool_file_selected', {
+        tool_title: title,
+        tool_category: category,
+      });
+      posthog.logger.info('tool_file_selected', {
+        tool_category: category ?? 'unknown',
+      });
+    }
+  }, [category, title]);
 
   const handleReset = useCallback(() => {
     setSelectedFile(null);

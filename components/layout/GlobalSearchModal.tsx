@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { useRouter } from 'next/navigation';
+import posthog from 'posthog-js';
 import {
   CommandDialog,
   CommandEmpty,
@@ -39,6 +40,15 @@ export function GlobalSearchModal({ open, onOpenChange }: GlobalSearchModalProps
 
   const handleSelect = React.useCallback(
     (url: string) => {
+      if (process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN && process.env.NEXT_PUBLIC_POSTHOG_HOST) {
+        const destinationType = url.startsWith('/alternatives/') ? 'alternative' : 'tool';
+        posthog.capture('tool_search_result_selected', {
+          destination_type: destinationType,
+        });
+        posthog.logger.info('tool_search_result_selected', {
+          destination_type: destinationType,
+        });
+      }
       onOpenChange(false);
       router.push(url);
     },

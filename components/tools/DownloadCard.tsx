@@ -2,6 +2,7 @@
 
 import { Download, Copy, Check } from 'lucide-react';
 import { useState } from 'react';
+import posthog from 'posthog-js';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 
@@ -29,6 +30,12 @@ export function DownloadCard({
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    if (process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN && process.env.NEXT_PUBLIC_POSTHOG_HOST) {
+      posthog.capture('tool_output_downloaded', { output_mime_type: mimeType });
+      posthog.logger.info('tool_output_downloaded', {
+        output_mime_type: mimeType,
+      });
+    }
     onDownload?.();
   };
 
